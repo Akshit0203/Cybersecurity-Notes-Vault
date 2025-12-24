@@ -175,31 +175,3 @@ Task 3 AS03: Software Supply Chain Failures
 THM(SUPPLY_CH41N_VULN3R4B1LITY)
 Task 4 AS04: Cryptographic Failures
 THM{CRYPTO_FAILURE_H4RDCOD3D_K3Y}
-
-
-OWASP Top 10 2025: IAAA Failures
-Task 1 Introduction
-no answer
-Task 2 What is IAAA?
-Identity, Authentication, Authorisation, Accountability
-Task 3 A01: Broken Access Control
-horizontal
-THM{Found.the.Millionare!}
-Task 4 A07: Authentication Failures
-THM{Account.confusion.FTW!}
-Task 5 A09: Logging & Alerting Failures
-203.0.113.45
-admin
-supersecretadminstuff
-Task 6 Conclusion
-no answer
-
-Upload Vulnerabilities
-Task 9 Bypassing Server-Side Filtering: Magic Numbers
-THM{MWY5ZGU4NzE0ZDlhNjE1NGM4ZThjZDJh}
-Task 10 Example Methodology
-no answer
-Task 11 Challenge
-no answer
-Task 12 Conclusion
-no answer
