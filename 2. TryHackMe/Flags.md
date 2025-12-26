@@ -147,14 +147,6 @@ no answer
 
 
 Humans as Attack Vectors
-Task 1 Introduction
-no answer
-Task 2 The Human Element
-humans
-Access
-Task 3 Attacks on Humans
-Social Engineering
-Impersonation
 Task 4 Defending Humans
 Mitigation
 Security Awareness Training
@@ -167,11 +159,3 @@ no answer
 # Web Fundamentals
 
 OWASP Top 10 2025: Application Design Flaws
-Task 1 Introduction
-no answer
-Task 2 AS02: Security Misconfigurations
-THM{V3RB0S3_3RR0R_L34K}
-Task 3 AS03: Software Supply Chain Failures
-THM(SUPPLY_CH41N_VULN3R4B1LITY)
-Task 4 AS04: Cryptographic Failures
-THM{CRYPTO_FAILURE_H4RDCOD3D_K3Y}
