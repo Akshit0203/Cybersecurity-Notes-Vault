@@ -125,13 +125,7 @@ no answer
 
 
 Systems as Attack Vectors
-Task 1 Introduction
-no answer
-Task 2 Definition of System
-Yea
-Yea
 Task 3 Attacks on Systems
-Vulnerability
 Supply Chain
 Task 4 Vulnerabilities
 CVE-2025–53770
@@ -143,17 +137,6 @@ Task 6 Practice
 THM{patch_or_reconfigure?}
 THM{best_systems_defender!}
 Task 7 Conclusion
-no answer
-
-
-Humans as Attack Vectors
-Task 4 Defending Humans
-Mitigation
-Security Awareness Training
-Task 5 Practice
-THM{anyone_else_at_risk?}
-THM{human_protection_expert!}
-Task 6 Conclusion
 no answer
 
 # Web Fundamentals
