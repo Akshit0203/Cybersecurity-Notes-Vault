@@ -4,7 +4,7 @@ using tags #concept
 
 italic - text in asterisks *text here*
 
-bold - text in double asterisks **text here
+bold - text in double asterisks **text here**
 
 [link title](https://linkhere)
 
