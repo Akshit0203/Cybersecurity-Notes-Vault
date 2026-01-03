@@ -1,32 +1,28 @@
 
 # AOC
 
+Day 20 Race Conditions - Toy to The World
+Task 1 Introduction
+no answer
+Task 2 Race Condition
+THM{WINNER_OF_R@CE007}
+
+
 Day 19 ICS/Modbus - Claus for Concern
 Task 1 Introduction
 no answer
 Task 2 SCADA (Supervisory Control and Data Acquisition)
-
-
-
+502
+Task 3 PLC & Modbus Protocol
+no answer
+Task 4 Practical
+THM{eGgMas0V3r}
+no answer
 
 Day 18 Obfuscation - The Egg Shell File
-Task 1 Introduction
-no answer
 Task 2 Obfuscation & Deobfuscation
 THM{C2_De0bfuscation_29838}   
 THM{API_Obfusc4tion_ftw_0283}
-no answer
-
-Day 17 CyberChef - Hoperation Save McSkidy
-Task 5 Third Lock - Guard House
-LongEars
-Task 6 Fourth Lock - Inner Castle
-passw0rd1
-Task 7 Fifth Lock - Prison Tower
-51rBr34chBl0ck3r
-THM{M3D13V4L_D3C0D3R_4D3P7}
-Task 8 Epilogue
-no answer
 no answer
 
 # SOC Level 1
