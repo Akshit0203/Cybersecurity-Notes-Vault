@@ -1,12 +1,64 @@
 
 # AOC
 
+Day 24 Exploitation with cURL - Hoperation Eggsploit
+Task 1 Introduction
+no answer
+Task 2 Web Hacking Using cURL
+
+
+
+Day 23 AWS Security - S3cret Santa
+Task 1 Introduction
+123456789012
+Task 2 IAM: Users, Roles, Groups and Policies
+policy
+Task 3 Practical: Enumerating a User's Permissions
+SirCarrotbanePolicy
+Task 4 Assuming Roles
+ListAllMyBuckets
+Task 5 Grabbing a file from S3
+THM{more_like_sir_cloudbane}
+
+
+Day 22 C2 Detection - Command & Carol
+Task 1 Introduction
+no answer
+Task 2 Detecting C2 with RITA
+6
+prevalence
+40
+dst:rabbithole.malhare.net beacon:>=70 sort:duration-desc
+80
+
+
+Day 21 Malware Analysis - Malhare.exe
+Task 1Introduction
+no answer
+Task 2Malware Analysis
+Best Festival Company Developer Survey
+getQuestions
+survey.bestfestiivalcompany.com
+i
+4
+South Pole
+ComputerName,UserName
+details
+get
+runObject.Run "powershell.exe -nop -w hidden -c " & feedbackString, 0, False
+base64
+rot13
+THM{Malware.Analysed}
+no answer
+no answer
+
 Day 20 Race Conditions - Toy to The World
 Task 1 Introduction
 no answer
 Task 2 Race Condition
 THM{WINNER_OF_R@CE007}
-
+THM{WINNER_OF_Bunny_R@ce}
+no answer
 
 Day 19 ICS/Modbus - Claus for Concern
 Task 1 Introduction
@@ -21,7 +73,6 @@ no answer
 
 Day 18 Obfuscation - The Egg Shell File
 Task 2 Obfuscation & Deobfuscation
-THM{C2_De0bfuscation_29838}   
 THM{API_Obfusc4tion_ftw_0283}
 no answer
 
