@@ -52,7 +52,7 @@ Git repositories maintain complete history of all changes, including deleted con
 
 From the home directory listing:
 
-![|556x434](./attachments/image.png)
+![|556x434](../attachments/image.png)
 
 ```
 eddi_knapp@tbfc-web01:~$ cd .secret_git
@@ -127,7 +127,7 @@ Assemble the three fragments in order:
 
 **Complete Password:** `3ast3r-1s-c0M1nG`
 
-![|432x375](./attachments/image-1.png)
+![|432x375](../attachments/image-1.png)
 
 ```
 eddi_knapp@tbfc-web01:~$ cd Documents/
@@ -142,7 +142,7 @@ gpg --batch --passphrase "3ast3r-1s-c0M1nG" -d mcskidy_note.txt.gpg
 
 > <span style="color:rgb(255, 0, 0)">UNLOCK_KEY: 91J6X7R4FQ9TQPM9JX2Q9X2Z</span>
 
-![|641x324](./attachments/image-2.png)
+![|641x324](../attachments/image-2.png)
 
 
 McSkidy’s note contains:
@@ -174,7 +174,7 @@ EOF
 
 After the wishlist is corrected, the glitching should stop and a block of **ciphertext** will be displayed.
 
-![](./attachments/image-3.png)
+![](../attachments/image-3.png)
 
 
 **Decrypt using OpenSSL**
@@ -184,7 +184,7 @@ echo "U2FsdGVkX1/7xkS74RBSFMhpR9Pv0PZrzOVsIzd38sUGzGsDJOB9FbybAWod5HMsa+WIr5HDpr
 
 > THM{w3lcome_2_A0c_2025}
 
-![|700x119](./attachments/image-4.png)
+![|700x119](../attachments/image-4.png)
 
 Navigate to the secret directory:
 
@@ -251,9 +251,9 @@ On the AttackBox browser, open:
 http://<TARGET_IP>:9999/sq1.png
 ```
 
-![|497x255](./attachments/image-5.png)
+![|497x255](../attachments/image-5.png)
 
-![|681x341](./attachments/image-6.png)
+![|681x341](../attachments/image-6.png)
 
 > now_you_see_me
 

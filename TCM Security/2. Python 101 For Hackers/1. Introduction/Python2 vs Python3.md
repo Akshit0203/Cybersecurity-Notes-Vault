@@ -1,5 +1,5 @@
 
-![](./attachments/image.png)
+![](attachments/image.png)
 
 # 🧠 First: What Is Unicode?
 

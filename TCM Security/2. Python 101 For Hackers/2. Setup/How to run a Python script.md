@@ -37,7 +37,7 @@ __name__ will be set to "__#that module's name instead__"
 
 because the interpreter is running the current file as the main file :
 
-![|303x146](./attachments/image.png)
+![|303x146](attachments/image.png)
 
-![|314x94](./attachments/image-1.png)
+![|314x94](attachments/image-1.png)
 

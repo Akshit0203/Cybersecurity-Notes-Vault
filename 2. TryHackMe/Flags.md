@@ -1,88 +1,9 @@
-
-# AOC
-
-Day 24 Exploitation with cURL - Hoperation Eggsploit
-Task 1 Introduction
-no answer
-Task 2 Web Hacking Using cURL
-
-
-
-Day 23 AWS Security - S3cret Santa
-Task 1 Introduction
-123456789012
-Task 2 IAM: Users, Roles, Groups and Policies
-policy
-Task 3 Practical: Enumerating a User's Permissions
-SirCarrotbanePolicy
-Task 4 Assuming Roles
-ListAllMyBuckets
-Task 5 Grabbing a file from S3
-THM{more_like_sir_cloudbane}
-
-
-Day 22 C2 Detection - Command & Carol
-Task 1 Introduction
-no answer
-Task 2 Detecting C2 with RITA
-6
-prevalence
-40
-dst:rabbithole.malhare.net beacon:>=70 sort:duration-desc
-80
-
-
-Day 21 Malware Analysis - Malhare.exe
-Task 1Introduction
-no answer
-Task 2Malware Analysis
-Best Festival Company Developer Survey
-getQuestions
-survey.bestfestiivalcompany.com
-i
-4
-South Pole
-ComputerName,UserName
-details
-get
-runObject.Run "powershell.exe -nop -w hidden -c " & feedbackString, 0, False
-base64
-rot13
-THM{Malware.Analysed}
-no answer
-no answer
-
-Day 20 Race Conditions - Toy to The World
-Task 1 Introduction
-no answer
-Task 2 Race Condition
-THM{WINNER_OF_R@CE007}
-THM{WINNER_OF_Bunny_R@ce}
-no answer
-
-Day 19 ICS/Modbus - Claus for Concern
-Task 1 Introduction
-no answer
-Task 2 SCADA (Supervisory Control and Data Acquisition)
-502
-Task 3 PLC & Modbus Protocol
-no answer
-Task 4 Practical
-THM{eGgMas0V3r}
-no answer
-
-Day 18 Obfuscation - The Egg Shell File
-Task 2 Obfuscation & Deobfuscation
-THM{API_Obfusc4tion_ftw_0283}
-no answer
-
 # SOC Level 1
 
 Introduction to SOAR
 Task 1 Introduction
 no answer
 Task 2 Traditional SOC and Challenges
-
 
 Introduction to EDR
 Task 1 Introduction
@@ -111,7 +32,6 @@ Known internal IT utility tool
 Task 8Conclusion
 no answer
 
-
 SOC Metrics and Objectives
 Task 1 Introduction
 no answer
@@ -130,7 +50,6 @@ THM{mttd:time_between_attack_and_alert}
 THM{fpr:the_main_cause_of_l1_burnout}
 Task 6 Conclusion
 no answer
-
 
 SOC Workbooks and Lookups
 Task 1 Introduction
@@ -154,63 +73,9 @@ THM{asset_inventory_is_essential}
 Task 6 Conclusion
 no answer
 
-
-SOC L1 Alert Reporting
-Task 1 Introduction
-no answer
-Task 2 Alert Funnel
-Alert Escalation
-Alert Reporting
-Task 3 Reporting Guide
-m.boslan@tryhackme.thm
-support@microsoft.com
-THM{nice_attempt_faking_microsoft_support}
-Task 4 Escalation Guide
-E.Fleming
-THM{good_job_escalating_your_first_alert}
-THM{looks_like_webshell_via_old_exchange}
-Task 5 SOC Communication
-Nay
-Yea
-Task 6 Conclusion
-no answer
-
-
-SOC L1 Alert Triage
-Task 1 Introduction
-no answer
-Task 2 Events and Alerts
-5
-Double-Extension File Creation
-Task 3 Alert Properties
-False Positive
-M.Clark
-yea
-nay
-Potential Data Exfiltration
-Task 5 Alert Triage
-THM{how_could_this_user_fall_for_it?}
-THM{looks_like_lots_of_zoom_meetings}
-THM{should_we_allow_github_for_devs?}
-Task 6 Conclusion
-no answer
-
-
-Systems as Attack Vectors
-Task 3 Attacks on Systems
-Supply Chain
-Task 4 Vulnerabilities
-CVE-2025–53770
-Patch
-Task 5 Misconfigurations
-Nay
-Penetration Testing
-Task 6 Practice
-THM{patch_or_reconfigure?}
-THM{best_systems_defender!}
-Task 7 Conclusion
-no answer
-
 # Web Fundamentals
 
 OWASP Top 10 2025: Application Design Flaws
+do owasp top 10 2 new rooms although flags submitted
+
+
