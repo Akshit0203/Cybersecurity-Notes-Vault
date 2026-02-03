@@ -973,6 +973,202 @@ You’ll get something like:
 
 1q2w3e4r5t
 
-# 7. TryPayMe Solutions's Contract
+# 7. TryPayMe Solutions's Contract (DFIR - malware analysis)
+
+The file to inspect is called agenda.exe and can be found on the Desktop. The necessary tools to answer the questions can be found in the DFIR Tools folder on the Desktop.
+
+Question 1
+What is the hash (sha-256) of the file?
+6d6ffc0419964f18f40a8feea47e7f41810da6ed5363536f78015467684219ac
+
+Open **Command Prompt** (Start → type `cmd`):
+
+```
+cd Desktop
+certutil -hashfile agenda.exe SHA256
+```
+
+---
+
+Question 2
+Which operating system was the file designed to run on?
+Windows
+
+Since `agenda.exe` is an **`.exe` Portable Executable (PE)** file (and you’re analyzing it on Windows), 
+**It’s designed for Microsoft Windows.**
+
+---
+
+Question 3
+What capability in the executable suggests that it can write on the Windows OS?
+CreateDirectoryA
+
+- Open **DFIR Tools → pestudio**
+    
+- Drag `agenda.exe` into PEStudio.
+    
+- Go to **Imports** (left panel).
+    
+- Look for file-writing related APIs
+
+This import explicitly shows the malware can create directories (i.e., write to disk).  
+(You also have other write-related APIs like `ReadFile`, but `CreateDirectoryA` is the clear indicator PeStudio flags.)
+
+![](./attachments/image-1.png)
+
+---
+
+Question 4
+Can you find a string/URL that points to an executable?
+eg.https://tryhackme.com/path/file.bat
+https://tryhatme.com/trypayme/01/20-1wdfgj69Fr/rans.exe
+
+From PeStudio screenshot , there’s a very important import highlighted:
+`URLDownloadToFileA`
+That already tells us the malware downloads something from the internet.
+
+1. In PeStudio, click **Strings** on the left.
+    
+2. Use the search box and look for:
+    
+
+`http`
+or
+`.exe`
+
+You should see a full URL ending in `.exe`.
+
+![](./attachments/image-2.png)
+
+---
+
+Question 5
+What MBC (Malware Behaviour Catalogue) Objective can be found associated with "process creation" in the executable?
+Execution
+
+We saw:
+
+`CreateProcessA`
+
+MBC maps this to: **Execution**
+
+---
+
+Question 6
+What command is the executable trying to execute?
 
 
+ under **Imports**, we have:
+
+- `CreateProcessA`
+    
+- `ShellExecuteExA`
+    
+
+These APIs are used to **spawn new processes / run commands**.
+
+That tells us: the malware launches something externally.
+
+In PeStudio:
+
+1. Click **Strings (count > 975)** on the left
+    
+2. Press **Ctrl + F**
+    
+3. Search for:
+    
+
+`cmd`
+
+You’ll see a literal string:
+
+`cmd.exe /c`
+
+What that means
+
+On Windows:
+
+`cmd.exe /c <command>`
+
+means: _“Run this command, then terminate.”_
+
+Malware almost always uses this pattern to:
+
+- launch payloads
+    
+- run downloaded executables
+    
+- execute PowerShell
+    
+- start secondary stages
+    
+
+Since:
+
+- You saw `URLDownloadToFileA` (download capability)
+    
+- You found `rans.exe` (payload)
+    
+- You saw `CreateProcessA`
+    
+- You saw `ShellExecuteExA`
+    
+- AND the literal string `cmd.exe /c`
+    
+
+This confirms the execution chain:
+
+`download → cmd.exe /c → run rans.exe`
+
+---
+
+Question 7
+Is there an encoded URL? What is the encoded text?
+dHJ5aGF0bWUuY29tL3RyeXBheW1lL2R3bGQva2V5LnR4d
+
+![](./attachments/image-3.png)
+
+
+---
+
+Question 8
+What are the first two bytes of the Executable?
+
+Windows PE files always start with:
+ `4D 5A`
+
+(or ASCII: `MZ`)
+
+![](./attachments/image-5.png)
+
+From the same folder as `agenda.exe`:
+
+`certutil -dump agenda.exe | more`
+
+At the very top you’ll see something like:
+
+`0000  4d 5a 90 00 ...`
+
+The **first two bytes** are:
+
+`4d 5a`
+
+---
+
+Question 9
+What is the architecture of the executable?
+64-bit
+
+Bottom bar of PeStudio shows:
+
+`cpu > 64-bit`
+
+---
+
+Question 10
+What is the decoded URL within the binary? (Answer exactly as decoded)
+tryhatme.com/trypayme/dwld/key.tx
+
+Use magic in cyberchef
+
+![](./attachments/image-4.png)
