@@ -1,5 +1,5 @@
-[Conditional Questions.pdf](530b267a110e4cd1b226e7f904c1c630.pdf)
-![image1](../../attachments/412baa5bffb241cfbd5ea069804b6d5e.png)![image2](../../attachments/4f19529781a24f51a66138e40b48bd19.png)[Conditional Solutions.pdf](b83418daa18545f1adb4479d0235441f.pdf)![image3](../../attachments/e995856175f84814a6801c570aac21c5.png)![image4](../../attachments/a400175b692343bb81c5cfc6e7a7d47e.png)![image5](../../attachments/df81ee9eb438462383d22968e802f7b9.png)
+[Conditional Questions.pdf](../../attachments/530b267a110e4cd1b226e7f904c1c630.pdf)
+![image1](../../attachments/412baa5bffb241cfbd5ea069804b6d5e.png)![image2](../../attachments/4f19529781a24f51a66138e40b48bd19.png)[Conditional Solutions.pdf](../../attachments/b83418daa18545f1adb4479d0235441f.pdf)![image3](../../attachments/e995856175f84814a6801c570aac21c5.png)![image4](../../attachments/a400175b692343bb81c5cfc6e7a7d47e.png)![image5](../../attachments/df81ee9eb438462383d22968e802f7b9.png)
 Q1
 ```java
 import java.util.Scanner;

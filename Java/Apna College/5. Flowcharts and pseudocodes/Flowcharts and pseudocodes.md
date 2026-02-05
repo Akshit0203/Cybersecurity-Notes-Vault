@@ -37,6 +37,6 @@ While = loop
 
 ![image11](../../attachments/ff6a4488e141487b9aecc7d3a72df934.png)
 
-[Question File (3).pdf](be49f8f875684f80b10fd3633ccb8621.pdf)
+[Question File (3).pdf](../../attachments/be49f8f875684f80b10fd3633ccb8621.pdf)
 
-![image12](../../attachments/29b37529b0c9462dbe846b0c099d25f3.png)[Solution File (3).pdf](e4548e1fb9a0440e864282084fcfb034.pdf)![image13](../../attachments/d07507af21074db2bedd2c5321c0780a.png)![image14](../../attachments/47800cf62c804860967f373a64399215.png)![image15](../../attachments/8bda486c94864865b8e8d13d354ca4b4.png)![image16](../../attachments/1c0e561d362748579630a73909b87c01.png)
+![image12](../../attachments/29b37529b0c9462dbe846b0c099d25f3.png)[Solution File (3).pdf](../../attachments/e4548e1fb9a0440e864282084fcfb034.pdf)![image13](../../attachments/d07507af21074db2bedd2c5321c0780a.png)![image14](../../attachments/47800cf62c804860967f373a64399215.png)![image15](../../attachments/8bda486c94864865b8e8d13d354ca4b4.png)![image16](../../attachments/1c0e561d362748579630a73909b87c01.png)

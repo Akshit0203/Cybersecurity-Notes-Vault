@@ -39,7 +39,7 @@ In 2017, [Uber](https://www.huntress.com/threat-library/data-breach/uber-data-b
 - Secure AI endpoints and automation services with proper access controls and monitoring
 - Integrate configuration reviews and automated security checks into your deployment pipeline
 
-![|700x224](./attachments/image.png)
+![|700x224](attachments/image.png)
 
 Idea here is to try to force an application for an error
 
@@ -83,19 +83,19 @@ POST /api/process HTTP/1.1
 ```
 
 
-![](./attachments/image-1.png)
+![](attachments/image-1.png)
 
 add "Content-type" field
 
-![](./attachments/image-2.png)
+![](attachments/image-2.png)
 
 add json code from downloaded file
 
-![](./attachments/image-4.png)
+![](attachments/image-4.png)
 
 ![](attachments/image-3.png)
 
 # Task 4 AS04: Cryptographic Failures
 
-![](./attachments/image-5.png)
+![](attachments/image-5.png)
 

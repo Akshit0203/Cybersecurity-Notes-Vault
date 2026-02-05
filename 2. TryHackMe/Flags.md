@@ -4,6 +4,18 @@ Introduction to SOAR
 Task 1 Introduction
 no answer
 Task 2 Traditional SOC and Challenges
+Alert Fatigue
+Task 3 Overcoming SOC Challenges with SOAR
+orchestration
+Playbook
+Task 4 Building SOAR Playbooks
+Yay
+Advisory lists
+mitigation plan
+Task 5 Threat Intel Workflow Practical
+THM{AUT0M@T1N6_S3CUR1T¥}
+Task 6 Conclusion
+no answer
 
 Introduction to EDR
 Task 1 Introduction
@@ -52,12 +64,6 @@ Task 6 Conclusion
 no answer
 
 SOC Workbooks and Lookups
-Task 1 Introduction
-no answer
-Task 2 Assets & Identities
-US Financial Adviser
-Financial records
-Yea
 Task 3 Network Diagrams
 VPN
 Database Subnet
@@ -72,10 +78,5 @@ THM{be_vigilant_with_powershell}
 THM{asset_inventory_is_essential}
 Task 6 Conclusion
 no answer
-
-# Web Fundamentals
-
-OWASP Top 10 2025: Application Design Flaws
-do owasp top 10 2 new rooms although flags submitted
 
 
