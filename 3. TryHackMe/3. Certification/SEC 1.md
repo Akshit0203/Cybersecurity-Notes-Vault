@@ -657,7 +657,7 @@ Suspicious Web Shell Upload
 
 go to alerts tab
 
-![](./attachments/image.png)
+![](attachments/image.png)
 
 ---
 
@@ -1014,7 +1014,7 @@ CreateDirectoryA
 This import explicitly shows the malware can create directories (i.e., write to disk).  
 (You also have other write-related APIs like `ReadFile`, but `CreateDirectoryA` is the clear indicator PeStudio flags.)
 
-![](./attachments/image-1.png)
+![](attachments/image-1.png)
 
 ---
 
@@ -1038,7 +1038,7 @@ or
 
 You should see a full URL ending in `.exe`.
 
-![](./attachments/image-2.png)
+![](attachments/image-2.png)
 
 ---
 
@@ -1126,7 +1126,7 @@ Question 7
 Is there an encoded URL? What is the encoded text?
 dHJ5aGF0bWUuY29tL3RyeXBheW1lL2R3bGQva2V5LnR4d
 
-![](./attachments/image-3.png)
+![](attachments/image-3.png)
 
 
 ---
@@ -1139,7 +1139,7 @@ Windows PE files always start with:
 
 (or ASCII: `MZ`)
 
-![](./attachments/image-5.png)
+![](attachments/image-5.png)
 
 From the same folder as `agenda.exe`:
 
@@ -1171,4 +1171,4 @@ tryhatme.com/trypayme/dwld/key.tx
 
 Use magic in cyberchef
 
-![](./attachments/image-4.png)
+![](attachments/image-4.png)
