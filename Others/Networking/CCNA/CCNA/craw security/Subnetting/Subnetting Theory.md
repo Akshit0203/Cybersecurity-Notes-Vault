@@ -1,0 +1,3 @@
+[Subnetting.pdf](../../../attachments/1c1ed92d0cac40b9a9163ef773438d73.pdf)
+![image1](../../attachments/74268daa6a2c474fae7a9f5d3078d080.png)![image2](../../attachments/a1e22ffc203742b8a72f51f51f8c3b92.png)![image3](../../attachments/bfa4b86021ff4e86871d0728d66f91ee.png)![image4](../../attachments/2a6d0cfa7e76469cbfd9b46c54358372.png)![image5](../../attachments/f8f82a9be1684f3b9326a207dc9d5ee5.png)![image6](../../attachments/1b7e3816865446af997aee19c609192b.png)![image7](../../attachments/c100d4209a4d461da1fee4fb0aa0d69a.png)![image8](../../attachments/fd2ce6c466594689b5134cf3b9fc9abd.png)![image9](../../attachments/95ad759ff228434c91f456b2ccbd1e4c.png)![image10](../../attachments/fbc97117daca45bfb788d41428468844.png)
+
