@@ -1,7 +1,7 @@
 
 # URL Encoding 
 
-![](./attachments/image.png)
+![](attachments/image.png)
 
 **URL Encoding** (also called **Percent Encoding**) converts unsafe or special characters into a format that can be safely transmitted in a URL.
 

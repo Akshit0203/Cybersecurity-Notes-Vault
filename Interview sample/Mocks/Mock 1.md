@@ -1,0 +1,17 @@
+
+- Tell me about Yourself
+- What bugs have you found
+- Explain CSRF and mitigation
+- CORS vs SOP
+- Cache Deception Explain
+- How good are you in Python
+- What is Generator in python
+- How good are you in Network Security
+- What other domains apart from VAPT in cyber are you interested in
+- Have you used AI
+- How have you utilized AI in cyber security
+- Full form of GPT in ChatGPT
+- Explain Transformers
+- What’s one quality that you will bring to the Table which is unique
+- Would you like to work in R&D of Cyber Security
+- Any questions for the interview Panel
