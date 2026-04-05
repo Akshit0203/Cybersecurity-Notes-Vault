@@ -18,5 +18,9 @@ AppSec Hiring Skills :
 - Security Testing
 - Application Security Remediation (OWASP Standards)
 
+https://learn.microsoft.com/en-us/training/paths/tm-threat-modeling-fundamentals/
+
+https://iriusrisk.academy/path-player?courseid=iriusrisk-threat-modeling-champion
+
 
 ![](attachments/interview-study-notes-for-security-engineering%20(1).pdf)
