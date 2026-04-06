@@ -68,5 +68,5 @@ Containers behave like small, self-contained spaces because:
 The easiest way to deploy containers in a VM is using Docker.  
 Docker is an open-source software platform that simplifies the process of building, deploying, and running applications using containerization.
 
-![534](./attachments/image.png)
+![534](attachments/image.png)
 
