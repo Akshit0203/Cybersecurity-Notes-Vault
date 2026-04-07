@@ -1,11 +1,23 @@
 
 # Development
 
-Apna Collge Sigma/Delta
+Apna Collge Sigma/Delta - web development
 
+### Books : 
+Web development - html and css
 ## Database 
 
 [CS50’s Introduction to Databases with SQL](https://cs50.harvard.edu/sql/)
+
+Github Education : 
+1. MongoDB Atlas Administrator Path
+2. MongoDB Database Admin Path – Self-Managed
+3. MongoDB PHP Developer Path
+4. MongoDB Python Developer Path
+5. MongoDB Java Developer Path
+6. MongoDB Node.js Developer Path
+7. MongoDB C# Developer Path
+8. MongoDB Data Modeling Path
 
 # Security
 

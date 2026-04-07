@@ -93,7 +93,10 @@
 		{"id":"2b09fc5ec258de9e","type":"text","text":"Log Analysis","x":-2143,"y":365,"width":154,"height":50},
 		{"id":"32215c3ce525b788","type":"text","text":"OSINT","x":-1960,"y":360,"width":129,"height":53},
 		{"id":"13ce7a6bb31edbac","type":"text","text":"Email Security","x":-1755,"y":360,"width":155,"height":50},
-		{"id":"53096cd676326f6e","x":-1541,"y":360,"width":250,"height":50,"type":"text","text":"Governance / Compliance"}
+		{"id":"53096cd676326f6e","type":"text","text":"Governance / Compliance","x":-1541,"y":360,"width":250,"height":50},
+		{"id":"22a9abf5c62a6f6a","x":2533,"y":635,"width":153,"height":50,"type":"text","text":"Arduino 4 wifi"},
+		{"id":"8c8ca958608b9ce8","x":2561,"y":740,"width":96,"height":57,"type":"text","text":"Esp32"},
+		{"id":"aac45872766e4afa","x":2507,"y":860,"width":204,"height":50,"type":"text","text":"Esp8266/ NodeMCU"}
 	],
 	"edges":[
 		{"id":"63699a09c9d0efe4","fromNode":"cd3fc60fe71ff552","fromSide":"bottom","toNode":"8bd90aa85c40cf31","toSide":"top"},
@@ -199,6 +202,9 @@
 		{"id":"f568dec67a14ec5a","fromNode":"e77a18e0b6a7f184","fromSide":"bottom","toNode":"386f623d08f902e7","toSide":"top"},
 		{"id":"5e16ac589d9a5f35","fromNode":"a1885b49dabbaab8","fromSide":"bottom","toNode":"f726b8acc5340ce4","toSide":"top"},
 		{"id":"fa3e21d43b4f79a8","fromNode":"f726b8acc5340ce4","fromSide":"bottom","toNode":"f1d825a96e790264","toSide":"top"},
-		{"id":"da2bac2ef27ec140","fromNode":"47490e6961475c29","fromSide":"bottom","toNode":"53096cd676326f6e","toSide":"top"}
+		{"id":"da2bac2ef27ec140","fromNode":"47490e6961475c29","fromSide":"bottom","toNode":"53096cd676326f6e","toSide":"top"},
+		{"id":"e4f1e7aa49f04894","fromNode":"cac778a5aa57be2f","fromSide":"bottom","toNode":"22a9abf5c62a6f6a","toSide":"top"},
+		{"id":"ac2366da6b6d8a36","fromNode":"22a9abf5c62a6f6a","fromSide":"bottom","toNode":"8c8ca958608b9ce8","toSide":"top"},
+		{"id":"acab92c309c0b3eb","fromNode":"8c8ca958608b9ce8","fromSide":"bottom","toNode":"aac45872766e4afa","toSide":"top"}
 	]
 }

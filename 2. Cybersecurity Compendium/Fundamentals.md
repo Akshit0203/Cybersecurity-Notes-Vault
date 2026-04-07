@@ -25,6 +25,8 @@ Udemy - [Learn Ethical Hacking From Scratch](https://www.udemy.com/course-dashbo
 Udemy - [The Ultimate Dark Web, Anonymity, Privacy & Security Course](https://www.udemy.com/course-dashboard-redirect/?course_id=2281984)
 Udemy - [NFT Masterclass : Buy, Sell, Trade NFT & Real world NFT uses](https://www.udemy.com/course-dashboard-redirect/?course_id=4412904)
 
+Technical support fundamentals - coursera
+IT security - coursera
 ## To Buy : 
 
 Udemy - SDR for Ethical Hackers and Security Researchers (all versions)\*

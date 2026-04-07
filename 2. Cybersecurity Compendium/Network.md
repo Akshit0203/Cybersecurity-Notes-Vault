@@ -19,6 +19,10 @@
 how do these tools work ?
 How are these tools made ? ex. nmap 
 
+# Articles :
+
+https://github.com/0xInfection/Awesome-WAF (everything about web application firewall)
+
 ## Courses :
 
 Bitten tech [PEN1] Complete Offensive Pentesting for Beginners certificate from app
