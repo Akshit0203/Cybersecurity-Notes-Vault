@@ -49,6 +49,57 @@ AI/ML - Artificial Intelligence & Machine Learning
 - [ ] Cursor AI, Github co-pilot, Claude etc.
 - [ ] Working with OpenAI APIs
 
+## <span style="color:rgb(255, 0, 0)">Claude courses</span>
+Phase 1:
+1. [x] Claude 101
+2. [ ] **AI Fluency: Framework & Foundations**
+3. [ ] **AI Fluency for students**
+Why:  
+This builds **how to think with AI**, not just use it.  
+Most people skip this → then misuse AI → slow growth.
+
+Phase 2: Practical Usage (Daily Workflow)
+Now learn how to actually use Claude like a tool.
+4. **Introduction to Claude Cowork**
+5. **Claude Code in Action**
+Why:  
+This is where you start becoming **productive (real work)**  
+Think: coding, research, automation.
+
+Phase 3: Developer / Builder Mode (IMPORTANT for you)
+This is the **most important phase** for your career.
+6. **Building with the Claude API**
+7. **Introduction to Model Context Protocol (MCP)**
+Why:
+- API = how real companies use AI
+- MCP = next-level (connect AI to tools, systems)
+This is where you start becoming **AI + Cybersecurity engineer level**
+
+Phase 4: Advanced Systems (High-Level Engineering)
+Only after above is clear.
+8. **Model Context Protocol: Advanced Topics**
+9. **Introduction to agent skills**
+10. **Introduction to subagents**
+Why:
+- Agents = automation systems
+- Subagents = scalable architecture
+- This is **future of security + AI ops**
+
+Phase 5: Cloud Integrations (Optional but Valuable)
+Do only if you want industry exposure.
+11. **Claude with Amazon Bedrock**
+12. **Claude with Google Cloud's Vertex AI**
+Why:  
+Companies use AWS/GCP → this gives **job relevance**
+
+Phase 6: Ignore / Low Priority (for YOU)
+You can skip these for now:
+- AI Fluency for educators
+- Teaching AI Fluency
+- AI Fluency for nonprofits
+Not relevant to your goal (cybersecurity + engineering)
+
+
 # AI Engineering Stack
 
 - [ ] Flask (Development with AI)
