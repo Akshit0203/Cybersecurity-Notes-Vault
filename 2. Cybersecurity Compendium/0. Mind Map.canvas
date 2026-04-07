@@ -2,7 +2,6 @@
 	"nodes":[
 		{"id":"cd3fc60fe71ff552","type":"text","text":"Cybersecurity","x":-80,"y":-280,"width":145,"height":50},
 		{"id":"16d8cbcb99a94ab3","type":"text","text":"Mindset:\n-How does this tool work ?\n-How to make this tool ?\n-How does that architecture work ?\n-How to fix this bug ? Code ?","x":-140,"y":-440,"width":293,"height":140},
-		{"id":"32215c3ce525b788","x":-2216,"y":203,"width":129,"height":53,"type":"text","text":"OSINT"},
 		{"id":"b63fd5ab650063a5","type":"text","text":"Analysis","x":-2200,"y":54,"width":113,"height":50},
 		{"id":"f93d38907dac64b1","type":"text","text":"Incident Response","x":-2040,"y":202,"width":180,"height":50},
 		{"id":"664a11ad5bf5f47d","type":"text","text":"Response","x":-2013,"y":54,"width":126,"height":50},
@@ -14,13 +13,11 @@
 		{"id":"29753fc54ca18766","type":"text","text":"Detection","x":-1351,"y":54,"width":120,"height":50},
 		{"id":"1ed2f8b7fe6e93a9","type":"text","text":"Machine Learning","x":-1045,"y":229,"width":190,"height":50},
 		{"id":"73da59e912e73b3d","type":"text","text":"Android","x":-3062,"y":196,"width":140,"height":50},
-		{"id":"4879487be1f6dbc1","type":"text","text":"Setup / Configuration","x":-2800,"y":62,"width":233,"height":50},
 		{"id":"5d05ce32fa062d8f","type":"text","text":"Network","x":-2607,"y":-100,"width":127,"height":50},
 		{"id":"6c41e342eed1add7","type":"text","text":"Security","x":-2480,"y":62,"width":120,"height":50},
 		{"id":"5c41c25c4d0eb96b","type":"text","text":"Linux","x":-3398,"y":199,"width":87,"height":56},
 		{"id":"bbfae2fc3f3f4a7d","type":"text","text":"Operating System","x":-3287,"y":-103,"width":202,"height":53},
 		{"id":"2ac3228a444a9ff4","type":"text","text":"Active Directory","x":-3278,"y":342,"width":188,"height":50},
-		{"id":"1bf8d41cdb69dc60","type":"text","text":"Security","x":-3265,"y":30,"width":159,"height":50},
 		{"id":"7c79523824bea2de","type":"text","text":"Windows","x":-3247,"y":199,"width":126,"height":50},
 		{"id":"a1885b49dabbaab8","type":"text","text":"DevSecOps","x":-4310,"y":-87,"width":127,"height":50},
 		{"id":"d299846db9dd56f3","type":"text","text":"Security","x":-4183,"y":38,"width":110,"height":50},
@@ -85,7 +82,14 @@
 		{"id":"c7370ef602eb0d63","type":"text","text":"Devices","x":2560,"y":50,"width":103,"height":50},
 		{"id":"dc9423662db714be","type":"text","text":"Write custom Firmware","x":2758,"y":50,"width":213,"height":50},
 		{"id":"de6d714fdcb6d782","type":"text","text":"IoT","x":2825,"y":-116,"width":80,"height":50},
-		{"id":"1b88f0dd519af17e","x":2160,"y":-119,"width":165,"height":50,"type":"text","text":"Cryptography"}
+		{"id":"1b88f0dd519af17e","x":2160,"y":-119,"width":165,"height":50,"type":"text","text":"Cryptography"},
+		{"id":"f6953dc168256063","x":-2300,"y":360,"width":174,"height":55,"type":"text","text":"Network Analysis"},
+		{"id":"c4d0249b3e68b2fa","x":-2090,"y":360,"width":186,"height":54,"type":"text","text":"Network Analysis"},
+		{"id":"2b09fc5ec258de9e","x":-1860,"y":365,"width":154,"height":50,"type":"text","text":"Log Analysis"},
+		{"id":"32215c3ce525b788","x":-1677,"y":360,"width":129,"height":53,"type":"text","text":"OSINT"},
+		{"id":"4879487be1f6dbc1","type":"text","text":"Core","x":-2694,"y":62,"width":87,"height":50},
+		{"id":"90a32375d110f4b0","x":-3088,"y":34,"width":108,"height":50,"type":"text","text":"Security"},
+		{"id":"7f1c244bb828ecc6","x":-3311,"y":37,"width":92,"height":50,"type":"text","text":"OS"}
 	],
 	"edges":[
 		{"id":"63699a09c9d0efe4","fromNode":"cd3fc60fe71ff552","fromSide":"bottom","toNode":"8bd90aa85c40cf31","toSide":"top"},
@@ -153,12 +157,8 @@
 		{"id":"b60d28358dd4f955","fromNode":"5d05ce32fa062d8f","fromSide":"bottom","toNode":"6c41e342eed1add7","toSide":"top"},
 		{"id":"27e931254acba88c","fromNode":"cd3fc60fe71ff552","fromSide":"bottom","toNode":"0e91cf30e5360c25","toSide":"top"},
 		{"id":"cc84aba2e20eb3a4","fromNode":"5d05ce32fa062d8f","fromSide":"bottom","toNode":"4879487be1f6dbc1","toSide":"top"},
-		{"id":"c8f0bc89f63d2a14","fromNode":"1bf8d41cdb69dc60","fromSide":"bottom","toNode":"5c41c25c4d0eb96b","toSide":"top"},
-		{"id":"d7f3979ffa7b9a76","fromNode":"1bf8d41cdb69dc60","fromSide":"bottom","toNode":"7c79523824bea2de","toSide":"top"},
-		{"id":"1809ccb6a18ec40f","fromNode":"1bf8d41cdb69dc60","fromSide":"bottom","toNode":"73da59e912e73b3d","toSide":"top"},
 		{"id":"af1a05d515a1eba9","fromNode":"7c79523824bea2de","fromSide":"bottom","toNode":"2ac3228a444a9ff4","toSide":"top"},
 		{"id":"9265f8cfaee589c1","fromNode":"cd3fc60fe71ff552","fromSide":"bottom","toNode":"bbfae2fc3f3f4a7d","toSide":"top"},
-		{"id":"bb062ec6b2bbe121","fromNode":"bbfae2fc3f3f4a7d","fromSide":"bottom","toNode":"1bf8d41cdb69dc60","toSide":"top"},
 		{"id":"9d86192218e34070","fromNode":"2f62776321f4a7cb","fromSide":"bottom","toNode":"b63fd5ab650063a5","toSide":"top"},
 		{"id":"0d3bfdc2a0cbedad","fromNode":"2f62776321f4a7cb","fromSide":"bottom","toNode":"664a11ad5bf5f47d","toSide":"top"},
 		{"id":"b522503de81453e7","fromNode":"2f62776321f4a7cb","fromSide":"bottom","toNode":"47490e6961475c29","toSide":"top"},
@@ -185,6 +185,14 @@
 		{"id":"c295af6a19a01aea","fromNode":"1f22308d02940ac5","fromSide":"bottom","toNode":"ad3be1b090be051a","toSide":"top"},
 		{"id":"f8960638a6069a8a","fromNode":"ad3be1b090be051a","fromSide":"bottom","toNode":"bdb49a16afb123a7","toSide":"top"},
 		{"id":"b294775826cd2c7c","fromNode":"ad3be1b090be051a","fromSide":"bottom","toNode":"7c1f6ba228b8867e","toSide":"top"},
-		{"id":"8d4562c21ba57edc","fromNode":"cd3fc60fe71ff552","fromSide":"bottom","toNode":"1b88f0dd519af17e","toSide":"top"}
+		{"id":"8d4562c21ba57edc","fromNode":"cd3fc60fe71ff552","fromSide":"bottom","toNode":"1b88f0dd519af17e","toSide":"top"},
+		{"id":"3933c6b7a892b653","fromNode":"b63fd5ab650063a5","fromSide":"bottom","toNode":"f6953dc168256063","toSide":"top"},
+		{"id":"1e6e641524e9b08e","fromNode":"b63fd5ab650063a5","fromSide":"bottom","toNode":"c4d0249b3e68b2fa","toSide":"top"},
+		{"id":"e99afc305d6f23d3","fromNode":"b63fd5ab650063a5","fromSide":"bottom","toNode":"2b09fc5ec258de9e","toSide":"top"},
+		{"id":"c3db9e91e7cf91d3","fromNode":"bbfae2fc3f3f4a7d","fromSide":"bottom","toNode":"90a32375d110f4b0","toSide":"top"},
+		{"id":"5fd46e5bbcbe7618","fromNode":"bbfae2fc3f3f4a7d","fromSide":"bottom","toNode":"7f1c244bb828ecc6","toSide":"top"},
+		{"id":"0b6fda7d8853e56c","fromNode":"7f1c244bb828ecc6","fromSide":"bottom","toNode":"5c41c25c4d0eb96b","toSide":"top"},
+		{"id":"78fd5c31b42865ef","fromNode":"7f1c244bb828ecc6","fromSide":"bottom","toNode":"7c79523824bea2de","toSide":"top"},
+		{"id":"530ef85a64dcedff","fromNode":"7f1c244bb828ecc6","fromSide":"bottom","toNode":"73da59e912e73b3d","toSide":"top"}
 	]
 }
