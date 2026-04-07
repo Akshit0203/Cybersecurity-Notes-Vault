@@ -20,7 +20,6 @@
 		{"id":"2ac3228a444a9ff4","type":"text","text":"Active Directory","x":-3278,"y":342,"width":188,"height":50},
 		{"id":"7c79523824bea2de","type":"text","text":"Windows","x":-3247,"y":199,"width":126,"height":50},
 		{"id":"a1885b49dabbaab8","type":"text","text":"DevSecOps","x":-4310,"y":-87,"width":127,"height":50},
-		{"id":"d299846db9dd56f3","type":"text","text":"Security","x":-4183,"y":38,"width":110,"height":50},
 		{"id":"8d5c6785de41b352","type":"text","text":"Deployment","x":-3923,"y":58,"width":150,"height":50},
 		{"id":"1a80b87b69da0de9","type":"text","text":"AWS","x":-3889,"y":178,"width":82,"height":50},
 		{"id":"2bfab34180c068fe","type":"text","text":"Cloud","x":-3773,"y":-77,"width":95,"height":50},
@@ -33,9 +32,6 @@
 		{"id":"802fe1348030be14","type":"text","text":"Python","x":-1000,"y":29,"width":98,"height":50,"color":"1"},
 		{"id":"344dccf1ce5af3a9","type":"text","text":"Security","x":-760,"y":29,"width":120,"height":50},
 		{"id":"427af3f1664dd226","type":"text","text":"Development","x":-5120,"y":38,"width":148,"height":50},
-		{"id":"315af1b9b99d86c4","type":"text","text":"Deployment","x":-4483,"y":38,"width":150,"height":50},
-		{"id":"975bf6d3f1e9b3a2","type":"text","text":"Kubernetes","x":-4483,"y":143,"width":149,"height":50},
-		{"id":"6b4873356aa11849","type":"text","text":"Docker","x":-4464,"y":258,"width":112,"height":50},
 		{"id":"e76783d72cd02684","type":"text","text":"Malware","x":-4957,"y":-87,"width":121,"height":50},
 		{"id":"308b9d332d7f46e3","type":"text","text":"Static","x":-4897,"y":183,"width":91,"height":50},
 		{"id":"77e86ef78167a069","type":"text","text":"Analysis","x":-4806,"y":38,"width":117,"height":50},
@@ -85,12 +81,18 @@
 		{"id":"32215c3ce525b788","x":-1677,"y":360,"width":129,"height":53,"type":"text","text":"OSINT"},
 		{"id":"4879487be1f6dbc1","type":"text","text":"Core","x":-2694,"y":62,"width":87,"height":50},
 		{"id":"90a32375d110f4b0","x":-3088,"y":34,"width":108,"height":50,"type":"text","text":"Security"},
-		{"id":"7f1c244bb828ecc6","x":-3311,"y":37,"width":92,"height":50,"type":"text","text":"OS"},
+		{"id":"7f1c244bb828ecc6","x":-3311,"y":37,"width":91,"height":50,"type":"text","text":"Core"},
 		{"id":"ad3be1b090be051a","x":-62,"y":236,"width":203,"height":50,"type":"text","text":"Systems Programming"},
 		{"id":"e77a18e0b6a7f184","x":1819,"y":171,"width":182,"height":53,"type":"text","text":"Secure code review"},
 		{"id":"386f623d08f902e7","type":"text","text":"Server Side","x":1840,"y":316,"width":141,"height":50},
 		{"id":"314e864c61215230","type":"text","text":"Client Side","x":1850,"y":459,"width":122,"height":50},
-		{"id":"80347b40ceb814c9","x":180,"y":-440,"width":300,"height":60,"type":"text","text":"No “Tool-based structure”\nNo “Certification-based structure”"}
+		{"id":"80347b40ceb814c9","x":180,"y":-440,"width":300,"height":60,"type":"text","text":"No “Tool-based structure”\nNo “Certification-based structure”"},
+		{"id":"d299846db9dd56f3","type":"text","text":"Security","x":-4120,"y":38,"width":110,"height":50},
+		{"id":"315af1b9b99d86c4","type":"text","text":"Deployment","x":-4333,"y":38,"width":150,"height":50},
+		{"id":"975bf6d3f1e9b3a2","type":"text","text":"Kubernetes","x":-4333,"y":143,"width":149,"height":50},
+		{"id":"6b4873356aa11849","type":"text","text":"Docker","x":-4314,"y":258,"width":112,"height":50},
+		{"id":"f726b8acc5340ce4","x":-4520,"y":38,"width":141,"height":51,"type":"text","text":"Development"},
+		{"id":"f1d825a96e790264","x":-4548,"y":158,"width":198,"height":50,"type":"text","text":"Writing secure code"}
 	],
 	"edges":[
 		{"id":"63699a09c9d0efe4","fromNode":"cd3fc60fe71ff552","fromSide":"bottom","toNode":"8bd90aa85c40cf31","toSide":"top"},
@@ -193,6 +195,8 @@
 		{"id":"78fd5c31b42865ef","fromNode":"7f1c244bb828ecc6","fromSide":"bottom","toNode":"7c79523824bea2de","toSide":"top"},
 		{"id":"530ef85a64dcedff","fromNode":"7f1c244bb828ecc6","fromSide":"bottom","toNode":"73da59e912e73b3d","toSide":"top"},
 		{"id":"feacb45cbafa50a6","fromNode":"c3df2ab3ea935d9d","fromSide":"bottom","toNode":"e77a18e0b6a7f184","toSide":"top"},
-		{"id":"f568dec67a14ec5a","fromNode":"e77a18e0b6a7f184","fromSide":"bottom","toNode":"386f623d08f902e7","toSide":"top"}
+		{"id":"f568dec67a14ec5a","fromNode":"e77a18e0b6a7f184","fromSide":"bottom","toNode":"386f623d08f902e7","toSide":"top"},
+		{"id":"5e16ac589d9a5f35","fromNode":"a1885b49dabbaab8","fromSide":"bottom","toNode":"f726b8acc5340ce4","toSide":"top"},
+		{"id":"fa3e21d43b4f79a8","fromNode":"f726b8acc5340ce4","fromSide":"bottom","toNode":"f1d825a96e790264","toSide":"top"}
 	]
 }
