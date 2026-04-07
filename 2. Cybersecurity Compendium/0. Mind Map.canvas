@@ -1,7 +1,6 @@
 {
 	"nodes":[
 		{"id":"cd3fc60fe71ff552","type":"text","text":"Cybersecurity","x":-80,"y":-280,"width":145,"height":50},
-		{"id":"16d8cbcb99a94ab3","type":"text","text":"Mindset:\n-How does this tool work ?\n-How to make this tool ?\n-How does that architecture work ?\n-How to fix this bug ? Code ?","x":-140,"y":-440,"width":293,"height":140},
 		{"id":"b63fd5ab650063a5","type":"text","text":"Analysis","x":-2200,"y":54,"width":113,"height":50},
 		{"id":"f93d38907dac64b1","type":"text","text":"Incident Response","x":-2040,"y":202,"width":180,"height":50},
 		{"id":"664a11ad5bf5f47d","type":"text","text":"Response","x":-2013,"y":54,"width":126,"height":50},
@@ -35,8 +34,8 @@
 		{"id":"308b9d332d7f46e3","type":"text","text":"Static","x":-4897,"y":183,"width":91,"height":50},
 		{"id":"77e86ef78167a069","type":"text","text":"Analysis","x":-4806,"y":38,"width":117,"height":50},
 		{"id":"5fc53e1095fb9727","type":"text","text":"Dynamic","x":-4723,"y":183,"width":123,"height":50},
-		{"id":"0e6e2f96df5b15b7","type":"text","text":"Fundamentals","x":-247,"y":-106,"width":167,"height":50},
-		{"id":"ff645849eca88edc","type":"text","text":"Career / Professional Skills","x":-560,"y":-106,"width":250,"height":50},
+		{"id":"0e6e2f96df5b15b7","type":"text","text":"Fundamentals","x":-247,"y":-106,"width":167,"height":50,"color":"1"},
+		{"id":"ff645849eca88edc","type":"text","text":"Career / Professional Skills","x":-560,"y":-106,"width":250,"height":50,"color":"1"},
 		{"id":"5ea9e288cf566c01","type":"text","text":"Javascript","x":1200,"y":554,"width":118,"height":50},
 		{"id":"e159e15619d48490","type":"text","text":"Frontend","x":1203,"y":197,"width":111,"height":50},
 		{"id":"58f2491cd299d2c9","type":"text","text":"HTML","x":1208,"y":314,"width":101,"height":50},
@@ -80,7 +79,6 @@
 		{"id":"e77a18e0b6a7f184","type":"text","text":"Secure code review","x":1819,"y":171,"width":182,"height":53},
 		{"id":"386f623d08f902e7","type":"text","text":"Server Side","x":1840,"y":316,"width":141,"height":50},
 		{"id":"314e864c61215230","type":"text","text":"Client Side","x":1850,"y":459,"width":122,"height":50},
-		{"id":"80347b40ceb814c9","type":"text","text":"No “Tool-based structure”\nNo “Certification-based structure”","x":180,"y":-440,"width":300,"height":60},
 		{"id":"d299846db9dd56f3","type":"text","text":"Security","x":-4120,"y":38,"width":110,"height":50},
 		{"id":"315af1b9b99d86c4","type":"text","text":"Deployment","x":-4333,"y":38,"width":150,"height":50},
 		{"id":"975bf6d3f1e9b3a2","type":"text","text":"Kubernetes","x":-4333,"y":143,"width":149,"height":50},
@@ -94,9 +92,11 @@
 		{"id":"32215c3ce525b788","type":"text","text":"OSINT","x":-1960,"y":360,"width":129,"height":53},
 		{"id":"13ce7a6bb31edbac","type":"text","text":"Email Security","x":-1755,"y":360,"width":155,"height":50},
 		{"id":"53096cd676326f6e","type":"text","text":"Governance / Compliance","x":-1541,"y":360,"width":250,"height":50},
-		{"id":"22a9abf5c62a6f6a","x":2533,"y":635,"width":153,"height":50,"type":"text","text":"Arduino 4 wifi"},
-		{"id":"8c8ca958608b9ce8","x":2561,"y":740,"width":96,"height":57,"type":"text","text":"Esp32"},
-		{"id":"aac45872766e4afa","x":2507,"y":860,"width":204,"height":50,"type":"text","text":"Esp8266/ NodeMCU"}
+		{"id":"22a9abf5c62a6f6a","type":"text","text":"Arduino 4 wifi","x":2533,"y":635,"width":153,"height":50},
+		{"id":"8c8ca958608b9ce8","type":"text","text":"Esp32","x":2561,"y":740,"width":96,"height":57},
+		{"id":"aac45872766e4afa","type":"text","text":"Esp8266/ NodeMCU","x":2507,"y":860,"width":204,"height":50},
+		{"id":"16d8cbcb99a94ab3","type":"text","text":"Mindset:\n-How does this tool work ?\n-How to make this tool ?\n-How does the architecture in front of me work ?\n-How to fix this bug ? Code ?","x":-207,"y":-440,"width":400,"height":140},
+		{"id":"80347b40ceb814c9","type":"text","text":"No “Tool-based structure”\nNo “Certification-based structure”","x":225,"y":-440,"width":300,"height":60}
 	],
 	"edges":[
 		{"id":"63699a09c9d0efe4","fromNode":"cd3fc60fe71ff552","fromSide":"bottom","toNode":"8bd90aa85c40cf31","toSide":"top"},
