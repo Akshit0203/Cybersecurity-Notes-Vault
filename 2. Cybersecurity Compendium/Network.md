@@ -1,4 +1,8 @@
 
+# Certifications
+
+- [ ] CCNA
+- [ ] Network +
 # Security 
 
 how do these tools work ?
