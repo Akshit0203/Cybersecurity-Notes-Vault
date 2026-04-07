@@ -8,4 +8,4 @@
 
 ## Certification : 
 
-AWS Security Specialty
+AWS Security Specialty (50% off coupon already)

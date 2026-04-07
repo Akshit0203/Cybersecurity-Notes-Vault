@@ -6,9 +6,18 @@ TCM Security AI 100: Fundamentals (till Nov 4, 2026)
 Apna College Prime AI/ML Batch
 
 [CS50’s Introduction to Artificial Intelligence with Python](https://cs50.harvard.edu/ai/) 
-## Security Courses : 
+## Security
+
+## Courses : 
 
 TCM Security AI Hacking 101
+EC council - Generative AI for Cybersecurity [Cyber AI Toolkit | EC-Council Learning](https://learn.eccouncil.org/learning-path/cyber-ai-toolkit?logged=true)
+EC council - Master ChatGPT for Ethical Hacking
+
+## Certification :
+
+HTB Certified Offensive AI Expert (HTB COAE)
+OffSec AI Red Teamer OSAI (AI-300)
 
 # <span style="color:rgb(255, 0, 0)">Claude courses</span>
 Phase 1:
