@@ -1,55 +1,16 @@
 AI/ML - Artificial Intelligence & Machine Learning
 
-# Python & Data
+# Courses :
 
-- [ ] Python (programming language)
-- [ ] Variables & Operators
-- [ ] Conditional Statements & Loops (Flow Control)
-- [ ] Functions & lambda functions
-- [ ] List & List comprehensions, Tuple, Dictionary, & Set
-- [ ] File Handling & JSON Module
-- [ ] Object Oriented Programming (OOPs) - in Detail
-- [ ] Data collection, preprocessing & visualization
-- [ ] Numpy, Pandas, Matplotlib, Seaborn etc.
+TCM Security AI 100: Fundamentals (till Nov 4, 2026)
+Apna College Prime AI/ML Batch
 
-# Machine Learning
+[CS50’s Introduction to Artificial Intelligence with Python](https://cs50.harvard.edu/ai/) 
+## Security Courses : 
 
-- [ ] Mathematics for AI
-- [ ] Statistics, Probability, Linear Algebra, Calculus, Central Limit Theorem etc.
-- [ ] Supervised Learning in ML (classification & regression)
-- [ ] Algorithms - Linear regression, Logistic regression, Naive Bayes, KNN, Decision Trees etc. 
-- [ ] Unsupervised Learning in ML (clustering & association)
-- [ ] Algorithms - K-means, DBSCAN, PCA for dimensionality reduction etc.
-- [ ] Reinforcement Learning in ML
-- [ ] Additional concepts: precision, recall, F1 score, bias/variance tradeoff etc.
-- [ ] Scikit-learn & Kaggle
-+ [ ] Multiple projects
+TCM Security AI Hacking 101
 
-# Deep Learning
-
-- [ ] Neural Networks & Terminologies
-- [ ] Forward & Backward Propagation
-- [ ] Perceptron
-- [ ] FNN Architecture (Feed forward neural network)
-- [ ] RNN Architecture (Recurrent neural network)
-- [ ] LSTM (Long short term memory network) need & advantages
-- [ ] CNN Architecture (Convolutional neural network)
-- [ ] Transformers
-- [ ] PyTorch
-- [ ] PyTorch vs TensorFlow vs Keras
-+ [ ] Multiple Projects
-
-# GenAI
-
-- [ ] Introduction to GenAI & LLMs (Language Language Models)
-- [ ] RNNs for NLP (Natural Language Processing)
-- [ ] GAN (Generative Adversarial Network)
-- [ ] RAG (Retrieval-Augmented Generation)
-- [ ] Agentic AI
-- [ ] Cursor AI, Github co-pilot, Claude etc.
-- [ ] Working with OpenAI APIs
-
-## <span style="color:rgb(255, 0, 0)">Claude courses</span>
+# <span style="color:rgb(255, 0, 0)">Claude courses</span>
 Phase 1:
 1. [x] Claude 101
 2. [ ] **AI Fluency: Framework & Foundations**
@@ -99,8 +60,57 @@ You can skip these for now:
 - AI Fluency for nonprofits
 Not relevant to your goal (cybersecurity + engineering)
 
+# Syllabus
 
-# AI Engineering Stack
+## Python & Data
+
+- [ ] Python (programming language)
+- [ ] Variables & Operators
+- [ ] Conditional Statements & Loops (Flow Control)
+- [ ] Functions & lambda functions
+- [ ] List & List comprehensions, Tuple, Dictionary, & Set
+- [ ] File Handling & JSON Module
+- [ ] Object Oriented Programming (OOPs) - in Detail
+- [ ] Data collection, preprocessing & visualization
+- [ ] Numpy, Pandas, Matplotlib, Seaborn etc.
+
+## Machine Learning
+
+- [ ] Mathematics for AI
+- [ ] Statistics, Probability, Linear Algebra, Calculus, Central Limit Theorem etc.
+- [ ] Supervised Learning in ML (classification & regression)
+- [ ] Algorithms - Linear regression, Logistic regression, Naive Bayes, KNN, Decision Trees etc. 
+- [ ] Unsupervised Learning in ML (clustering & association)
+- [ ] Algorithms - K-means, DBSCAN, PCA for dimensionality reduction etc.
+- [ ] Reinforcement Learning in ML
+- [ ] Additional concepts: precision, recall, F1 score, bias/variance tradeoff etc.
+- [ ] Scikit-learn & Kaggle
++ [ ] Multiple projects
+
+## Deep Learning
+
+- [ ] Neural Networks & Terminologies
+- [ ] Forward & Backward Propagation
+- [ ] Perceptron
+- [ ] FNN Architecture (Feed forward neural network)
+- [ ] RNN Architecture (Recurrent neural network)
+- [ ] LSTM (Long short term memory network) need & advantages
+- [ ] CNN Architecture (Convolutional neural network)
+- [ ] Transformers
+- [ ] PyTorch
+- [ ] PyTorch vs TensorFlow vs Keras
++ [ ] Multiple Projects
+
+## <span style="color:rgb(255, 0, 0)">GenAI</span>
+
+- [ ] Introduction to GenAI & LLMs (Language Language Models)
+- [ ] RNNs for NLP (Natural Language Processing)
+- [ ] GAN (Generative Adversarial Network)
+- [ ] RAG (Retrieval-Augmented Generation)
+- [ ] Agentic AI
+- [ ] Cursor AI, Github co-pilot, Claude etc.
+- [ ] Working with OpenAI APIs
+## AI Engineering Stack
 
 - [ ] Flask (Development with AI)
 - [ ] Frontend fundamentals (HTML, CSS, JS)
@@ -109,7 +119,7 @@ Not relevant to your goal (cybersecurity + engineering)
 - [ ] Docker
 - [ ] Kubernetes
 
-# Projects
+## Projects
 
 - [ ] Multiple minor & major projects
 - [ ] Industry grade domain specific projects
