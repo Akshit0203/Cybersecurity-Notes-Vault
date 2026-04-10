@@ -40,7 +40,7 @@ Save the file on your VM of choice and connect to it using the following command
 
 If you have already running VPN files, use `sudo killall openvpn` to kill them.
 
-[![](https://downloads.intercomcdn.com/i/o/1044982399/ac79de14b241aa38c38f8b0b/ScreenRecording2024-05-08at12_59_54PM-ezgif_com-video-to-gif-converter.gif?expires=1754991900&signature=c9cef33074e4653f60c0ac9c511658b06036bab5ec293f766cfcf684e17dec40&req=dSAjEsB2n4JWUPMW1HO4zQPJF5OKASJdzSi87KFnN2l06WuRsdErPNuVMggq%0AhZ5nhc%2BwWDYnaeNNkm8%3D%0A)](https://downloads.intercomcdn.com/i/o/1044982399/ac79de14b241aa38c38f8b0b/ScreenRecording2024-05-08at12_59_54PM-ezgif_com-video-to-gif-converter.gif?expires=1754991900&signature=c9cef33074e4653f60c0ac9c511658b06036bab5ec293f766cfcf684e17dec40&req=dSAjEsB2n4JWUPMW1HO4zQPJF5OKASJdzSi87KFnN2l06WuRsdErPNuVMggq%0AhZ5nhc%2BwWDYnaeNNkm8%3D%0A)
+[![|697x417](https://downloads.intercomcdn.com/i/o/1044982399/ac79de14b241aa38c38f8b0b/ScreenRecording2024-05-08at12_59_54PM-ezgif_com-video-to-gif-converter.gif?expires=1754991900&signature=c9cef33074e4653f60c0ac9c511658b06036bab5ec293f766cfcf684e17dec40&req=dSAjEsB2n4JWUPMW1HO4zQPJF5OKASJdzSi87KFnN2l06WuRsdErPNuVMggq%0AhZ5nhc%2BwWDYnaeNNkm8%3D%0A)](https://downloads.intercomcdn.com/i/o/1044982399/ac79de14b241aa38c38f8b0b/ScreenRecording2024-05-08at12_59_54PM-ezgif_com-video-to-gif-converter.gif?expires=1754991900&signature=c9cef33074e4653f60c0ac9c511658b06036bab5ec293f766cfcf684e17dec40&req=dSAjEsB2n4JWUPMW1HO4zQPJF5OKASJdzSi87KFnN2l06WuRsdErPNuVMggq%0AhZ5nhc%2BwWDYnaeNNkm8%3D%0A)
 
 Once you see `Initialization Sequence Completed` you are ready to go, **do not close the terminal tab** as this will kill your connection, open a new tab and start working from it.
 

@@ -25,12 +25,19 @@ Github Education :
 
 Rana Khalil Web Academy - All Portswigger Labs (BSCP)
 Bitten tech [WEB1] Web Application Pentesting for Beginners ; certificate from app
+Bitten Tech [WEB2] Advanced Web Exploitation - Alpha Edition
 TryHackMe Path – Web Fundamentals
 TryHackMe Path – Web Application Pentesting
 **TryHackMe Path – Web Application Red Teaming**
 TCM Security Practical Bug Bounty (Beginner)
 TCM Security External Pentest Playbook
 TCM Security Practical Web Hacking (Intermediate)
+redteamleaders : Complete Web Penetration Testing 
+redteamleaders : Introduction to Bug Bounty
+redteamleaders : SQL Injection - Challenge 1
+redteamleaders : Web Browser for Hacking
+redteamleaders : Security Code Review and White Box Testing
+redteamleaders : Offensive Smart Contracts & Web3 Security
 
 [CS50’s Web Programming with Python and JavaScript](https://cs50.harvard.edu/web/)
 
@@ -40,12 +47,18 @@ Udemy - [BUG BOUNTY HUNTING WITH BURP SUITE](https://www.udemy.com/course-dashbo
 Udemy - [Burp Suite: In Depth Survival Guide](https://www.udemy.com/course-dashboard-redirect/?course_id=3932106)
 
 Linuxdroid Mr.Hacker Bug Bounty Course (Website Penetration)
+Hackers Arise – Web App Hacking
+Hackers Arise – Advanced Web App 
+Hackers Arise – Bug Bounty 
+Hackers Arise – Database Hacking 
 
 ## API Security
 
 TCM Security Practical API Hacking
 XSS rat - CAPIE — Certified API Hacking Expert
 Udemy -  [API Security Testing Guide by The XSS Rat](https://www.udemy.com/course/uncle-rats-api-security-testing-guide/)
+Hackers Arise – Hacking APIs 
+
 # Certification :
 
 Port Swigger's BSCP

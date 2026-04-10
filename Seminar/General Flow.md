@@ -39,6 +39,16 @@ Jahan na maine jake apply Kiya kahi
 Na mera referall tha 
 Par phir bhi recruiter khud saamne se reach out kar rahe hai ke
 
+---
 
+Think always from a skill point of view 
+Not a certfition or a course
+Mind map is the best way to do it
 
+Certification useless nahi hai Going after certification spree is useless
 
+All seminars Make 1 common order flow
+
+Mind map is the best way to do it
+And how to make mind map show step by step 
+Add images

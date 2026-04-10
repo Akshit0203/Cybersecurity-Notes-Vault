@@ -6,13 +6,24 @@ TCM Security AI 100: Fundamentals (till Nov 4, 2026)
 Apna College Prime AI/ML Batch
 
 [CS50’s Introduction to Artificial Intelligence with Python](https://cs50.harvard.edu/ai/) 
-## Security
+# Security
+
+## Extended Reading :
+
+https://www.youtube.com/watch?v=0nPkGvNS0n8
+RSA recap, the LiteLLM breach, and the quest to fix AI agent security
 
 ## Courses : 
 
 TCM Security AI Hacking 101
 EC council - Generative AI for Cybersecurity [Cyber AI Toolkit | EC-Council Learning](https://learn.eccouncil.org/learning-path/cyber-ai-toolkit?logged=true)
 EC council - Master ChatGPT for Ethical Hacking
+redteamleaders : Introduction to Offensive Security with Artificial Intelligence
+redteamleaders : Offensive Agent AI Course
+redteamleaders : Master in Prompt Engineering and AI
+redteamleaders : Data Science for Cybersecurity
+Hackers Arise – AI for Cybersecurity
+Hackers Arise – Data Science Analytics 
 
 ## Certification :
 

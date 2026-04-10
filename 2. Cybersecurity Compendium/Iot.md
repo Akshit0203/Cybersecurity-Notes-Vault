@@ -6,9 +6,18 @@ TCM Security Beginner's Guide to IoT and Hardware Hacking
 
 Linuxdroid Pro Ducky Pi (Hardware Penetration)
 
+redteamleaders : Aerospace & Satellite Hacking
+redteamleaders : ATM Penetration Testing & Security Assessment
+redteamleaders : ICS/SCADA Cybersecurity 
+redteamleaders : Healthcare Hacking Introduction
+
+[Sigma Berry](https://sigmaberry.com/) Cellular Network
+
 Udemy - SDR for Ethical Hackers and Security Researchers
 Udemy - Automobile Hacking and Security v1.0
 Udemy : Complete Guide to Build IOT Things from Scratch to Market
+Udemy - SDR for Ethical Hackers and Security Researchers (all versions)\*
+Udemy - Automobile Hacking and Security (all versions)
 
 Udemy - [RFID Programming and Security Master Class](https://www.udemy.com/course/rfid-programming/?couponCode=MXABCARTRT24)
 Udemy - [Advanced RF Hacking with HackRF PortaPack H2](https://www.udemy.com/course/hackrf-one-portapack/?couponCode=MXABCARTRT24)
@@ -28,12 +37,27 @@ Udemy - [The Ultimate Flipper Zero Course Learn, Hack, Innovate](https://www.ude
  Tutorials point - [Home Automation System From Scratch](https://www.tutorialspoint.com/home-automation-system-from-scratch/index.asp)
 Udemy : Complete Guide to Build IOT Things from Scratch to Market
 
+Hackers Arise – Radio Basics
+Hackers Arise – Software Defined Radio 
+Hackers Arise – Advanced SDR 
+Hackers Arise – Femtocell 
+Hackers Arise – IoT Hacking
+Hackers Arise – Car Hacking
+Hackers Arise – IP Camera Hacking 
+Hackers Arise – SCADA/ICS Security
+Hackers Arise – Advanced SCADA/ICS 
+Hackers Arise – Satellite Hacking 
+
 Web server hosting using esp 32
  How to use satdump
  [10 Raspberry Pi projects based on Software-Defined Radio (SDR)](https://ke4bfi.com/2023/06/23/10-raspberry-pi-projects-based-on-software-defined-radio-sdr/)
  [How to Set Up a Pi-Hole System on a Raspberry Pi - Block Ads and More!](https://www.youtube.com/watch?v=roYduABVjo8)
 
 # Write Custom FIrmware
+
+Check telegram channel and github repos
+https://t.me/FlipperNews
+
 ## HackRF
 
 - [ ] Jammer

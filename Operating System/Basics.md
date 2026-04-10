@@ -35,3 +35,20 @@ At a basic level, your operating system handles
 - **Isolation**: Keeps every process in its own protected box (kernel/user space separation)
 - **System Protection**: Safeguards critical system files and settings from unauthorized changes
 
+## Real World Operating Systems
+
+**Embedded and IoT Devices**
+- **Embedded Linux**: Specialized OS built into devices with dedicated functions  
+    _OpenWrt, Ubuntu Core, Yocto Project_
+- **Real-Time OS**: Designed for apps where tasks need guaranteed response times (aircraft controls)  
+    _FreeRTOS, VxWorks, QNX_
+
+
+**Virtual and Cloud**
+- **Cloud/VM**: Massive data centers that host websites, apps, and streaming services  
+    _Ubuntu LTS, Amazon Linux, Rocky Linux_
+- **Container-optimized**: Lightweight alternatives to VMs that package just the app and its dependencies  
+    _Alpine Linux, Bottlerocket AWS, Flatcar Linux_
+
+
+

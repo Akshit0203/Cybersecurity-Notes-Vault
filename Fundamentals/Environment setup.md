@@ -33,7 +33,7 @@ Enable password less privilege escalation
 **Download windows**
 
 14.  Search for windows ova file/virtual machine
-15.  Windows 11 ([**https://developer.microsoft.com/en-us/windows/downloads/virtual-machines/**](https://developer.microsoft.com/en-us/windows/downloads/virtual-machines/)) (password : Akshit\*\*11)
+15.  Windows 11 ([**https://developer.microsoft.com/en-us/windows/downloads/virtual-machines/**](https://developer.microsoft.com/en-us/windows/downloads/virtual-machines/)) (password : )
 16.  Windows 10 (<https://drive.google.com/file/d/1KR-dVmA89d9eWY933iWbOl649PIfyR-1/view>)
 17.  Password : Passw0rd! (password)
 **License key for windows**
