@@ -1,4 +1,10 @@
 
+# Tools :
+
+[GTFOBins](https://gtfobins.github.io/)
+[Reverse Shell Cheatsheet](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md)
+[Cheat Sheets | pentestmonkey](https://pentestmonkey.net/category/cheat-sheet)
+
 # Courses :
 
 TCM Security Mobile Application Penetration Testing

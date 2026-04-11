@@ -1,4 +1,9 @@
 
+# Projects :
+
+https://github.com/z4sec/Snort
+https://github.com/z4sec/splunk-soc-alert-lab
+
 TryHackMe Path – Security Engineer
 # Detection / Analysis / SOC
 

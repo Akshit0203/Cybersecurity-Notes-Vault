@@ -3,7 +3,6 @@
 
 https://github.com/sgoudelis/ground-station (forked)
 
-
 # Trusted websites to buy iot stuff :
 
 [robocraze](https://learn.robocraze.com/web/activity)
@@ -307,7 +306,7 @@ Work mail youtube watch later
 
 [The History of Printed Circuit Board PCB (1880 - Present)](https://how2electronics.com/history-printed-circuit-board-pcb-nextpcb/#google_vignette)
 
-# Department of Telecommunications :
+# Department of Telecommunications  :
 
 Hackathons : 
 
