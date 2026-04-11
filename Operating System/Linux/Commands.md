@@ -1,49 +1,72 @@
-## Where Am I?
+# Linux CLI Basics
 
- `pwd`
+> Source: TryHackMe — *Linux CLI Basics* room
 
-```shell-session
-ubuntu@tryhackme:~$ pwd
-/home/ubuntu
+---
+
+## Navigation Commands
+
+| Command                    | Purpose                                          |
+| -------------------------- | ------------------------------------------------ |
+| `pwd`                      | Print working directory — shows current location |
+| `ls`                       | List files & folders in current directory        |
+| `ls -l`                    | Long listing — shows permissions, size, dates    |
+| `ls -al`                   | Includes hidden files (names starting with `.`)  |
+| `cd <dir>`                 | Change directory                                 |
+| `cd ..`                    | Go up one level                                  |
+| `find <path> -name <file>` | Search for a file by name recursively            |
+| `cat <file>`               | Print file contents to terminal                  |
+
+---
+
+## System Information Commands
+
+| Command | Purpose |
+|---|---|
+| `whoami` | Print current username |
+| `uname` | Print OS name |
+| `uname -a` | Full system info — kernel, hostname, architecture |
+| `df -h` | Disk usage in human-readable format |
+| `cat /etc/os-release` | Distribution name, version & codename |
+
+### `uname -a` Output Breakdown
+
+```
+Linux  tryhackme  6.8.0-aws  x86_64  GNU/Linux
+ │        │          │          │        │
+ OS    hostname   kernel    arch    OS type
 ```
 
-It stands for "print working directory", which basically means "show me the folder I'm currently in".
+### `df -h` Key Columns
 
-## What's Around Me?
+- **Filesystem** — device or mount name
+- **Size / Used / Avail** — space stats
+- **Use%** — percentage full
+- **Mounted on** — where it's accessible (e.g. `/`)
 
- `ls`
+---
 
-```shell-session
-ubuntu@tryhackme:~$ ls
-Desktop    Downloads  Pictures  Templates  logsDocuments  Music      Public    Videos     projects
+## Quick Reference Workflow
+
+```bash
+pwd                          # Where am I?
+ls -al                       # What's here (incl. hidden)?
+cd Documents                 # Move into a folder
+cd ..                        # Go back
+find ~ -name "file.txt"      # Search home dir for a file
+cat file.txt                 # Read a file
+whoami                       # Current user
+uname -a                     # System & kernel info
+df -h                        # Disk space
+cat /etc/os-release          # Distro details
 ```
 
-This lists the content of the current directory. If we need more details, we can try: `ls -l`
+---
 
-ls -l Command
+## Key Takeaways
 
-```shell-session
-ubuntu@tryhackme:~$ ls -l
-total 44
-drwxr-xr-x 2 ubuntu ubuntu 4096 Feb 27  2022 Desktop
-drwxr-xr-x 6 ubuntu ubuntu 4096 Dec 11 12:45 Documents
-drwxr-xr-x 2 ubuntu ubuntu 4096 Feb 16  2024 Downloads
-```
-
-The output displays important information about the files and directories like file sizes, permissions, dates, and more.
-
-**Hidden Files**
-
-In order to get the hidden files in the directory, we can append the command to `ls -al`, and it will display all the hidden files present in the directory, as shown below:
-
-```shell-session
-ubuntu@tryhackme:~$ ls -al
-total 144
-drwxr-xr-x 24 ubuntu ubuntu  4096 Feb 10 10:48 .
-drwxr-xr-x  3 root   root    4096 Feb 10 10:36 ..
--rw-------  1 ubuntu ubuntu   439 Feb 10 06:47 .Xauthority
--rw-rw-r--  1 ubuntu ubuntu     0 Sep 12  2024 .Xresources
-```
-
-Hidden files aren't really `secret`; they start with a dot `.`, and Linux hides such files by default.
-
+- **Terminal** = text-based interface; faster & more powerful than GUI.
+- Hidden files start with `.` — use `ls -a` to reveal them.
+- `/etc` stores system config & info files.
+- `find` searches recursively from a given starting point.
+- `-h` flag on `df` converts bytes → human-readable sizes (G, M, K).
