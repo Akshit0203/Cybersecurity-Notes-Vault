@@ -1,4 +1,11 @@
 
+# Trusted websites to buy iot stuff :
+
+[robocraze](https://learn.robocraze.com/web/activity)
+[Shopping Cart - Robu](https://robu.in/cart/)
+https://www.silverlineelectronics.in/
+https://www.fabtolab.com/index.php?route=common/home
+
 # Courses
 
 Hardware hacking course - https://courses.redteamleaders.com/dashboard
@@ -79,8 +86,6 @@ TCM Security — Practical IoT Pentest Associate (PIPA)
 
 [Flipper Zero Exposes Evil Twin Wi-Fi Attacks : Stay Safe 🤯 \| \#flipperzero \#flipper](https://www.youtube.com/watch?v=QhSYn9XzCAQ&ab_channel=Tech-Eyez)
 
-![image1](../../attachments/a908c448c30d4a04a3ce6e20c4582302.png)
-
 <https://forum.flipper.net/t/flipper-freeze-when-emulating-mifare-desfire-on-a-stid-card-reader/17210>
 
 <https://www.google.com/search?q=flipper+zero+crash+when+cloning+card&rlz=1C1CHBF_enIN1083IN1083&oq=flipper+zero+crash+when+cloning+card&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIHCAIQIRigAdIBCDc1ODlqMGo3qAIIsAIB&sourceid=chrome&ie=UTF-8>
@@ -95,8 +100,6 @@ TCM Security — Practical IoT Pentest Associate (PIPA)
 
 Marauder and Evil portal tutorial flipper zero \#flipperzero \#flipperzerohacking \#hacker
 [Marauder and Evil portal tutorial flipper zero \#flipperzero \#flipperzerohacking \#hacker](https://www.youtube.com/watch?v=OHntktBZRi0)
-
-![image2](../../attachments/3a4850da72df4ce99bc99e35bd15fc6f.png)
 
 ## Drone hacking
 
@@ -155,6 +158,94 @@ Hack rf - <https://github.com/topics/volte>
 
 <https://www.youtube.com/@LowLevelTV/videos>
 
+[11 Raspberry Pi Cybersecurity Projects to Enhance Your Resume and Impress Hiring Managers | (via AccessCyber.co)](https://accesscyber.co/blog/raspberry-pi-cybersecurity-infosec-projects)
+
+- ### Build a Kali Linux Hacking Lab
+    
+    - Build a [**penetration testing lab**](https://www.kali.org/docs/arm/raspberry-pi-4/#kali-on-raspberry-pi-4---user-instructions) with [**Kali Linux**](https://academy.tcm-sec.com/p/practical-ethical-hacking-the-complete-course?affcode=770707__q0gunir)**,** and hack all the things — legally(!)
+        
+
+- ### CIRClean USB Key Sanitizer
+    
+    - Go ahead, plug in that random USB drive you found…
+        
+        - Just be sure to [**sanitize it first**](https://circl.lu/projects/CIRCLean/).
+            
+
+- ### **Honeypot**
+    
+    - A decoy server to catch attackers? Devious.
+        
+        - Matt South from TrustFoundry shows you how to build your own [**HoneyPi**](https://trustfoundry.net/2017/08/22/honeypi-easy-honeypot-raspberry-pi/) using PSAD
+            
+        - This guide from Bob Mckay provides detailed instructions on setting up a honey pot using [**OpenCanary**](https://bobmckay.com/i-t-support-networking/hardware/create-a-security-honey-pot-with-opencanary-and-a-raspberry-pi-3-updated-2021/)
+            
+        - On his Youtube Channel, Wolfgang shows us how to [**trap attackers in a honeypot**](https://www.youtube.com/watch?v=SKhKNUo6rJU)
+            
+
+- ### **Pi-VPN**
+    
+    - Browse privately from anywhere.
+        
+        - The [**PiVPN Project**](https://www.pivpn.io/#about) call itself _'the simplest way to setup and manage a VPN’._
+            
+        - Here’s a PiVPN video tutorial from [**Jeff Geerling**](https://www.youtube.com/watch?v=5NJ6V8i1Xd8)
+            
+
+- ### **Travel Router**
+    
+    - Stay secure on the go.
+        
+        - Tristam shows us how to put together a [**travel router using OpenWRT**](https://tristam.ie/2023/582/).
+            
+
+- ### **Pi-Hole**
+    
+    - Because we’re all tired of ads.
+        
+        - [**Get rid of them**](https://pi-hole.net/) with Pi-Hole, a network-wide ad blocker.
+            
+
+- ### **Docker Home Lab**
+    
+    - A place to practice your l33t hax0r skills.
+        
+        - Build an [**offensive security home lab**](https://www.youtube.com/watch?v=pV7P2ADtfDs) with Grant Collins
+            
+
+- ### **Private Cloud Storage**
+    
+    - Got cloud concerns? Here’s one solution.
+        
+        - Hosting your own cloud server is [**less daunting than it seems**](https://www.makeuseof.com/raspberry-pi-nextcloud/).
+            
+
+- ### **Tor Router**
+    
+    - Browse the web anonymously — and explore the deeper parts of the web — with your very own Tor Router
+        
+        - Check out this [**step-by-step guide**](https://learn.adafruit.com/onion-pi/overview) to setting up your own Onion Pi from **Adafruit**
+            
+
+
+
+- ### **Password Manager**
+    
+    - Don’t trust commercial password managers? We get it. Build your own.
+        
+        - Ravi Singh shows you how, over at [**MakeUseOf**](https://www.makeuseof.com/self-host-bitwarden-password-manager-raspberry-pi-zero/)
+            
+        - [**BYOPM**](https://novamostra.com/2022/10/23/byopm/) – Bring Your Own Password Manager guide from NovaMostra
+            
+        
+        - Video tutorial from [**WunderTech**](https://www.youtube.com/watch?v=nShKWcPD6w0)
+            
+              
+            
+- ### **Pwnagotchi**
+    
+    - Remember Tamogotchi, the digital pet? Well, Pwnagotchi is _similar_…. except it performs deauthentication attacks. Whoops. Here’s [**how to build one**](https://pwnagotchi.ai/).
+
 ## Alfa Wifi Adapter
 
 This hack kills security footage // Wifi Jammer
@@ -170,4 +261,35 @@ Work mail youtube watch later
 
 [Learn Morse Code in 10 Days (Day 1) – ASOC Tutorials India](https://www.youtube.com/watch?v=e-mFm3O-s2w&list=PLMKbuR20uP1_Bu15IQGlZi7PD-D3F0tZx&index=12)
 
-![image1](../../attachments/7dc264d915f542409f118d3f77a3f01d.png)
+# Simple IoT Projects
+
+[rampageX/firmware-mod-kit: Automatically exported from code.google.com/p/firmware-mod-kit](https://github.com/rampageX/firmware-mod-kit)
+
+
+[Alarm Timer | Arduino Project Hub](https://projecthub.arduino.cc/manjariiiiiiiiitalasila/alarm-timer-f24d4e)
+[Traffic Lights Using Arduino!! | Arduino Project Hub](https://projecthub.arduino.cc/valnaut/traffic-lights-using-arduino-6184ee)
+[Arduino-Coffin-Dance-Theme/Coffin_dance_arduino/Coffin_dance_arduino.ino at master · Rahul24-06/Arduino-Coffin-Dance-Theme](https://github.com/Rahul24-06/Arduino-Coffin-Dance-Theme/blob/master/Coffin_dance_arduino/Coffin_dance_arduino.ino)
+[Smart Street Light | Arduino Project Hub](https://projecthub.arduino.cc/angadiameya007/smart-street-light-6ad038)
+[Arduino Coffin Dance Theme | Arduino Project Hub](https://projecthub.arduino.cc/rahulkhanna/arduino-coffin-dance-theme-130475)
+[Smart Stick for Blind Peoples | Arduino Project Hub](https://projecthub.arduino.cc/mohammadsohail0008/smart-stick-for-blind-peoples-310a0d)
+[Car Parking Sensor | Arduino Project Hub](https://projecthub.arduino.cc/omerfettahoglu/car-parking-sensor-325715)
+[(324) Smart Light | LDR | Relay | Arduino Uno | Arduino project | Smart Bulb | Smart Street Light | Bulb - YouTube](https://www.youtube.com/watch?v=OapZNPaKrmA&ab_channel=ElectronicsUniversity)
+[Arduino Blind Stick | Arduino Project Hub](https://projecthub.arduino.cc/hadi1234/arduino-blind-stick-b3157a)
+[Blind Hat Helper | Arduino Project Hub](https://projecthub.arduino.cc/ardy345678903456789/blind-hat-helper-a2a398)
+[Arduino Door Bell with 3 LEDs | Arduino Project Hub](https://projecthub.arduino.cc/abhishekghosh/arduino-door-bell-with-3-leds-66d398)
+[Smart Shower Control | Arduino Project Hub](https://projecthub.arduino.cc/rodrigo-moliveira/smart-shower-control-a9b937)
+
+# Neuroscience + IoT :
+
+[Upside Down Labs's Projects - Instructables](https://www.instructables.com/member/Upside%20Down%20Labs/instructables/)
+
+# Design Software :
+
+[Tinkercad - Dashboard](https://www.tinkercad.com/dashboard)
+[Wokwi - World's most advanced ESP32 Simulator](https://wokwi.com/)
+[Free PCB Design Software](https://www.build-electronic-circuits.com/pcb-design-software/)
+
+# Extended Reading :
+
+[The History of Printed Circuit Board PCB (1880 - Present)](https://how2electronics.com/history-printed-circuit-board-pcb-nextpcb/#google_vignette)
+
