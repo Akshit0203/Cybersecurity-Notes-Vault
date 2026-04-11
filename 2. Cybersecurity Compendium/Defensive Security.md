@@ -32,6 +32,9 @@ Hackers Arise – Social Engineering
 
 ## OSINT
 
+### Master : 
+[OSINT Framework](https://osintframework.com/)
+
 TCM Security Open-Source Intelligence (OSINT) Fundamentals
 Zsecurity Certified OSINT Professional C|OSINT|P
 Linuxdroid F-OSINT (Open Source Intelligence)
@@ -65,7 +68,7 @@ Hackers Arise – Cyber Defense (Military)
 
 ## Certification : 
 
-Mastermind - iso 27001 lead auditor
+[ISO/IEC 27001:2022 Lead Auditor - Mastermind Assurance](https://learn.mastermindassurance.com/courses/take/new-course/lessons/61109891-welcome)
 INE Security eEDA (Enterprise Defense Administrator)
 Comptia CASP+
 ISC2 CISSP

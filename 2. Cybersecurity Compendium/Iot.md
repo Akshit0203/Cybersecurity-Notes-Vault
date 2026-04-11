@@ -1,4 +1,9 @@
 
+# Projects :
+
+https://github.com/sgoudelis/ground-station (forked)
+
+
 # Trusted websites to buy iot stuff :
 
 [robocraze](https://learn.robocraze.com/web/activity)
@@ -82,6 +87,9 @@ TCM Security — Practical IoT Pentest Associate (PIPA)
 
 ## Flipper Zero 
 
+Software updates : [Flipper Lab](https://lab.flipper.net/apps)
+Firmware : [Momentum FW Asset Packs](https://momentum-fw.dev/asset-packs/)
+
 <https://www.stationx.net/flipper-zero-tutorial/>
 
 [Flipper Zero Exposes Evil Twin Wi-Fi Attacks : Stay Safe 🤯 \| \#flipperzero \#flipper](https://www.youtube.com/watch?v=QhSYn9XzCAQ&ab_channel=Tech-Eyez)
@@ -114,7 +122,13 @@ Marauder and Evil portal tutorial flipper zero \#flipperzero \#flipperzerohackin
 
 Write research paper
 
-Hack rf - <https://github.com/topics/volte>
+[Rolling PWN](https://rollingpwn.github.io/rolling-pwn/#:~:text=A%20rolling%20code%20system%20in,accidental%20key%20pressed%20by%20design.)
+
+## Hack rf
+
+Software updates : [Mayhem Hub](https://hackrf.app/)
+
+<https://github.com/topics/volte>
 
 <https://www.youtube.com/@SecureTechware/videos>
 
@@ -293,3 +307,8 @@ Work mail youtube watch later
 
 [The History of Printed Circuit Board PCB (1880 - Present)](https://how2electronics.com/history-printed-circuit-board-pcb-nextpcb/#google_vignette)
 
+# Department of Telecommunications :
+
+Hackathons : 
+
+[✔ SaralSanchar | Home](https://saralsanchar.gov.in/)
