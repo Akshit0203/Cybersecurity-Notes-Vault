@@ -12,18 +12,28 @@ redteamleaders : AV/EDR Evasion Practical Techniques
 Hackers Arise – Mobile Hacking
 ## Linux
 
+### Courses :
+
 TCM Security Linux 101 
 Hackers Arise – Linux Basics for Hackers
 Hackers Arise – Linux Basics for Hackers
-RHCSA (Red Hat Certified System Administrator)
+Craw security RHCSA (Red Hat Certified System Administrator)
 
 Bitten Tech [LINPE1] Linux Privilege Escalation for Offensive Pentesting]
 Hackers Arise – Linux Firewalls
+
+### Certifications :
+
+RHCSA (Red Hat Certified System Administrator)
+LFCS: Linux Foundation Certified Systems Administrator
 ## Android 
 
+Craw Security - Mobile Application Security
 Linuxdroid Start Android (Beginner Level)
 Linuxdroid CR phase 2 (craxs rat - Android Penetration)
-Tech vansh android hacking
+TechVansh – Master Android Hacking with CRAX RAT
+TechVansh – Everything About Android Hacking
+TechVansh – 2025 Nov Live Android Hacking Masterclass
 Android hacking - cosmofeed
 Hackers Arise – Android Hacking
 ## Windows 

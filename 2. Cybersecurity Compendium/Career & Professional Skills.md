@@ -1,5 +1,6 @@
 
-Career / Professional Skills
+Career / Professional Skills 
+
   ├── Communication
         ├── Speaking
         ├── Confidence
@@ -23,6 +24,7 @@ COURSES :
 - [ ] Prakhar ke pravachan - art of conversation
 - [ ] Speak Smart in Any Situation - Coach Divas Gupta https://academy.divasgupta.com/web/courses
 - [ ] The Art of Effortless Conversations - Coach Divas Gupta
+- [ ] https://sonusharmaacademy.com/ 
 - [ ] The Free 3-Step Confidence Kickstart - Coach Divas Gupta
 - [ ] Grokking Modern Behavioral Interview
 - [ ] Grokking Tech Salary Negotiations

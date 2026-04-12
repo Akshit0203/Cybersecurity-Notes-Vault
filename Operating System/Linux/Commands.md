@@ -21,13 +21,13 @@
 
 ## System Information Commands
 
-| Command | Purpose |
-|---|---|
-| `whoami` | Print current username |
-| `uname` | Print OS name |
-| `uname -a` | Full system info — kernel, hostname, architecture |
-| `df -h` | Disk usage in human-readable format |
-| `cat /etc/os-release` | Distribution name, version & codename |
+| Command               | Purpose                                           |
+| --------------------- | ------------------------------------------------- |
+| `whoami`              | Print current username                            |
+| `uname`               | Print OS name                                     |
+| `uname -a`            | Full system info — kernel, hostname, architecture |
+| `df -h`               | Disk usage in human-readable format               |
+| `cat /etc/os-release` | Distribution name, version & codename             |
 
 ### `uname -a` Output Breakdown
 

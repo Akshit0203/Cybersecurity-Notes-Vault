@@ -2,7 +2,10 @@
 # Projects :
 
 https://github.com/sgoudelis/ground-station (forked)
+[Pwnagotchi - Deep Reinforcement Learning instrumenting bettercap for WiFi pwning. :: Installation](https://pwnagotchi.ai/installation/)
 
+[Car Key Fob Security](https://chatgpt.com/c/676abf82-6da8-800d-8a02-3c4fc4f273d2)
+[IMSI Catcher](https://chatgpt.com/c/680db205-fb3c-800d-8aa8-5745129e5b61)
 # Trusted websites to buy iot stuff :
 
 [robocraze](https://learn.robocraze.com/web/activity)
