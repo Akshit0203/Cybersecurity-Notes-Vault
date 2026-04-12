@@ -1,9 +1,3 @@
-# Linux CLI Basics
-
-> Source: TryHackMe — *Linux CLI Basics* room
-
----
-
 ## Navigation Commands
 
 | Command                    | Purpose                                          |
@@ -29,6 +23,8 @@
 | `df -h`               | Disk usage in human-readable format               |
 | `cat /etc/os-release` | Distribution name, version & codename             |
 
+Linux stores configuration and informational files in the `/etc` directory.
+
 ### `uname -a` Output Breakdown
 
 ```
@@ -39,34 +35,22 @@ Linux  tryhackme  6.8.0-aws  x86_64  GNU/Linux
 
 ### `df -h` Key Columns
 
+The `-h` flag means **human-readable** — sizes display as `2G`, `500M` instead of raw byte counts.
+
 - **Filesystem** — device or mount name
 - **Size / Used / Avail** — space stats
 - **Use%** — percentage full
 - **Mounted on** — where it's accessible (e.g. `/`)
 
----
+### `df -h` Output Breakdown
 
-## Quick Reference Workflow
+| Filesystem | Type | Description |
+| --- | --- | --- |
+| `/dev/root` | Physical disk | Main system disk — holds the OS and all user data |
+| `tmpfs` | RAM-based | Temporary filesystem stored in RAM, not on physical disk; cleared on reboot |
+| `/dev/shm` | Shared memory | RAM area for inter-process communication (e.g. 1.9G available, 0 used) |
+| `/run/user/<id>` | Per-user tmpfs | Temporary runtime storage for a specific user session (e.g. 387M total, mostly empty) |
 
-```bash
-pwd                          # Where am I?
-ls -al                       # What's here (incl. hidden)?
-cd Documents                 # Move into a folder
-cd ..                        # Go back
-find ~ -name "file.txt"      # Search home dir for a file
-cat file.txt                 # Read a file
-whoami                       # Current user
-uname -a                     # System & kernel info
-df -h                        # Disk space
-cat /etc/os-release          # Distro details
-```
+> **Example reading:** `/dev/root` with 70G total, 12G used, 55G free, 17% full — this is the real disk. The `tmpfs` entries are virtual and live only in memory.
 
----
 
-## Key Takeaways
-
-- **Terminal** = text-based interface; faster & more powerful than GUI.
-- Hidden files start with `.` — use `ls -a` to reveal them.
-- `/etc` stores system config & info files.
-- `find` searches recursively from a given starting point.
-- `-h` flag on `df` converts bytes → human-readable sizes (G, M, K).
