@@ -26,6 +26,8 @@ Hackers Arise – Cyber Threat Intelligence
 Hackers Arise – MITRE ATT&CK 
 ## Awareness & Human Security
 
+https://emkei.cz/
+
 TCM Security Practical Phishing Campaigns
 Evilginx mastery - downloaded
 Linuxdroid evilteam (Phishing)
@@ -37,6 +39,7 @@ Hackers Arise – Social Engineering
 
 ## OSINT
 
+darkforums.su
 ### Master : 
 [OSINT Framework](https://osintframework.com/)
 
