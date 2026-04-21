@@ -155,7 +155,22 @@ Every browser ships with a **built-in JS engine** — this is required, not opti
 - Browser JS attacks → **client-side** (affect the user)
 - Node.js attacks → **server-side** (affect the entire system)
 
-about running JavaScript in your web browser, it is pretty simple. In your favorite web browser, access the Web Developer Tools. For example, I need to press F12 in Firefox to open the console, where I can run my JavaScript code. A screenshot of a web browser running JavaScript code is shown below.
+### Running JS in the Browser Console
 
-![Running JavaScript code within a web browser](https://tryhackme-images.s3.amazonaws.com/user-uploads/5f04259cf9bf5b57aed2c476/room-content/5f04259cf9bf5b57aed2c476-1771247689654.png)
+Open **DevTools** (`F12`) → **Console** tab → type JavaScript directly.
 
+![](./attachments/image.png)
+
+### How VS Code Runs JS Files
+
+When you click **"Run"** in VS Code (or use Code Runner extension), VS Code internally executes:
+
+```bash
+node "c:\path\to\your\file.js"
+```
+
+- VS Code opens its built-in terminal and runs `node file.js` for you
+- `node` doesn't appear "magically" — VS Code (or an extension) types the command automatically
+- If the program asks for input (e.g., `readline`), the terminal will pause and wait — just type your answer and press Enter
+
+> VS Code is the editor, `node` is the engine. Clicking "Run" just bridges the two.
