@@ -1,0 +1,260 @@
+# AI Models & Data
+
+> How training data shapes AI models — provenance risks, PII exposure, and the invisible data supply chain.
+
+---
+
+## Training Data Sources
+
+Training LLMs requires massive amounts of text (GPT-3 used ~570GB of filtered text — considered modest today).
+
+| Source | What It Is | Trust Level |
+| ------ | ---------- | ----------- |
+| **Web Scraping** | Automated crawls of public internet (news, forums, blogs, social media) | **Low** — no curator, no version control, content changes after collection |
+| **Licensed Datasets** | Data purchased or agreed with platforms (e.g., OpenAI + Reddit) | **Medium** — terms often unclear; original users rarely consented to AI training |
+| **Synthetic Data** | AI-generated content used to train further AI systems | **Variable** — ~12% of fine-tuning datasets now contain LLM-generated content |
+| **Internal Corpora** | Company knowledge bases, support transcripts, clinical notes | **Higher** — direct control, but also direct liability if mishandled |
+
+### Common Crawl
+
+- **Most widely used** training dataset — free, publicly available web crawl archive
+- Underpins essentially every major model family:
+  - **GPT-3** — 60% of tokens from filtered Common Crawl
+  - **DeepSeek-V3** — 14.8 trillion tokens with Common Crawl as core source
+  - **LLaMA 4** — 40 trillion tokens across 200 languages
+- The keyword is **"filtered"** — how filtering was done, by whom, and what slipped through is where security risks begin
+
+---
+
+## Data Provenance
+
+**Provenance** = knowing the full history and origin of training data.
+
+Three key questions for any training data:
+
+1. **Where** did it come from?
+2. **When** was it collected?
+3. **Has it been modified** since?
+
+> For most AI supply chains today, the honest answer to all three is: **we don't fully know**.
+
+### Why Provenance Fails
+
+- Models are trained on **datasets of datasets** — huge composites from hundreds of upstream sources
+- Original attribution is often **lost, simplified, or never recorded**
+- **Data Provenance Initiative** audit of 1,800+ datasets found:
+  - **70%+** of licenses listed as "Unspecified"
+  - Of those labeled, **66% were miscategorised** (listed as more permissive than actual)
+
+### Consequences of Bad Provenance
+
+- **Legal issues** — copyright/license violations
+- **Privacy leaks** — PII embedded unknowingly
+- **Biased outputs** — unvetted data skews model behavior
+- **Data poisoning** — no way to detect tampered upstream sources
+- **Trust erosion** — organizations can't verify what they're deploying
+
+---
+
+## ML-BOM (ML Bill of Materials)
+
+> The software security world has been here before — **SolarWinds** showed you can't trust compiled software if you don't know what went into it → led to **SBOMs** (Software Bill of Materials) becoming standard.
+
+**Same principle applies to AI:**
+
+| Software World | AI Equivalent |
+| -------------- | ------------- |
+| "What code is inside this software?" | "What data was used to train this AI?" |
+| **SBOM** — lists components, libraries, versions, dependencies | **ML-BOM** — documents dataset sources, licenses, PII categories, filtering decisions |
+
+- ML-BOM adoption is still **early** — most organizations deploying third-party models have nothing close to one
+
+---
+
+## PII in the Pipeline
+
+One of the most direct consequences of undocumented web scraping — **PII gets baked into model weights** and is very difficult to remove.
+
+### What Gets Swept Up
+
+- Medical records, personal emails, forum posts about health/political views
+- Anything **publicly accessible at crawl time**
+- Directly conflicts with **GDPR's data minimisation** principle (collect only what's necessary)
+
+### Concrete Security Impact
+
+- **Truffle Security** scanned the Dec 2024 Common Crawl archive (400TB, 2.67B web pages):
+  - Found nearly **12,000 live, verified API keys and passwords**
+- With the right prompt, models trained on this data can be coaxed into **surfacing training content near-verbatim** — including credentials
+- This isn't a bug — it's a **consequence of what went in during training**
+- **No patch fixes it** once the model is deployed
+
+---
+
+## Key Takeaway
+
+> A model's behaviour is a direct product of what it was trained on. If that data was scraped without audit, contaminated with PII, or manipulated upstream — those characteristics **become part of the model**, and there's no reliable way for the deploying organization to know.
+
+The data supply chain is **as real and as exploitable** as a software supply chain — and for most organizations, it's **almost entirely invisible**.
+
+---
+
+## Building the Model
+
+Key decisions during model building that carry **security implications**.
+
+### Epochs & Overfitting
+
+- **Epoch** = one complete pass of the training algorithm through the entire dataset
+- Models train over **many epochs** — algorithm repeatedly sees the same data, adjusting parameters each time
+- More epochs ≠ better model — train too long and the model **memorises** training data instead of learning general patterns
+
+> **Security implication:** overfitting is one mechanism by which a model can memorise sensitive details from training data (passwords, API keys, PII) — making it more likely to reproduce them when prompted.
+
+### Model Validation
+
+- To catch overfitting, a portion of data is **held back** as the **validation set** (never used for training)
+- Typical split: **80% training / 20% validation**
+- Model is periodically tested on validation set during training
+
+**Detecting overfitting in real time:**
+- Training accuracy keeps increasing ✅ but validation accuracy plateaus or drops ❌ → **overfitting**
+
+> **Security implication:** a model that skips thorough validation has **unknown real-world behaviour** — biases or anomalies from compromised training data may go undetected until deployment.
+
+---
+
+## Post-Training Optimisation
+
+After training, models often go through **compression** before deployment (especially for limited hardware). Two common techniques:
+
+| Technique | What It Does | Security Consideration |
+| --------- | ------------ | ---------------------- |
+| **Pruning** | Removes parameters that contribute little to predictions → smaller model | Changes model behaviour post-training; rarely documented |
+| **Quantisation** | Reduces numerical precision of weights (e.g., 32-bit → 8-bit floats) → lower memory/compute | Can **degrade safety-aligned behaviour**; backdoor defences tested on full-precision may fail on quantised versions |
+
+### Why This Matters
+
+- Both steps are often applied by a **different third-party team** packaging the model for distribution
+- Research shows quantisation can **silently degrade safety mechanisms** — defences that worked on full-precision may fail once compressed
+- Downloading a quantised model without compression documentation = **inheriting unknown behaviour modifications**
+
+---
+
+## Federated Learning
+
+Standard training: data flows to a **central location** → model trains there.
+
+**Federated learning** flips this — model trains **across decentralised devices/organisations**:
+- Each participant trains **locally** on their own data
+- Only **weight updates** (not raw data) sent back to central server for aggregation
+
+### Privacy Benefit
+
+- Raw data **never leaves** the owner (e.g., hospital contributes model updates without sending patient records)
+- Better **legal compliance** for sensitive sectors (healthcare, banking)
+
+### Security Trade-Off
+
+| Centralised Training | Federated Learning |
+| -------------------- | ------------------ |
+| Organisation controls the data | Data stays distributed — stronger privacy |
+| Easier to verify training integrity | Participants can submit **poisoned local updates** (manipulated gradients) |
+| Single point of control | Hard to detect corruption at **aggregation stage** |
+
+> Federated learning solves one trust problem (privacy) by distributing control — but creates another: **"who controls the aggregation, and can any participant corrupt it?"**
+
+---
+
+## Pre-Trained Models & Fine-Tuning
+
+- **Pre-trained model** = already trained on a large, general-purpose dataset (web-scale corpus)
+  - Learns broad language understanding: grammar, facts, reasoning, world knowledge
+  - Produced by few well-resourced orgs, then made available via **open weights** (Meta's LLaMA) or **API access** (OpenAI's GPT)
+- **Fine-tuning** = continuing to train a pre-trained model on a **smaller, task-specific dataset**
+  - E.g., healthcare company fine-tunes on clinical docs, law firm on case law
+  - Result: base model capabilities + domain specialisation
+
+| Fine-Tuning Changes | Fine-Tuning Does NOT Change |
+| -------------------- | --------------------------- |
+| Task-specific behaviour, tone, domain knowledge | Base model weights — billions of parameters shaped by pre-training data the fine-tuning org **never saw or audited** |
+
+### The Inheritance Problem
+
+When you fine-tune a pre-trained model, you **inherit everything** it already contains — including things you cannot see and did not choose:
+- Biases baked in during pre-training **persist**
+- Unexpected behaviours from base training data **carry through**
+- Safety alignment is **not as durable** as it appears
+
+**1. Safety alignment erodes, not breaks**
+- [Stanford & Princeton research](https://arxiv.org/abs/2310.03693) — safety mechanisms can be compromised by fine-tuning on as few as **10 adversarial examples** (cost: < $0.20)
+- Even **benign** fine-tuning on legitimate data degraded safety as a side effect
+- Analogy: safety alignment = well-worn path through a forest → fine-tuning adds new paths that gradually **obscure the safe one** → defence mechanisms don't snap, they wear down
+
+**2. Specialisation increases attack surface**
+- [Cisco research](https://blogs.cisco.com/security/fine-tuning-llms-breaks-their-safety-and-security-alignment) — fine-tuned models are **more susceptible to prompt injection** than base models
+- Fine-tuning narrows focus → reduces resilience to unexpected tokens
+- E.g., model fine-tuned on financial records becomes more responsive to attacker prompts **framed in financial terms**
+
+**3. Version tracking is rarely done**
+- Fine-tuning targets a **specific checkpoint** of a base model
+- If that checkpoint later found to contain a **backdoor or problematic data** → every derivative inherits it
+- Without knowing the exact base version → **no way to assess exposure** after the fact
+
+> **Bottom line:** when you deploy a fine-tuned model, you're deploying the **entire pre-trained base** beneath it — shaped by a training process you didn't control, on data you didn't audit. Fine-tuning is powerful, but it **doesn't sanitise** what came before it.
+
+---
+
+## The Black Box Problem
+
+- A trained model's weights = **billions of floating-point numbers** with no human-readable record of how they were shaped
+- Unlike source code or binaries — you **cannot open a model** and find the decision that makes it behave a certain way
+- Trusting a model = **trusting the process** that produced it
+
+### What You Can Do (and Its Limits)
+
+- **Testing:** run inputs, benchmark against known tasks, probe with adversarial prompts (red teaming)
+- But this is **sampling, not auditing** — tells you how the model behaved on inputs you tried
+- **Cannot** tell you what it will do on inputs you haven't thought of yet
+- The attack surface is defined by the model's training, which is **opaque**
+
+---
+
+## Model Cards
+
+**Model card** = a structured transparency document that accompanies a model — describes what it is, how it was built, and where it falls short.
+
+- Introduced by [Google researchers in 2019](https://arxiv.org/abs/1810.03993) — closest thing the industry has to a standard transparency format
+- Analogy: **nutritional label for an AI model** — you can't see inside, but the label tells you what went in and what to watch out for
+
+### What a Model Card Should Cover
+
+| Section | What It Should Tell You |
+| ------- | ----------------------- |
+| **Training data** | Sources used, how they were filtered, known gaps or biases |
+| **Intended use** | What the model was designed for (and explicitly what it wasn't) |
+| **Evaluation results** | Performance metrics across different conditions and demographics |
+| **Known limitations** | Conditions where the model underperforms or behaves unexpectedly |
+| **Bias assessment** | Where training data or evaluation may have introduced skew |
+| **Licence** | What you're legally permitted to do with the model |
+
+### The Gaps (Why Model Cards Often Fail)
+
+In practice, model cards are frequently **incomplete, vague, or absent entirely**:
+
+| Problem | Details |
+| ------- | ------- |
+| **Incomplete** | Leave out weak performance areas, bias issues, security risks |
+| **Vague** | Use language like "high accuracy" or "robust" without real numbers |
+| **Missing entirely** | Some models released with **no model card at all** |
+
+**Why this happens:**
+- **No regulatory requirement** — model cards are voluntary for most use cases
+- **Weak incentive** — disclosing limitations might reduce adoption
+- **Supply chain problem** — if upstream datasets are poorly documented, model cards built on them will also be weak
+- [Data Provenance Initiative](https://arxiv.org/abs/2310.16787) audit found documentation gaps **throughout the AI supply chain**
+
+> **Security perspective:** a sparse or missing model card is a **warning sign** — the org either didn't evaluate thoroughly enough, or chose not to share what they found. Either way, the downstream user is **flying blind**.
+
+> **The model card is your audit trail.** In the absence of one, there is no audit trail — just a black box and the hope that whoever built it was thorough. In security, **hope is not a control**.
+

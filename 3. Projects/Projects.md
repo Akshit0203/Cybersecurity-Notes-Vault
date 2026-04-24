@@ -10,3 +10,6 @@ Enigma simulator in Python
 
 search on youtube videos
 search for cybersecurity resume on reddit also
+
+https://www.linkedin.com/posts/prathamesh-bakliwal_everyones-talking-about-ai-in-cybersecurity-activity-7443273178166067203-NbXR?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEF09nYBybU-O2YK7A2zabMxA4OcbMVqKDU
+
