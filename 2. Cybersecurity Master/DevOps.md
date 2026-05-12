@@ -2,12 +2,13 @@
 # Projects :
 
 https://quantumvector.sh/webinars
-# Security 
 
 ## Courses :
 
+GeekforGeeks Devops Course
+KodeKloud Devops
+### Security :
 **TryHackMe Path – DevSecOps
-
 # Certification :
 
 Docker
