@@ -15,6 +15,11 @@ Hackers Arise – Mobile Hacking
 ### Courses :
 
 TCM Security Linux 101 
+
+M Prashant YouTube Playlist Linux Admin Playlist
+M Prashant YouTube Playlist Linux Questions for Exams & Interviews
+M Prashant YouTube Playlist Linux Zero to Hero
+
 Hackers Arise – Linux Basics for Hackers
 Hackers Arise – Linux Basics for Hackers
 Craw security RHCSA (Red Hat Certified System Administrator)

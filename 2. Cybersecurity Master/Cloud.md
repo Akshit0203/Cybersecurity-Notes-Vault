@@ -4,11 +4,13 @@
 ## Courses :
 
 INE Fundamentals: Introduction to Identity & Access Management
+Piyush Garg YouTube Playlist Serverless
 
 ### AWS 
 
-#### adrian cantrill all AWS courses (BEST)
-
+adrian cantrill all AWS courses (BEST)
+M Prashant YouTube Playlist AWS For Beginners
+Piyush Garg YouTube Playlist AWS - Amazon Web Services
 Coursera - Aws cloud technical essentials
 Coursera - Aws cloud Practitioner essentials
 ### Azure
