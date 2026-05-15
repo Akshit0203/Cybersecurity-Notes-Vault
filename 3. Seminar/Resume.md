@@ -11,3 +11,13 @@ what you did months/years ago is not valid now
 extract the keywords from the job description : 
 use gpt for 
 summary , bullet points and cover letter
+
+
+You’re building projects. But companies are looking for developers who can build real products.
+
+There’s a difference.
+- Projects are small.
+- Products scale.
+- Products handle real users.
+
+Build products , not projects
