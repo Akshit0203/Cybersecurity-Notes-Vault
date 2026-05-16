@@ -20,6 +20,8 @@ TCM Security Beginner's Guide to IoT and Hardware Hacking
 
 Linuxdroid Pro Ducky Pi (Hardware Penetration)
 
+All About UART : https://training.brownfinesecurity.com/l/pdp/all-about-uart
+
 redteamleaders : Aerospace & Satellite Hacking
 redteamleaders : ATM Penetration Testing & Security Assessment
 redteamleaders : ICS/SCADA Cybersecurity 

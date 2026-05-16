@@ -5,6 +5,24 @@ Tcm security courses projects
 https://www.youtube.com/watch?v=RDulnxvursU
 bitten tech projects videos
 
+Automated STRIDE mapping
++OWASP TOP 10 
++MITRE
+
+AI SOC
+The system even tunes its own detection rules. Noisy rule firing too many false positives? It rewrites the rule and deploys the fix.
+→ AI triage on every alert. 91%+ confidence. MITRE mapping. Behavioral anomaly detection 
+→ Closed-loop detection engineering. Identifies noisy rules, rewrites them, deploys after human approval 
+→ Threat hunting agent. Generates hypotheses from MITRE gaps, runs them automatically 
+→ Natural language investigation. Ask your SIEM questions in plain English 
+→ 9 active response actions with verification 
+→ Vulnerability management. Detect CVE, generate fix, execute remotely, verify patch 
+→ Incident grouping, case management, timelines, merge 
+→ Slack/email notifications, 4-role RBAC, audit logging 
+→ Live threat intel (AbuseIPDB + AlienVault OTX)
+Coming next: VirusTotal + MISP, MITRE heatmap, automated playbooks, executive reports, multi-tenant, Docker/K8s packaging.
+
+
 Enigma simulator in Python
 (add photos and yt video reference link)
 

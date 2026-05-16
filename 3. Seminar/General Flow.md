@@ -52,3 +52,20 @@ All seminars Make 1 common order flow
 Mind map is the best way to do it
 And how to make mind map show step by step 
 Add images
+
+---
+
+first see how my internships started
+
+1. first i used to pay for internship 200rs , 300rs for certificate 
+2. then i cold emailed people that i am doing this , i liked this , can you give me an internship
+3. then i started winning all india govt internship
+4. then i just participated for fun , just sharing exp from my previous internships
+5. now even getting full time offers from fang/maang
+
+----
+
+![](./attachments/image-13.png)
+
+![](./attachments/image-14.png)
+
