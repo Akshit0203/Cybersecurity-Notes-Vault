@@ -1,6 +1,9 @@
 
 # Core :
 
+## Extended Reading : 
+
+IBM Technology YouTube Playlist: [Cloud Data Storage Explained](https://www.youtube.com/watch?v=Q5aTUc7c4jg&list=PLOspHqNVtKAAXDobTc9kBWwnfgzNV2k_a)
 ## Courses :
 
 INE Fundamentals: Introduction to Identity & Access Management
@@ -25,6 +28,9 @@ INE Security cloud - Azure Fundamentals: Cloud Concepts
 
 # Security 
 
+## Extended Reading : 
+
+IBM Technology YouTube Playlist: [Cloud Security Explained](https://www.youtube.com/watch?v=aXMPqfZt1gk&list=PLOspHqNVtKACfjqfEwR3iKz1gJILKj5Tn)
 ## Courses :
 
 **TryHackMe Path – Attacking and Defending AWS**

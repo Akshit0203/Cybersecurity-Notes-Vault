@@ -1,0 +1,5 @@
+![Pasted image 20250815182637.png](attachments/Pasted%20image%2020250815182637.png)
+![Pasted image 20250815182645.png](attachments/Pasted%20image%2020250815182645.png)
+![Pasted image 20250815182653.png](attachments/Pasted%20image%2020250815182653.png)
+![Pasted image 20250815182701.png](attachments/Pasted%20image%2020250815182701.png)
+![Pasted image 20250815182709.png](attachments/Pasted%20image%2020250815182709.png)
