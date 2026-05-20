@@ -1,6 +1,7 @@
 
 # Projects :
 
+# DevSecOps
 https://quantumvector.sh/webinars
 
 ## Courses :

@@ -1,4 +1,9 @@
 
+every project should have ai in it 
+theres no project nowadays without ai
+# DevSecOps
+https://quantumvector.sh/webinars
+
 # AI Projects : 
 
 Bitten tech youtube Cyber Projects for Future
@@ -102,6 +107,8 @@ AI Security Projects:
 
 https://github.com/usestrix/strix
 Strix ai pentesting
+
+Email Magic Links
 
 Custom Burp Suite Extension
 
@@ -282,7 +289,59 @@ Machine Learning Based Malware Detection
 
 ----
 
+# Others Projects : 
+
 https://www.linkedin.com/feed/update/urn:li:activity:7403648271497269248?updateEntityUrn=urn%3Ali%3Afs_updateV2%3A%28urn%3Ali%3Aactivity%3A7403648271497269248%2CFEED_DETAIL%2CEMPTY%2CDEFAULT%2Cfalse%29
 making ads invisible
 Targeted ad generation using AI that feels like a part of your movies and shows.
 generates cutscenes and product placements in real time, perfectly matched to your interests.
+
+https://github.com/GeneralDussDuss/poseidon
+80+ feature pentesting firmware for M5Stack Cardputer-Adv. WiFi, BLE, sub-GHz (CC1101), 2.4GHz (nRF24), LoRa (SX1262), IR, BadUSB, DHCP attacks, WPAD, MouseJack, BLE spam, signal replay, 6 themes. Supports LoRa-GNSS + Hydra RF hats + ESP32-C5 companion.
+
+Forensic analysis of already-acquired WhatsApp Android databases - browse every chat exactly like the WhatsApp home screen, plus 30 forensic pages: media recovery, visual-hash search, contact + group reports, offline export bundles. Read-only by construction.
+https://github.com/akhil-dara/WAInsight
+
+π RuView turns commodity WiFi signals into real-time spatial intelligence, vital sign monitoring, and presence detection — all without a single pixel of video.
+http://github.com/ruvnet/RuView
+
+The Network Execution Tool
+https://github.com/Pennyw0rth/NetExec
+
+AutoRecon is a multi-threaded network reconnaissance tool which performs automated enumeration of services.
+https://github.com/AutoRecon/AutoRecon
+
+Open-source, low-cost 10.5 GHz PLFM phased array RADAR system
+https://github.com/NawfalMotii79/PLFM_RADAR
+
+Ground Station is all-in-one satellite monitoring suite
+https://github.com/sgoudelis/ground-station
+
+https://github.com/s0md3v/AwesomeXSS
+XSS stuff
+
+Open-source AI hackers to find and fix your app’s vulnerabilities.
+https://github.com/usestrix/strix
+
+Flipper Zero Telegram Client
+https://github.com/jblanked/FlipTelegram
+
+Custom operating system firmware for the Flipper Zero, written in Rust
+https://github.com/BEATRIX-Development/beatrix-rs
+
+Shannon Lite is an autonomous, white-box AI pentester for web applications and APIs. It analyzes your source code, identifies attack vectors, and executes real exploits to prove vulnerabilities before they reach production.
+https://github.com/KeygraphHQ/shannon
+
+XSS scanner
+https://github.com/s0md3v/XSStrike
+
+Mobile Security Framework (MobSF) is an automated, all-in-one mobile application (Android/iOS/Windows) pen-testing, malware analysis and security assessment framework capable of performing static and dynamic analysis.
+https://github.com/MobSF/Mobile-Security-Framework-MobSF
+
+A simple threat modeling tool to help humans to reduce time-to-value when threat modeling
+https://github.com/awslabs/threat-composer
+analyze your source code to generate a starter threat model
+
+AI-powered penetration testing assistant using local LLM on linux (Parrot OS)
+https://github.com/sooryathejas/METATRON
+

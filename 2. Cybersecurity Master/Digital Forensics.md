@@ -1,6 +1,8 @@
 
 # Courses :
 
+- [x] Craw Security Cyber Forensics and Investigation
+
 redteamleaders : Digital Forensics & Incident Investigation
 redteamleaders : CSAM Combat & Investigation Introduction
 Hackers Arise – Digital Forensics
@@ -19,5 +21,5 @@ Understand full blockchain architecture first , then : https://chatgpt.com/share
 
 # Certification :
 
-EC Council CHFI
+- [x] EC Council CHFI (Computer Hacking Forensic Investigator)
 INE Security eCDFP Certified Digital Forensics Professional

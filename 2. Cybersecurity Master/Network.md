@@ -5,17 +5,20 @@
 
 **Search all on LinkedIn learning also (watch everything you can)**
 
- - [x] Udemy CompTIA Network+ (N10-009) Bootcamp
+ - [x] Udemy CompTIA Network+ (N10-009) Jason DionBootcamp
  - [x] Jeremey's it labs - youtube playlist
  - [x] Ccna notes github - <https://github.com/dollarboysushil/CCNA-200-301/blob/main/Day%203%20-%20OSI%20Model%20%26%20TCP%2CIP%20suite.md>
  - [x] David bombal practical ccna youtube playlist
+ - [x] Coursera google The Bits and Bytes of Computer Networking
 - [ ] Hackers Arise – Network Basics
 - [ ] Hackers Arise – Infrastructure Basics
 
 ## Certifications
 
-- [x] CCNA
-- [x] Network +
+- [x] CCNA (Cisco Certified Network Associate)
+- [x] Craw Security Cisco Certified Network Associate (CCNA)
+- [x] CompTIA Network+
+- [x] Certified Network Security Practitioner (CNSP)
 # Security 
 
 how do these tools work ?

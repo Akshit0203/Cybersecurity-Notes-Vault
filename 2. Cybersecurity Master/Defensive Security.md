@@ -24,6 +24,8 @@ Hackers Arise – Honeypots
 Hackers Arise – Splunk 
 Hackers Arise – Cyber Threat Intelligence
 Hackers Arise – MITRE ATT&CK 
+- [x] Student Security Operations Center (SOC) Program Foundations
+- [x] Microsoft Certified: Security, Compliance, and Identity Fundamentals (Exam: SC-900)
 ## Awareness & Human Security
 
 https://emkei.cz/
@@ -111,6 +113,8 @@ Ine security eSOC (Security Operations Center)
 Try hack me Security Analyst Level 1 (SAL1)
 TCM Security — Practical SOC Analyst Associate (PSAA)
 - [x] Comptia Security+ 
+- [x] Craw Security End Point Security
+- [x] IBM Cyber Security Analyst
 CompTIA CySA+
 Blue Team Level 1 (BTL1) by Security Blue Team
 Cyber warfare labs - Certified Cyber Security Analyst C3SA

@@ -1,4 +1,11 @@
 
+![624](./attachments/image.png)
+
+LIVE IN THE FUTURE THEN 
+BUILD WHAT'S                   MISSING
+
+---
+
 From Google :
 whatever you build has to be 10 times better, cheaper, or faster than the competition.
 
@@ -96,7 +103,7 @@ Most payment banks in India didn’t incorporate UPI till demonetisation. Till d
 
 If I were to start razor pay today what would it look like with AI.  They behaved like a startup and not like an incumbent. They redid a major part and there was a good traction on their platform after. 
 
-If you build responding to what happens in the market you’re already dead. You have to predict where the market will go and build for it. 
+<span style="color:rgb(255, 0, 0)">If you build responding to what happens in the market you’re already dead. You have to predict where the market will go and build for it. </span>
 
 When the company grows, the founder changes for the better. Going manager mode is the worst mistake to do. 
 
@@ -181,3 +188,165 @@ Insights that are obtained from talking to customers
 Agency: you will become a more “relentlessly resourceful”
 Rate of learning matters a lot.
 The qualities of good founder has been the same throughout.
+
+---
+
+## 13 Rules for Startups
+
+- **#1** Build fast
+    
+- **#2** Rejection is data
+    
+- **#3** Marketing is differentiation
+    
+- **#4** Speed kills competition
+    
+- **#5** Distribution beats products
+    
+- **#6** Use Twitter
+    
+- **#7** Use LinkedIn
+    
+- **#8** Iterate fast
+    
+- **#9** Kill ideas fast
+    
+- **#10** Free users lie
+    
+- **#11** Watch PostHog sessions
+    
+- **#12** Forget color schemes
+    
+- **#13** Spam UGC (User Generated Content)
+
+---
+
+# Startup Failure Notes (Harvard Study)
+
+## Stage 1 — Validation
+
+### 42% of startups fail here
+
+### Main Mistake
+
+Building a product without talking to customers.
+
+### Why They Fail
+
+- Founders assume they already know the problem.
+- They build based on ideas, not real demand.
+- No market validation before development.
+
+### Key Lesson
+
+Talk to real people before building.
+
+### Action Step
+
+- Speak to at least **20 people** who face the problem.
+- Understand:
+    - Their pain points
+    - Current solutions
+    - Willingness to pay
+    - Frequency of the problem
+
+### Goal
+
+Validate the problem before creating the solution.
+
+---
+
+# Stage 2 — Early Traction
+
+### “The Speed Trap”
+
+### Main Mistake
+
+Scaling too early.
+
+### Common Problems
+
+- Hiring too fast
+- Spending heavily on ads
+- Expanding before understanding what works
+- Chasing growth without a repeatable system
+
+### Why It Happens
+
+Founders panic after getting initial customers and try to grow aggressively.
+
+### Key Lesson
+
+Stay small until customer acquisition becomes repeatable.
+
+### Action Step
+
+Find:
+
+- One repeatable marketing channel
+- One reliable acquisition method
+- One proven customer journey
+
+Then scale slowly.
+
+### Goal
+
+Build a stable, repeatable growth engine first.
+
+---
+
+# Stage 3 — Scaling
+
+### 65% fail because of leadership, not the market
+
+### Main Mistake
+
+Losing customer obsession after success starts.
+
+### What Happens
+
+- Focus shifts to:
+    - Money
+    - Expansion
+    - Competition
+    - Internal politics
+- Founders become disconnected from users.
+
+### Why Companies Collapse
+
+Not because the product stopped working —  
+because leadership stopped listening to customers.
+
+### Key Lesson
+
+Stay close to the customer even while scaling.
+
+### Action Step
+
+- Keep customer feedback loops active
+- Maintain simplicity
+- Avoid unnecessary complexity
+- Build strong leadership culture
+
+### Goal
+
+Scale without losing the original mission and customer focus.
+
+---
+
+# Overall Core Message
+
+Most startups fail because:
+
+1. No validation
+2. Scaling too early
+3. Weak leadership during growth
+
+## The Winning Formula
+
+- Validate first
+- Scale slowly
+- Stay customer obsessed
+- Keep systems simple
+- Grow only after repeatability is proven
+

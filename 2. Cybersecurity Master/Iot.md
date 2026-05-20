@@ -64,6 +64,11 @@ Hackers Arise – SCADA/ICS Security
 Hackers Arise – Advanced SCADA/ICS 
 Hackers Arise – Satellite Hacking 
 
+- [x] Cyber Octopus IMSI Catcher - Mobile Tower Hacking
+- [x] Cyber Octopus SS7 (Signaling System No. 7) Attack Vulnerabilities
+- [x] Linkedin Learning Raspberry Pi Essential Training
+- [x] Craw Security IOT Pentesting
+
 Web server hosting using esp 32
  How to use satdump
  [10 Raspberry Pi projects based on Software-Defined Radio (SDR)](https://ke4bfi.com/2023/06/23/10-raspberry-pi-projects-based-on-software-defined-radio-sdr/)

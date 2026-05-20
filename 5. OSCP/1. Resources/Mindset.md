@@ -1,7 +1,7 @@
 
 ---
 
-Enumeration > Exploitation (every single time)_
+Enumeration > Exploitation (every single time)_\
 
 Avoid the habit of randomly throwing exploits at a target.
 
@@ -13,6 +13,10 @@ Proper enumeration:
 Poor enumeration leads to rabbit holes, repeated loops, and unnecessary stress.
 
 Take notes for every enumeration step, even findings that look boring. Many exploitation paths only become clear when small details are connected later. And sometimes, once you step back and review your notes, you realize the solution is actually simpler than it first appeared.
+
+**Enumeration is not a step — it’s the whole exam.** Miss a UDP port, miss a service, miss the foothold that was sitting right there. Most rabbit holes exist because you didn’t enumerate thoroughly enough at the start. Go back to basics before you decide the machine is just hard.
+
+**Build a checklist, not just notes.** Notes are for learning. Checklists are for performing under pressure. There’s a real difference — build both.
 
 ---
 
