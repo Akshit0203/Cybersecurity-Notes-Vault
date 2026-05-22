@@ -53,3 +53,6 @@ Youtube Videos
 
 [Finding CSRFs with CODE REVIEWS](https://www.youtube.com/watch?v=9cYTZa7jWbs)
 [Finding IDORs with CODE REVIEWS!](https://www.youtube.com/watch?v=xBZps1k1sxI)
+A Beginners Guide to Code Review The Cyber Mentor [Link](https://www.youtube.com/watch?v=48vMaDUv530)
+
+
