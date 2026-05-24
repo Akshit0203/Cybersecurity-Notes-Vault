@@ -74,6 +74,10 @@ Add images
 
 ---
 
+Only conduct sessions in which you will also learn something moving forward and in the direction in which you want to go
+
+---
+
 first see how my internships started
 
 1. first i used to pay for internship 200rs , 300rs for certificate 
