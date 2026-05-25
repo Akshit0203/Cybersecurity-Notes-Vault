@@ -16,6 +16,26 @@ But at the same time be technical also
 
 Aisa bhi na ho ki log bole arre maza to bahut aata hai yaar iske sessions me par kuch seekhne ko nahi mila
 
+---
+
+Most of the opportunities I got was not by think and preparing for an event 
+It was just showing up and applying 
+We tend to overthink that when I'm ready then I'll apply, 
+But someone else would just apply and show up and would get in
+
+Hum kya sochte hai ki jab hum puri tarah ready ho jayenge tab apply karenge 
+Par iss cheez ka wait mat karo 
+Apni visibility badhao online 
+Agar aap bataoge hi nahi kisi ko ki mai kya karta hu to saamne se offer ayega kaise 
+
+To pura karo jitna apply kar sakte ho
+Aur iske 2 extreme hai 
+
+Mai apne kaam ka master banunga 
+Ki aane do jo chalenge aa rha hai 
+Aane do jo interview aa rha hai 
+Darta nahi hu
+
 ----
 
 Cybersecurity carreer

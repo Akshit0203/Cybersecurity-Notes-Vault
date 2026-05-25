@@ -109,3 +109,18 @@ Generally speaking, an application/product security engineer interview will have
     - You're presented a source code with some vulnerabilities and you should discuss with the interviewer the security issues on it and possible fixes. It should be straightforward, but if the role you're applying require knowledge in specific languages/frameworks they might use that.
     - There are some platforms that you can use to prep for this one. I just launched one (there are not many exercises in the platform yet so it might no be of great help for you right now - [https://security.dev](https://security.dev/)). There's also Pentesterlab, HTB, etc.
 
+----
+
+<span style="color:rgb(0, 176, 240)">You have to think both like an attacker and defender , how to attack it and how to defend it from same attacks</span>
+HOW "IT" CAN BE ATTACKED  ; HOW TO PREVENT IT 
+
+---
+
+Always ask - what's stopping me from bypassing this infrastructure/security check
+
+---
+
+Tough just means you haven't broken it down to even smaller steps
+
+---
+
