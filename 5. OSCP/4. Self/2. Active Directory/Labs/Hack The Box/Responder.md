@@ -10,11 +10,11 @@ Responder is a very easy Windows machine that focuses on exploring the File Incl
 ### 1. Information Gathering & Routing
 We start by visiting the provided IP address of the box in our browser and watching how the URL changes.
 
-![](./attachments/image.png)
+![](attachments/image.png)
 
-![](./attachments/image-1.png)
+![](attachments/image-1.png)
 
-![](./attachments/image-4.png)
+![](attachments/image-4.png)
 
 The application redirects to the domain `http://unika.htb/`. 
 
@@ -24,26 +24,26 @@ To access the site, we must add an entry to our `/etc/hosts` file. This routes a
 nano /etc/hosts
 ```
 
-![](./attachments/image-5.png)
+![](attachments/image-5.png)
 
 Now, the website will reload successfully where it earlier could not.
 
-![](./attachments/image-6.png)
+![](attachments/image-6.png)
 
 ### 2. Web Application Analysis
 Observing the URL extension of the page being loaded, we need to find which scripting language is being used on the server to generate webpages. We can use the Wappalyzer extension to see the technologies running behind the scenes.
 
-![](./attachments/image-8.png)
+![](attachments/image-8.png)
 
 The server uses **PHP**.
 
 Next, we analyze the URL when visiting different language versions of the page.
 
-![](./attachments/image-9.png)
+![](attachments/image-9.png)
 
 We change the language to German as an example.
 
-![](./attachments/image-11.png)
+![](attachments/image-11.png)
 
 We can see it is using the `page` URL parameter to load different language versions of the webpage.
 
@@ -58,21 +58,21 @@ We are presented with a few potential values for the `page` parameter to test fo
 
 Testing `french.html` works normally after changing the language:
 
-![](./attachments/image-12.png)
+![](attachments/image-12.png)
 
 The directory traversal going to the host file (`../../../../../../../../windows/system32/drivers/etc/hosts`) is our valid LFI payload.
 
 We can also reference a sample LFI wordlist here: [LFI Wordlist](https://github.com/drtychai/wordlists/blob/master/intruder/lfi.txt)
 
-![](./attachments/image-13.png)
+![](attachments/image-13.png)
 
 Since we saw it was using Apache earlier, we can use payloads from the list which match the "apache" word as well.
 
-![](./attachments/image-14.png)
+![](attachments/image-14.png)
 
 We try the LFI payload given in the question after the `page` parameter:
 
-![](./attachments/image-15.png)
+![](attachments/image-15.png)
 
 The server returns the contents of the `hosts` file, confirming the LFI vulnerability.
 
@@ -97,19 +97,19 @@ responder -I tun0
 
 It starts a lot of different listening servers.
 
-![](./attachments/image-19.png)
+![](attachments/image-19.png)
 
 Responder gives us its own IP on the VPN.
 
-![](./attachments/image-17.png)
+![](attachments/image-17.png)
 
 We copy the IP address and use it as an RFI payload. It will request some file from our (Responder) IP.
 
-![](./attachments/image-20.png)
+![](attachments/image-20.png)
 
 We run it in the browser.
 
-![](./attachments/image-21.png)
+![](attachments/image-21.png)
 
 The request goes through, and we capture the hash! We take a copy of the hash.
 
@@ -130,7 +130,7 @@ We use **John The Ripper** and provide the `rockyou.txt` wordlist to crack the h
 john --wordlist=/usr/share/wordlists/rockyou.txt hash
 ```
 
-![](./attachments/image-22.png)
+![](attachments/image-22.png)
 
 The password for the Administrator user is successfully cracked: **badminton**.
 
@@ -141,7 +141,7 @@ We will use a Windows service running on the box to remotely access the Responde
 nmap -sC -sV 10.129.11.182 -T5
 ```
 
-![](./attachments/image-23.png)
+![](attachments/image-23.png)
 
 Port **5985** is open, which is important:
 
@@ -196,16 +196,16 @@ We will use `evil-winrm` now with our cracked credentials.
 evil-winrm -i 10.129.11.182 -u Administrator -p badminton 
 ```
 
-![](./attachments/image-24.png)
+![](attachments/image-24.png)
 
 ### 7. Post-Exploitation & Flag Retrieval
 We are in! Now we try to find the flag. Windows users' home directories are by default in `C:\Users`.
 
-![](./attachments/image-25.png)
+![](attachments/image-25.png)
 
 Let's check the `mike` directory.
 
-![](./attachments/image-26.png)
+![](attachments/image-26.png)
 
 We found `flag.txt` on Mike's desktop!
 
