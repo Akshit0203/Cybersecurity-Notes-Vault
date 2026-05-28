@@ -12,7 +12,7 @@ All notes are written while practicing real labs, hands-on exercises, CTF-style 
 🚀 About This Vault
 - Contains notes from Labs, security courses & projects
 - Includes attachments such as diagrams, screenshots, and reference visuals
-- Synced via Obsidian + Git for version control
+- Synced via Obsidian + Git Desktop for version control
 - Continuously updated as I learn more
 
 ---
