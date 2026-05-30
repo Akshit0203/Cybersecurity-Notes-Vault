@@ -1,69 +1,69 @@
 
-![](./attachments/Screenshot%202026-05-20%20195303.png)
+![](attachments/Screenshot%202026-05-20%20195303.png)
 
-![](./attachments/Screenshot%202026-05-20%20194213.png)
+![](attachments/Screenshot%202026-05-20%20194213.png)
 
-![](./attachments/Screenshot%202026-05-20%20194341.png)
+![](attachments/Screenshot%202026-05-20%20194341.png)
 
-![](./attachments/Screenshot%202026-05-20%20194636.png)
+![](attachments/Screenshot%202026-05-20%20194636.png)
 
 The first 2 courses are Systems heavy
 C programming required for systems heavy courses
 
-![](./attachments/Screenshot%202026-05-20%20195005.png)
+![](attachments/Screenshot%202026-05-20%20195005.png)
 
-![](./attachments/Screenshot%202026-05-20%20195018.png)
+![](attachments/Screenshot%202026-05-20%20195018.png)
 
-![](./attachments/Screenshot%202026-05-20%20195122.png)
+![](attachments/Screenshot%202026-05-20%20195122.png)
 
-![](./attachments/image.png)
+![](attachments/image.png)
 
 Bi-costal have business courses also 
 
-![](./attachments/image-1.png)
+![](attachments/image-1.png)
 
-![](./attachments/image-2.png)
+![](attachments/image-2.png)
 Translates security knowledge to business context
 
-![](./attachments/image-3.png)
+![](attachments/image-3.png)
 Allows to make projects
 If you want to do research there
 
-![](./attachments/image-4.png)
+![](attachments/image-4.png)
 
 Cyber Defense requires mostly 4 semesters as more coursework 
 rest 2 can be done in 3 semesters
 
 you can do only few courses from these tracks without specializing in these tracks
 
-![](./attachments/image-6.png)
+![](attachments/image-6.png)
 
-![](./attachments/image-7.png)
+![](attachments/image-7.png)
 
-![](./attachments/image-8.png)
+![](attachments/image-8.png)
 
-![](./attachments/image-9.png)
+![](attachments/image-9.png)
 
-![](./attachments/image-10.png)
+![](attachments/image-10.png)
 
-![](./attachments/image-11.png)
+![](attachments/image-11.png)
 
-![](./attachments/image-12.png)
+![](attachments/image-12.png)
 
-![](./attachments/image-13.png)
+![](attachments/image-13.png)
 
-![](./attachments/image-14.png)
+![](attachments/image-14.png)
 
-![](./attachments/image-15.png)
+![](attachments/image-15.png)
 
-![](./attachments/image-17.png)
+![](attachments/image-17.png)
 
 Find time to do student networking here
 Be involved , make some time for these
 
-![](./attachments/image-18.png)
+![](attachments/image-18.png)
 
-![](./attachments/image-19.png)
+![](attachments/image-19.png)
 
 Majority pay majority tuition
 
@@ -73,15 +73,15 @@ Admission decision is separate from this
 only after admission is accepted then this will be considered
 both are completely separate
 
-![](./attachments/image-20.png)
+![](attachments/image-20.png)
 This is just for US residents
 
-![](./attachments/image-21.png)
+![](attachments/image-21.png)
 Rales , GEM -> For US permanent residents only
 The HUB - Financial center at CMU
 RAILS GEM - only for FALL intake
 
-![](./attachments/image-22.png)
+![](attachments/image-22.png)
 
 LOR we can't send
 We enter email address in application and they send it (who wrote the LOR)
@@ -91,9 +91,9 @@ Priority Deadline -> Especially for students looking for funding opportunities ,
 
 A strong application is better than a rushed application
 
-![](./attachments/image-23.png)
+![](attachments/image-23.png)
 
-![](./attachments/image-24.png)
+![](attachments/image-24.png)
 
 They don't have graduate housing , it's only available for undergrads
 Funding won't cover housing 
@@ -156,7 +156,7 @@ LORs :
 resume required
 tell how INI will help you to achieve your goals
 
-![](./attachments/image-25.png)
+![](attachments/image-25.png)
 
 amber dworek - session taker
 For Application Fee waiver : email to ini@cmu.edu

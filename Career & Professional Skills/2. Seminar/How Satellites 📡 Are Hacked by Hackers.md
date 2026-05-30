@@ -1,6 +1,6 @@
 
 Satellite systems are not just space infrastructure — they are part of the invisible cyber backbone of the modern world.  
-From GPS navigation to military communication and global internet routing, everything depends on signals traveling through open space and complex ground networks. From a hacker’s perspective, any system that relies on wireless transmission, trust-based communication, and layered protocols becomes an exploitable surface.  
+From GPS navigation to military communication and global internet routing, everything depends on signals traveling through open space and complex ground networks. From a hacker’s perspective, any system that relies on wireless transmission, trust-based communication, and layered protocols becomes an exploitable surface. 
   
 Attackers don’t “break into space” — they study signals, analyze communication patterns, and target weak points in ground stations, misconfigurations, and outdated security implementations.  
   
