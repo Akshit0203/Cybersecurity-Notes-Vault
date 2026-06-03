@@ -23,6 +23,10 @@ The system even tunes its own detection rules. Noisy rule firing too many false 
 Coming next: VirusTotal + MISP, MITRE heatmap, automated playbooks, executive reports, multi-tenant, Docker/K8s packaging.
 
 
+RCE of Burp Scanner / Crawler via Clickjacking
+[Link1](https://hackerone.com/reports/1274695) ; [Link2](https://infosecwriteups.com/3-000-bounty-rce-in-burp-suite-via-clickjacking-3a3bac7cf431)
+
+
 Enigma simulator in Python
 (add photos and yt video reference link)
 
@@ -32,6 +36,10 @@ search for cybersecurity resume on reddit also
 https://www.linkedin.com/posts/prathamesh-bakliwal_everyones-talking-about-ai-in-cybersecurity-activity-7443273178166067203-NbXR?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEF09nYBybU-O2YK7A2zabMxA4OcbMVqKDU
 
 Cyber cell projects :
+- 1930 ai helpline 
+- Telegram channel ban 
+- Instagram channel ban 
+- FIRs pdf indexing
 - Build a phishing Email Classifier (NLP Based)
 - Prepare a fraud keyword blacklist generator
 - Quick URL reputation checker (API based)
@@ -52,6 +60,11 @@ Cyber cell projects :
 - Phishing detection checklist
 - Cyber crime glossary and learning tool
 - List of Govt and Non-Govt authorities concerning IT, internet, and various regulations + type of information available with them
+- Collection of unlawful content on social media and internet which should be blocked (3 themes - Real money backing , Investment scams , Fake customer care number)
+- Ai machine learning - deepfake detection (Malicious intent also not general use cases like graphic designers)
+- Ai powdered fraud call transcriber and detection system
+- Telegram groups how to infiltrate and how to find these groups
+- Social media , sentiment fraud and scam analysis
 
 JWT-auth portal
 SMS fraud detection app using NLP

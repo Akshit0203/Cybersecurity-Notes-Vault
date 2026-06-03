@@ -112,6 +112,7 @@ Hackers Arise – Phishing Analysis
 Ine security eSOC (Security Operations Center)
 Try hack me Security Analyst Level 1 (SAL1)
 TCM Security — Practical SOC Analyst Associate (PSAA)
+Let's Defend Certifications
 - [x] Comptia Security+ 
 - [x] Craw Security End Point Security
 - [x] IBM Cyber Security Analyst

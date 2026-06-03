@@ -3,7 +3,6 @@
 > Small practice programs and concepts explored while learning Python.
 
 ---
-
 ## Guess the Number Game
 
 A beginner program where the computer picks a random number and the player guesses until they find it.
