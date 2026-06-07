@@ -13,7 +13,14 @@ https://github.com/sgoudelis/ground-station (forked)
 https://www.silverlineelectronics.in/
 https://www.fabtolab.com/index.php?route=common/home
 
-# Courses
+# Aerospace cybersecurity :
+
+- Aerospace Cybersecurity Fundamentals Wiki: https://github.com/r0r0x-xx/AeroSpace-Cybersecurity
+* In-depth articles on our Medium: [**https://medium.com/@pwnsat**](https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fmedium%2Ecom%2F%40pwnsat&urlhash=qdwf&mt=duhu90wx1OJ-5oxCO71Jo-0tbyOfmeOkZSIT97IQ_48MQB63A4-wZHp7TvgOXVKsij6qQrMn7HqviWZvS6f0c00jlxj1_1PbqKqUuqnI8qjA_W-uNmk3pic&isSdui=true)  
+* Open-source Hardware & Code Repository on GitHub: https://github.com/Pwnsat/FlatSat
+
+Flatsat: https://electroniccats.com/store/flatsat1/
+# Courses :
 
 Hardware hacking course - https://courses.redteamleaders.com/dashboard
 TCM Security Beginner's Guide to IoT and Hardware Hacking

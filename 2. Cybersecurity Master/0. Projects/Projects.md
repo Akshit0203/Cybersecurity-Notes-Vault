@@ -60,11 +60,42 @@ Cyber cell projects :
 - Phishing detection checklist
 - Cyber crime glossary and learning tool
 - List of Govt and Non-Govt authorities concerning IT, internet, and various regulations + type of information available with them
-- Collection of unlawful content on social media and internet which should be blocked (3 themes - Real money backing , Investment scams , Fake customer care number)
+- Collection of unlawful content on social media and internet which should be blocked (3 themes - Real money backing , Investment scams , Fake customer care number ; Even on all apps snapchat , discord , Roblox )
 - Ai machine learning - deepfake detection (Malicious intent also not general use cases like graphic designers)
 - Ai powdered fraud call transcriber and detection system
-- Telegram groups how to infiltrate and how to find these groups
-- Social media , sentiment fraud and scam analysis
+- Telegram groups how to infiltrate and how to find these groups (who are doing illegal things)
+- Social media , sentiment fraud and scam analysis (ex. financial fraud)
+- **Cyber Crime Trends in India** (Analyze NCRB, I4C and public reports, identify emerging frauds, output: trend report with visualizations)
+- **Dark Web Research Project** (Study dark web ecosystem, criminal marketplaces, threat actors, no access to illegal content, output: research paper)
+- **OSINT Toolkit for Law Enforcement** (Compile free tools for username search, domain analysis, metadata extraction, social media investigations, output: investigator's handbook)
+- **Cyber Crime Reporting Awareness Project** (Study reporting barriers, compare cyber helpline and portal awareness, output: citizen outreach strategy)
+- **Cryptocurrency Crime Research** (Research money laundering, investment scams, pig butchering, wallet tracing, output: investigation guide)
+- **Women & Cyber Safety Project** (Research cyber stalking, online harassment, revenge porn and sextortion, output: awareness toolkit)
+- **AI-Generated Deepfake Detection Study** (Study tools and techniques, build awareness material, output: research paper + awareness campaign)
+- **Phishing URL Detection Tool** (Machine learning-based phishing detection, skills: Python, ML, web security)
+- **Cyber Crime Complaint Dashboard** (Visualize fraud types, victim demographics, geographic distribution, tech: Python, Power BI, Tableau)
+- **Social Media Intelligence Dashboard** (Public profile monitoring, keyword alerts, trend mapping, tech: OSINT tools)
+- **IOC Aggregator Platform** (Collect indicators from open feeds, generate alerts, tech: Python, APIs)
+- **Threat Intelligence Portal** (Create searchable repository of domains, hashes, IPs, scam URLs)
+- **QR Code Fraud Detection Tool** (Analyze QR code contents, identify suspicious redirects)
+- **Mobile App Permission Analyzer** (Analyze Android APK permissions, perform risk scoring)
+- **Cyber Awareness Chatbot** (Hindi and English support, answer citizen cyber safety questions, tech: LLMs, Python)
+- **Mobile Forensics SOP Manual** (Prepare standard operating procedures, output: investigation handbook)
+- **Metadata Extraction Toolkit** (Extract metadata from images, PDFs, videos, output: investigator utility)
+- **WhatsApp Artifact Analysis Study** (Study evidentiary artifacts and legal admissibility, output: research paper)
+- **Cloud Forensics Challenges** (Research Google Drive, OneDrive, Dropbox investigations)
+- **Comparative Study: BNSS, BNS and IT Act** (Study practical application in cyber crime cases)
+- **Drafting Investigation Notices** (Create templates for Google, Meta, Telegram, X, banks, output: legal toolkit for investigators)
+- **International Cooperation in Cyber Crime Investigations** (Study MLATs, 24/7 Network, Budapest Convention)
+- **Privacy vs Investigation** (Study balancing citizen rights and investigation requirements)
+- **Cyber Smart Gurugram Index** (Measure cyber awareness across schools and colleges)
+- **Gurugram Scam Map** (Create interactive map of fraud trends and scam typologies)
+- **Cyber Safety Curriculum for Schools** (Develop cyber safety modules for Classes 6–12)
+- **AI-Powered Cyber Safety Assistant** (Citizen awareness chatbot)
+- **Cyber Crime Simulation Lab** (Develop realistic case scenarios for training students and police personnel)
+- **Cyber Volunteer Portal** (Platform for reporting phishing, fake apps, malicious links, and cyber awareness activities)
+
+---
 
 JWT-auth portal
 SMS fraud detection app using NLP
