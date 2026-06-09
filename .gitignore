@@ -1,4 +1,38 @@
 # Ignore folders
 .obsidian/
 1. To-do/
+Others/Dont Sync/
 #files made - .gitignore , .git(hidden folder) , readme.md , .gitattributes , LICENSE
+
+# It depends on what pattern you put in .gitignore.
+
+# Case 1: Ignore a specific folder
+# PrivateNotes/
+# This ignores the folder named PrivateNotes only in the repository root.
+# Example:
+# Vault/
+# ├── PrivateNotes/      ← Ignored
+# ├── Projects/
+# │   └── PrivateNotes/  ← NOT ignored
+
+# Case 2: Ignore a folder name anywhere
+# **/PrivateNotes/
+# or simply
+# PrivateNotes
+# This ignores every folder or file named PrivateNotes anywhere in the vault.
+# Example:
+# Vault/
+# ├── PrivateNotes/          ← Ignored
+# ├── Projects/
+# │   └── PrivateNotes/      ← Ignored
+# ├── Notes/
+# │   └── PrivateNotes/      ← Ignored
+
+# Case 3: Ignore a specific path
+# Projects/Secrets/
+# Only this folder is ignored:
+# Vault/
+# ├── Projects/
+# │   └── Secrets/      ← Ignored
+# ├── Notes/
+# │   └── Secrets/      ← NOT ignored
