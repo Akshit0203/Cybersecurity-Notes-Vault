@@ -1,2 +1,2 @@
 
-![](../attachments/cover%20letter%20sample.pdf)
+![](Samples/attachments/cover%20letter%20sample.pdf)

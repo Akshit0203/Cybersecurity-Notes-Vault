@@ -35,3 +35,24 @@ Before hitting send, ask: "If I received this message, would I want to help?" 
 
 ----
 
+## Referral Mindset vs. Learning Mindset
+
+- Don't keep a "give me a referral" attitude. Otherwise, you'll always be playing the blame game — "He didn't give me a referral," "My resume wasn't selected."
+- Instead, keep a learning attitude. Go to people and ask them:
+    - "How did you do this work?"
+    - "How did you reach this point?"
+    - "How should I showcase my work?"
+    - "How should I present myself?"
+    - "How do you think about things this way?"
+- Once you adopt this mindset, the blaming attitude will naturally disappear.
+
+---
+
+## Don't Ask for Referrals — Ask for Guidance
+
+- Don't ask people: "Give me a referral" or "Give me an HR contact."
+- Instead, ask: "What are you looking for in the people you hire as a security engineer? What should I do to get there?"
+- Your focus should only be on the work — not going around asking people their salary.
+
+---
+

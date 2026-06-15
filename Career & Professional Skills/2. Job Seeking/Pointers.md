@@ -2,6 +2,37 @@
 
 ---
 
+## Review Manually — Common Resume Mistakes
+
+- **Tool Lists With No Explanation**
+    - Example: *Wireshark • Nmap • Metasploit*
+    - Why it's a problem: Anyone can list tools. Hiring managers want to see **how you actually used them**.
+- **Courses But No Practical Work**
+    - Example: *Completed Cyber Security Training*
+    - Why it's a problem: Cyber security is hands-on. They want proof like: Labs, CTFs, projects, investigations.
+- **Tailor resume for each role**
+    - You need to showcase your most relevant transferable experience.
+    - What you did months/years ago is not valid now.
+
+## Using ChatGPT for Resume Optimization
+
+- Extract the keywords from the job description.
+- Use GPT for: summary, bullet points, and cover letter.
+
+## Build Products, Not Projects
+
+You're building projects. But companies are looking for developers who can build real products.
+
+There's a difference:
+
+- Projects are small.
+- Products scale.
+- Products handle real users.
+
+> **Build products, not projects.**
+
+---
+
 ## How HRs from Cyber Companies Shortlist Candidates
 
 1. **Similar cyber companies** — they have a list they match from it

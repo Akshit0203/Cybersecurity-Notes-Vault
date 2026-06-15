@@ -1,9 +1,27 @@
 
-# Banner : 
+Premium subscribers get up to 11x more profile views.
 
-![](attachments/image.png)
+----
 
-![](attachments/image-1.png)
+Don't take marketing for granted
+
+---
+
+Profile should be about what I built, What I did
+Not where I went
+You have to show your work
+
+----
+
+Make 1 post a week on LinkedIn about the strongest/best thing you learned in the week
+
+---
+
+Banner : 
+
+![](Ankur%20Warikoo%20Linkedin%20course/attachments/image.png)
+
+![](Ankur%20Warikoo%20Linkedin%20course/attachments/image-1.png)
 
 
 |Rank|Posting Method|Confidence|
@@ -14,3 +32,6 @@
 |4|Native LinkedIn scheduled post that auto-publishes|Medium|
 |5|Edited scheduled post that auto-publishes|Low-Medium|
 |6|Third-party scheduled post (Buffer, Hootsuite, etc.)|Low-Medium|
+
+---
+

@@ -8,15 +8,15 @@ The real risk is not the satellite itself — it’s the ecosystem built around 
   
 Understanding this layer means understanding how modern cyber-physical systems truly work.
 
-![](attachments/image-7.png)
+![](../../Career%20&%20Professional%20Skills/6.%20Public%20Speaking/attachments/image-7.png)
 
-![](attachments/image-8.png)
+![](../../Career%20&%20Professional%20Skills/6.%20Public%20Speaking/attachments/image-8.png)
 
-![](attachments/image-9.png)
+![](../../Career%20&%20Professional%20Skills/6.%20Public%20Speaking/attachments/image-9.png)
 
-![](attachments/image-10.png)
+![](../../Career%20&%20Professional%20Skills/6.%20Public%20Speaking/attachments/image-10.png)
 
-![](attachments/image-11.png)
+![](../../Career%20&%20Professional%20Skills/6.%20Public%20Speaking/attachments/image-11.png)
 
-![](attachments/image-12.png)
+![](../../Career%20&%20Professional%20Skills/6.%20Public%20Speaking/attachments/image-12.png)
 

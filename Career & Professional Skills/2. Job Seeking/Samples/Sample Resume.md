@@ -1,2 +1,2 @@
 
-![](../../attachments/Resume_sample.pdf)
+![](attachments/Resume_sample.pdf)
