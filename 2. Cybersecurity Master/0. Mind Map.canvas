@@ -6,21 +6,21 @@
 		{"id":"390d735af4dfdc91","type":"text","text":"Agents","x":-1003,"y":579,"width":105,"height":50},
 		{"id":"1f112cf9e8b780de","type":"text","text":"GenAI","x":-996,"y":466,"width":90,"height":50},
 		{"id":"e451a59665aca090","type":"text","text":"Data         ","x":-994,"y":129,"width":87,"height":50},
-		{"id":"8bd90aa85c40cf31","type":"text","text":"AI/ML","x":-862,"y":-106,"width":102,"height":50,"color":"1"},
-		{"id":"802fe1348030be14","type":"text","text":"Python","x":-1000,"y":29,"width":98,"height":50,"color":"1"},
+		{"id":"8bd90aa85c40cf31","type":"text","text":"AI/ML","x":-862,"y":-106,"width":102,"height":50},
+		{"id":"802fe1348030be14","type":"text","text":"Python","x":-1000,"y":29,"width":98,"height":50},
 		{"id":"344dccf1ce5af3a9","type":"text","text":"Security","x":-760,"y":29,"width":120,"height":50},
-		{"id":"0e6e2f96df5b15b7","type":"text","text":"Fundamentals","x":-247,"y":-106,"width":167,"height":50,"color":"1"},
-		{"id":"ff645849eca88edc","type":"text","text":"Career / Professional Skills","x":-560,"y":-106,"width":250,"height":50,"color":"1"},
+		{"id":"0e6e2f96df5b15b7","type":"text","text":"Fundamentals","x":-247,"y":-106,"width":167,"height":50},
+		{"id":"ff645849eca88edc","type":"text","text":"Career / Professional Skills","x":-560,"y":-106,"width":250,"height":50},
 		{"id":"8d5df69ec1589c7e","type":"text","text":"Security","x":680,"y":92,"width":119,"height":57},
-		{"id":"ea6ea21db8949c59","type":"text","text":"Scripting","x":231,"y":231,"width":144,"height":59,"color":"1"},
+		{"id":"ea6ea21db8949c59","type":"text","text":"Scripting","x":231,"y":231,"width":144,"height":59},
 		{"id":"ea6a0eaf1ebcb3e5","type":"text","text":"Bash","x":175,"y":367,"width":112,"height":50},
-		{"id":"7a344ec8e952dca2","type":"text","text":"Python","x":321,"y":366,"width":108,"height":55,"color":"1"},
+		{"id":"7a344ec8e952dca2","type":"text","text":"Python","x":321,"y":366,"width":108,"height":55},
 		{"id":"a6c24d994ee32c59","type":"text","text":"Low-Level","x":474,"y":239,"width":139,"height":55},
 		{"id":"3f27c9aa4f671446","type":"text","text":"Assembly","x":482,"y":360,"width":123,"height":50},
 		{"id":"7c1f6ba228b8867e","type":"text","text":"Rust","x":56,"y":369,"width":85,"height":50},
 		{"id":"bdb49a16afb123a7","type":"text","text":"C#","x":-49,"y":369,"width":75,"height":50},
-		{"id":"1f22308d02940ac5","type":"text","text":"Languages","x":330,"y":96,"width":122,"height":50,"color":"1"},
-		{"id":"6b07a87e34b6e5c5","type":"text","text":"Programming","x":445,"y":-94,"width":160,"height":50,"color":"1"},
+		{"id":"1f22308d02940ac5","type":"text","text":"Languages","x":330,"y":96,"width":122,"height":50},
+		{"id":"6b07a87e34b6e5c5","type":"text","text":"Programming","x":445,"y":-94,"width":160,"height":50},
 		{"id":"ad3be1b090be051a","type":"text","text":"Systems Programming","x":-62,"y":236,"width":203,"height":50},
 		{"id":"16d8cbcb99a94ab3","type":"text","text":"Mindset:\n-How does this tool work ?\n-How to make this tool ?\n-How does the architecture in front of me work ?\n-How to fix this bug ? Code ?","x":-207,"y":-440,"width":400,"height":140},
 		{"id":"80347b40ceb814c9","type":"text","text":"No “Tool-based structure”\nNo “Certification-based structure”","x":225,"y":-440,"width":300,"height":60},
@@ -107,10 +107,11 @@
 		{"id":"2ac3228a444a9ff4","type":"text","text":"Active Directory","x":-3583,"y":346,"width":190,"height":50},
 		{"id":"7c79523824bea2de","type":"text","text":"Windows","x":-3552,"y":203,"width":126,"height":50},
 		{"id":"73da59e912e73b3d","type":"text","text":"Android","x":-3367,"y":200,"width":140,"height":50},
-		{"id":"d7e5661230d924ba","x":-3860,"y":202,"width":107,"height":51,"type":"text","text":"MacOS"},
+		{"id":"d7e5661230d924ba","type":"text","text":"MacOS","x":-3860,"y":202,"width":107,"height":51},
 		{"id":"1a80b87b69da0de9","type":"text","text":"AWS","x":-4140,"y":237,"width":82,"height":50},
-		{"id":"4f6342527d882708","x":-4292,"y":237,"width":88,"height":50,"type":"text","text":"Azure"},
-		{"id":"4f49878b7512cca7","x":-4440,"y":234,"width":77,"height":53,"type":"text","text":"GCP"}
+		{"id":"4f6342527d882708","type":"text","text":"Azure","x":-4292,"y":237,"width":88,"height":50},
+		{"id":"4f49878b7512cca7","type":"text","text":"GCP","x":-4440,"y":234,"width":77,"height":53},
+		{"id":"e08c03ed3c4a92e2","x":-288,"y":3,"width":250,"height":60,"type":"text","text":"Computer Science Basics"}
 	],
 	"edges":[
 		{"id":"63699a09c9d0efe4","fromNode":"cd3fc60fe71ff552","fromSide":"bottom","toNode":"8bd90aa85c40cf31","toSide":"top"},
@@ -237,6 +238,7 @@
 		{"id":"ff4bf289308af4f6","fromNode":"c70589b76592bdb4","fromSide":"bottom","toNode":"2be161caff72b117","toSide":"top"},
 		{"id":"38499b6e8dcfee49","fromNode":"7f1c244bb828ecc6","fromSide":"bottom","toNode":"d7e5661230d924ba","toSide":"top"},
 		{"id":"1899691f31a0e8db","fromNode":"8d5c6785de41b352","fromSide":"bottom","toNode":"4f6342527d882708","toSide":"top"},
-		{"id":"fde8f77c7252b790","fromNode":"8d5c6785de41b352","fromSide":"bottom","toNode":"4f49878b7512cca7","toSide":"top"}
+		{"id":"fde8f77c7252b790","fromNode":"8d5c6785de41b352","fromSide":"bottom","toNode":"4f49878b7512cca7","toSide":"top"},
+		{"id":"a4850ed725f759a6","fromNode":"0e6e2f96df5b15b7","fromSide":"bottom","toNode":"e08c03ed3c4a92e2","toSide":"top"}
 	]
 }
