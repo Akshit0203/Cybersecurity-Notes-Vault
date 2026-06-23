@@ -90,21 +90,15 @@ ESP32-S3 Node 2
 
 ### ESP32-S3 CSI Nodes
 
-![Node Setup](images/hardware/ESP32_S3_Nodes_Connected_View1.jpg)
-
 ![Node Setup](images/hardware/ESP32_S3_Nodes_Connected_View2.jpg)
 
 ---
 
 ## Demonstration
 
-### Dashboard Overview
+### Vital Sign Observatory
 
-![Dashboard](images/dashboard/Dashboard_System_Status_Overview.png)
-
-### System Metrics
-
-![Metrics](images/dashboard/Dashboard_System_Metrics_and_Stats.png)
+![Observatory](images/observatory/RuView_Observatory_Vital_Signs_A.png)
 
 ### CSI Heatmap
 
@@ -114,9 +108,13 @@ ESP32-S3 Node 2
 
 ![Pose Detection](images/pose_detection/Live_Pose_Detection_Three_Persons.png)
 
-### Vital Sign Observatory
+### Dashboard Overview
 
-![Observatory](images/observatory/RuView_Observatory_Vital_Signs_A.png)
+![Dashboard](images/dashboard/Dashboard_System_Status_Overview.png)
+
+### System Metrics
+
+![Metrics](images/dashboard/Dashboard_System_Metrics_and_Stats.png)
 
 ---
 
