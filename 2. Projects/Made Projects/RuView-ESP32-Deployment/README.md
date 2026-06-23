@@ -1,54 +1,40 @@
-# Multi-Node WiFi CSI Human Sensing Platform using ESP32-S3 and RuView
+# Distributed WiFi CSI Human Sensing
 
-> Real-time human presence detection, motion sensing, occupancy estimation, and RF-based environment awareness using WiFi Channel State Information (CSI).
+> Multi-node WiFi CSI sensing platform using ESP32-S3 and RuView for real-time presence detection, motion sensing, occupancy estimation, and RF-based environment awareness.
 
----
-
-## Project Overview
-
-This project demonstrates a multi-node WiFi sensing system built using ESP32-S3 development boards and the RuView WiFi DensePose ecosystem.
-
-The platform captures WiFi Channel State Information (CSI) from multiple sensing nodes and processes it through a Rust-based backend to estimate:
-
-- Human Presence Detection
-- Motion Detection
-- Occupancy Estimation
-- CSI Heatmaps
-- Pose Visualization
-- Vital Sign Visualization
-- Multi-Node RF Sensing
-
-Unlike camera-based systems, the platform uses wireless signal variations to understand environmental activity while preserving privacy.
+![Architecture](images/architecture/Architecture_Diagram_Full.png)
 
 ---
 
-## Project Highlights
+## Overview
 
-✅ Multi-Node ESP32-S3 Deployment
+This project demonstrates a distributed WiFi sensing system built using ESP32-S3 development boards and the RuView WiFi DensePose ecosystem.
 
-✅ Real-Time CSI Collection
+The platform captures WiFi Channel State Information (CSI) from multiple sensing nodes and processes it through a Rust-based backend to estimate human presence, motion, occupancy, and environmental activity without requiring cameras, wearable devices, or dedicated tracking hardware.
 
-✅ UDP-Based CSI Streaming
+The final deployment successfully operated with two ESP32-S3 CSI sensing nodes streaming live CSI data to the RuView sensing backend.
 
-✅ Rust Backend Processing
+---
 
-✅ Web Dashboard Visualization
+## Key Features
 
-✅ Occupancy Estimation
-
-✅ Presence Detection
-
-✅ Motion Detection
-
-✅ CSI Heatmap Visualization
-
-✅ Real-Time WebSocket Telemetry
+- Multi-node ESP32-S3 deployment
+- Real-time WiFi CSI collection
+- UDP-based CSI streaming
+- Rust sensing backend
+- Live dashboard visualization
+- Presence detection
+- Motion detection
+- Occupancy estimation
+- CSI heatmap visualization
+- WebSocket telemetry
+- Camera-free sensing architecture
 
 ---
 
 ## System Architecture
 
-```
+```text
 ESP32-S3 Node 1
         \
          \
@@ -58,11 +44,13 @@ ESP32-S3 Node 1
 ESP32-S3 Node 2
 ```
 
-The sensing nodes continuously collect WiFi CSI measurements and stream them to the RuView backend for processing and visualization.
+### Architecture Diagram
+
+![Architecture](images/architecture/Architecture_Diagram_Cropped.png)
 
 ---
 
-## Hardware Used
+## Hardware
 
 ### Sensing Nodes
 
@@ -70,7 +58,7 @@ The sensing nodes continuously collect WiFi CSI measurements and stream them to 
 - 16 MB Flash
 - 8 MB PSRAM
 
-### Host System
+### Host Environment
 
 - Windows 11
 - VMware Workstation
@@ -85,31 +73,35 @@ The sensing nodes continuously collect WiFi CSI measurements and stream them to 
 
 ## Hardware Setup
 
-### Connected ESP32-S3 Nodes
+### ESP32-S3 CSI Nodes
 
+![Node Setup](images/hardware/ESP32_S3_Nodes_Connected_View1.jpg)
 
-
-### ESP32-S3 Hardware
+![Node Setup](images/hardware/ESP32_S3_Nodes_Connected_View2.jpg)
 
 ---
 
-## Dashboard Demonstration
+## Demonstration
 
 ### Dashboard Overview
 
+![Dashboard](images/dashboard/Dashboard_System_Status_Overview.png)
+
 ### System Metrics
+
+![Metrics](images/dashboard/Dashboard_System_Metrics_and_Stats.png)
 
 ### CSI Heatmap
 
----
-
-## Human Sensing Results
+![Heatmap](images/sensing/Live_Sensing_Heatmap_Active_Hotspot.png)
 
 ### Multi-Person Detection
 
-### Pose Estimation
+![Pose Detection](images/pose_detection/Live_Pose_Detection_Three_Persons.png)
 
-### Vital Sign Monitoring
+### Vital Sign Observatory
+
+![Observatory](images/observatory/RuView_Observatory_Vital_Signs_A.png)
 
 ---
 
@@ -132,12 +124,11 @@ The sensing nodes continuously collect WiFi CSI measurements and stream them to 
 
 ### Networking
 
-- UDP Streaming
-- WiFi CSI
+- UDP
 - TCP/IP
-- Real-Time Telemetry
+- WiFi CSI Streaming
 
-### Monitoring & Analysis
+### Analysis & Diagnostics
 
 - tcpdump
 - ss
@@ -145,112 +136,145 @@ The sensing nodes continuously collect WiFi CSI measurements and stream them to 
 
 ---
 
-## Performance Summary
+## Project Statistics
 
-|Capability|Status|
-|---|---|
-|CSI Collection|✅|
-|UDP Streaming|✅|
-|Multi-Node Operation|✅|
-|Dashboard Integration|✅|
-|Motion Detection|✅|
-|Presence Detection|✅|
-|Occupancy Estimation|✅|
-|Pose Visualization|✅|
-|Vital Sign Visualization|✅|
+| Metric | Value |
+|----------|----------|
+| Sensing Nodes | 2 ESP32-S3 |
+| Backend Language | Rust |
+| CSI Transport | UDP |
+| Dashboard Updates | WebSocket |
+| CSI Source | WiFi Channel State Information |
+| Frequency Band | 2.4 GHz |
+| Deployment Model | Distributed Multi-Node |
 
 ---
 
-## Key Findings
+## Results
 
-### Strengths
+### Successfully Implemented
 
-- Reliable presence detection
-- Responsive motion detection
-- Stable backend performance
-- Successful multi-node deployment
-- Real-time visualization
+- Live CSI collection
+- Multi-node sensing
+- UDP streaming
+- Real-time dashboard updates
+- Presence detection
+- Motion detection
+- Occupancy estimation
+- CSI heatmap generation
+- Observatory integration
 
-### Current Limitations
+### Observations
 
-- Person counting occasionally fluctuates
-- Environmental calibration can improve results
-- Limited evaluation with only two sensing nodes
-
----
-
-## Project Structure
-
-```
-.
-├── README.md
-├── docs
-│   ├── 01_Project_Overview.md
-│   ├── 02_Hardware_Setup.md
-│   ├── 03_ESP32_Firmware.md
-│   ├── 04_RuView_Backend.md
-│   ├── 05_Dashboard.md
-│   ├── 06_Troubleshooting.md
-│   ├── 07_Performance_Evaluation.md
-│   ├── 08_Future_Work.md
-│   ├── 09_Results_and_Lessons_Learned.md
-│   └── 10_References.md
-├── images
-├── firmware
-└── backend
-```
+- Presence detection was reliable.
+- Motion detection responded consistently to environmental activity.
+- Multi-node CSI streaming operated successfully.
+- Occupancy estimation was functional but could benefit from additional calibration.
+- Person counting occasionally fluctuated due to environmental conditions.
 
 ---
 
-## Future Roadmap
+## Technical Skills Demonstrated
 
-### Short Term
-
-- Deploy 4 sensing nodes
-- Improve occupancy estimation
-- Optimize node placement
-
-### Medium Term
-
-- Activity recognition
-- Gesture recognition
-- Room localization
-
-### Long Term
-
-- Smart building integration
-- Healthcare monitoring
-- Digital twin environments
-- Large-scale distributed sensing networks
+- Embedded Systems Engineering
+- ESP32 Development
+- ESP-IDF
+- Wireless Networking
+- WiFi CSI Analysis
+- RF Sensing
+- Rust Development
+- Linux Administration
+- Network Diagnostics
+- Distributed Systems
+- Real-Time Telemetry
+- System Integration
 
 ---
 
 ## Documentation
 
-Detailed documentation is available in the `docs/` directory:
+Detailed documentation is available in the `docs/` directory.
 
-|Document|Description|
-|---|---|
-|01_Project_Overview|Project introduction|
-|02_Hardware_Setup|Hardware deployment|
-|03_ESP32_Firmware|Firmware build and flashing|
-|04_RuView_Backend|Backend deployment|
-|05_Dashboard|Visualization and observatory|
-|06_Troubleshooting|Debugging log|
-|07_Performance_Evaluation|Performance analysis|
-|08_Future_Work|Research roadmap|
-|09_Results_and_Lessons_Learned|Final conclusions|
-|10_References|References and resources|
+| File | Description |
+|--------|-------------|
+| 01_Project_Overview.md | Project overview |
+| 02_Hardware_Setup.md | Hardware deployment |
+| 03_ESP32_Firmware.md | Firmware configuration |
+| 04_RuView_Backend.md | Backend deployment |
+| 05_Dashboard_and_Observatory.md | Dashboard walkthrough |
+| 06_Troubleshooting.md | Issues and fixes |
+| 07_Performance_Evaluation.md | Performance analysis |
+| 08_Future_Work.md | Future improvements |
+| 09_Results_and_Lessons_Learned.md | Final results |
+| 10_References.md | References |
+| 11_Project_Timeline.md | Development timeline |
+
+---
+
+## Future Improvements
+
+### Short-Term
+
+- Deploy 4+ sensing nodes
+- Improve occupancy estimation
+- Optimize node placement
+
+### Long-Term
+
+- Activity recognition
+- Gesture recognition
+- Indoor localization
+- Smart building integration
+- Digital twin environments
+
+---
+
+## Lessons Learned
+
+- Wireless sensing systems require careful node placement.
+- CSI quality significantly impacts detection accuracy.
+- Multi-node sensing improves environmental awareness.
+- Packet-level diagnostics are critical for debugging distributed sensing systems.
+- Real-world RF environments require calibration and tuning.
+
+---
+
+## Repository Structure
+
+```text
+.
+├── README.md
+├── LICENSE
+├── docs/
+└── images/
+    ├── architecture/
+    ├── hardware/
+    ├── dashboard/
+    ├── pose_detection/
+    ├── sensing/
+    ├── observatory/
+    └── performance/
+```
+
 
 ---
 
 ## Project Status
 
-```
-Status: Completed
-Deployment: Successful
-Nodes: 2 ESP32-S3
-Backend: Operational
-Dashboard: Operational
-Research Potential: High
-```
+**Status:** Completed
+
+**Deployment:** Successful
+
+**Nodes:** 2 ESP32-S3
+
+**Backend:** Operational
+
+**Dashboard:** Operational
+
+**Research Potential:** High
+
+---
+
+### Citation
+
+Akshit. *Distributed WiFi CSI Human Sensing using ESP32-S3 and RuView*, 2026.
