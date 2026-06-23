@@ -2,10 +2,7 @@
 
 > Multi-node WiFi CSI sensing platform using ESP32-S3 and RuView for real-time presence detection, motion sensing, occupancy estimation, and RF-based environment awareness.
 
-![Architecture](images/architecture/Architecture_Diagram_Full.png)
-
----
-
+----
 ## Overview
 
 This project demonstrates a distributed WiFi sensing system built using ESP32-S3 development boards and the RuView WiFi DensePose ecosystem.
@@ -31,7 +28,25 @@ The final deployment successfully operated with two ESP32-S3 CSI sensing nodes s
 - Camera-free sensing architecture
 
 ---
+## Documentation
 
+Detailed documentation is available in the `docs/` directory.
+
+| File | Description |
+|--------|-------------|
+| 01_Project_Overview.md | Project overview |
+| 02_Hardware_Setup.md | Hardware deployment |
+| 03_ESP32_Firmware.md | Firmware configuration |
+| 04_RuView_Backend.md | Backend deployment |
+| 05_Dashboard_and_Observatory.md | Dashboard walkthrough |
+| 06_Troubleshooting.md | Issues and fixes |
+| 07_Performance_Evaluation.md | Performance analysis |
+| 08_Future_Work.md | Future improvements |
+| 09_Results_and_Lessons_Learned.md | Final results |
+| 10_References.md | References |
+| 11_Project_Timeline.md | Development timeline |
+
+---
 ## System Architecture
 
 ```text
@@ -191,26 +206,6 @@ ESP32-S3 Node 2
 
 ---
 
-## Documentation
-
-Detailed documentation is available in the `docs/` directory.
-
-| File | Description |
-|--------|-------------|
-| 01_Project_Overview.md | Project overview |
-| 02_Hardware_Setup.md | Hardware deployment |
-| 03_ESP32_Firmware.md | Firmware configuration |
-| 04_RuView_Backend.md | Backend deployment |
-| 05_Dashboard_and_Observatory.md | Dashboard walkthrough |
-| 06_Troubleshooting.md | Issues and fixes |
-| 07_Performance_Evaluation.md | Performance analysis |
-| 08_Future_Work.md | Future improvements |
-| 09_Results_and_Lessons_Learned.md | Final results |
-| 10_References.md | References |
-| 11_Project_Timeline.md | Development timeline |
-
----
-
 ## Future Improvements
 
 ### Short-Term
@@ -247,15 +242,7 @@ Detailed documentation is available in the `docs/` directory.
 ├── LICENSE
 ├── docs/
 └── images/
-    ├── architecture/
-    ├── hardware/
-    ├── dashboard/
-    ├── pose_detection/
-    ├── sensing/
-    ├── observatory/
-    └── performance/
 ```
-
 
 ---
 
@@ -274,7 +261,3 @@ Detailed documentation is available in the `docs/` directory.
 **Research Potential:** High
 
 ---
-
-### Citation
-
-Akshit. *Distributed WiFi CSI Human Sensing using ESP32-S3 and RuView*, 2026.
