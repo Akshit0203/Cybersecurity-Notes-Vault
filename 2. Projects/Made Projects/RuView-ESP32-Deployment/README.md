@@ -32,19 +32,19 @@ The final deployment successfully operated with two ESP32-S3 CSI sensing nodes s
 
 Detailed documentation is available in the `docs/` directory.
 
-| File | Description |
-|--------|-------------|
-| 01_Project_Overview.md | Project overview |
-| 02_Hardware_Setup.md | Hardware deployment |
-| 03_ESP32_Firmware.md | Firmware configuration |
-| 04_RuView_Backend.md | Backend deployment |
-| 05_Dashboard_and_Observatory.md | Dashboard walkthrough |
-| 06_Troubleshooting.md | Issues and fixes |
-| 07_Performance_Evaluation.md | Performance analysis |
-| 08_Future_Work.md | Future improvements |
-| 09_Results_and_Lessons_Learned.md | Final results |
-| 10_References.md | References |
-| 11_Project_Timeline.md | Development timeline |
+| File                              | Description            |
+| --------------------------------- | ---------------------- |
+| 01_Project_Overview.md            | Project overview       |
+| 02_Hardware_Setup.md              | Hardware deployment    |
+| 03_ESP32_Firmware.md              | Firmware configuration |
+| 04_RuView_Backend.md              | Backend deployment     |
+| 05_Dashboard_and_Observatory.md   | Dashboard walkthrough  |
+| 06_Troubleshooting.md             | Issues and fixes       |
+| 07_Performance_Evaluation.md      | Performance analysis   |
+| 08_Future_Work.md                 | Future improvements    |
+| 09_Results_and_Lessons_Learned.md | Final results          |
+| 10_References.md                  | References             |
+| 11_Reproduction_Guide.md          | Replication Guide      |
 
 ---
 ## System Architecture
