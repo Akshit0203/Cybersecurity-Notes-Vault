@@ -8,6 +8,24 @@ MAI APNE KAAM KO AUR INTERESTING KAISE BANA SAKTA HU ?
 Ask notebook lm to make it interesting for me 
 with audio file
 
+-----
+
+Your goal is to master penetration testing—not to be loyal to one instructor.
+
+----
+
+**if you focus on mastering your craft and doing meaningful work, success is more likely to follow**. Chasing grades, titles, or money alone may bring external success, but it doesn't necessarily bring fulfillment or lasting impact.
+
+----
+
+So let me leave you with a Rancho-style question—not one to answer quickly, but one to carry with you:
+
+> **If nobody could ever see your grades, your certificates, your LinkedIn profile, or your résumé, would you still want to learn cybersecurity?**
+
+If the answer is **yes**, you've found something powerful.
+
+If the answer is **not fully**, that's not a failure. It's an invitation to explore what aspects of cybersecurity genuinely fascinate you. The closer your daily work aligns with that genuine curiosity, the closer you'll come to the mindset that Rancho represents.
+
 ---
 
 Change your data points 
