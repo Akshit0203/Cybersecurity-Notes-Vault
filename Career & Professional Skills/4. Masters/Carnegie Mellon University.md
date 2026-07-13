@@ -31,3 +31,7 @@ Think of it like this:
 - **Carnegie Mellon University (CMU)** = whole university
 - **School of Computer Science (SCS)** = one school inside CMU
 - **Information Networking Institute (INI)** = another institute/program inside CMU Engineering
+
+----------
+
+CyberOps Certificate -- with additional courses
