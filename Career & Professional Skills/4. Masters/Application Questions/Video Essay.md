@@ -1,57 +1,4 @@
 
-How have you handled a situation where you identified and pointed out something that could be fixed or improved?
-
-This is a **behavioral interview question**. They want to see whether you:
-
-- Take initiative.
-- Notice opportunities for improvement.
-- Communicate constructively.
-- Follow through.
-- Reflect on the outcome.
-
-A good structure is **STAR**:
-
-- **Situation** – Brief context.
-- **Task** – What needed improvement.
-- **Action** – What you did.
-- **Result** – What changed.
-- **Reflection** – What you learned.
-
-For your background, one of your internships is a strong example.
-
-------
-
-This is a standard **asynchronous video interview**. The admissions committee is usually **not looking for perfect answers**—they're assessing how you think, communicate, and whether you're a good fit for CMU.
-
-## What to expect
-
-- **1 randomly selected question**
-- **30 seconds** to think
-- **Up to 3 minutes** to answer
-- **No retakes**
-- Webcam and microphone required
-- Speak **naturally**, not from a script
-
----
-
-# What they're evaluating
-
-Typically:
-
-- Communication skills
-- Clarity of thought
-- Authenticity
-- Self-awareness
-- Motivation
-- English proficiency
-- Professionalism
-
-They are **not** grading your accent.
-
-They are **not** expecting memorized speeches.
-
----
-
 # Common question categories
 
 ## 1. Tell us about yourself
@@ -206,7 +153,7 @@ Long term impact
 
 ---
 
-# A simple structure that works for almost every question
+## A simple structure that works for almost every question
 
 Think in this format:
 
@@ -224,7 +171,7 @@ Think in this format:
 
 ---
 
-# Sample questions to practice
+## Sample questions to practice
 
 Practice answering these aloud within 2–3 minutes:
 
@@ -251,7 +198,7 @@ Practice answering these aloud within 2–3 minutes:
 
 ---
 
-# Video tips
+## Video tips
 
 During the 30-second preparation time:
 
@@ -269,7 +216,7 @@ While recording:
 
 ---
 
-# Things to avoid
+## Things to avoid
 
 - Reading from notes
 - Memorized speeches
@@ -285,3 +232,70 @@ While recording:
 - Aim for **90–150 seconds** of speaking time rather than trying to fill the full 180 seconds.
 - If you make a small mistake, keep going. Recovering naturally often leaves a better impression than trying to sound perfect.
 - Focus on answering the question directly, then support it with one meaningful example. Admissions reviewers are generally more interested in how you think and communicate than in hearing a polished, rehearsed performance.
+# Spring 2027
+
+How have you handled a situation where you identified and pointed out something that could be fixed or improved?
+
+This is a **behavioral interview question**. They want to see whether you:
+
+- Take initiative.
+- Notice opportunities for improvement.
+- Communicate constructively.
+- Follow through.
+- Reflect on the outcome.
+
+A good structure is **STAR**:
+
+- **Situation** – Brief context.
+- **Task** – What needed improvement.
+- **Action** – What you did.
+- **Result** – What changed.
+- **Reflection** – What you learned.
+
+For your background, one of your internships is a strong example.
+
+------
+
+This is a standard **asynchronous video interview**. The admissions committee is usually **not looking for perfect answers**—they're assessing how you think, communicate, and whether you're a good fit for CMU.
+
+## What to expect
+
+- **1 randomly selected question**
+- **30 seconds** to think
+- **Up to 3 minutes** to answer
+- **No retakes**
+- Webcam and microphone required
+- Speak **naturally**, not from a script
+
+---
+
+## What they're evaluating
+
+Typically:
+
+- Communication skills
+- Clarity of thought
+- Authenticity
+- Self-awareness
+- Motivation
+- English proficiency
+- Professionalism
+
+They are **not** grading your accent.
+
+They are **not** expecting memorized speeches.
+
+-----
+
+During my cybersecurity internship, I noticed that some routine security assessment tasks were being performed manually. For example, information from network scans had to be collected from multiple tools and compared manually before being documented. This wasn't a major problem, but it made the process slower and increased the chance of missing details.
+
+I suggested creating a simple workflow to standardize how scan results were collected and organized. Instead of changing the technical process itself, I focused on improving consistency by organizing outputs in a structured format and documenting the steps clearly. Before proposing it, I tested the approach on a few systems to make sure it was practical.
+
+After discussing it with my mentor, we incorporated parts of that workflow into our daily assessments. It reduced repetitive work and made it easier for team members to review findings and prepare reports.
+
+That experience taught me that improving a process doesn't always require a big innovation. Sometimes carefully observing how people work, understanding their challenges, and suggesting practical improvements can make a meaningful difference. Since then, I've tried to approach projects with the mindset of continuously looking for ways to make systems and workflows more efficient.
+
+-----
+
+
+
