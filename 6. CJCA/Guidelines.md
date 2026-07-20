@@ -1,4 +1,21 @@
 
+
+On HTB Academy, the **estimated time** shown for each module is based on **active study time**, not calendar days.
+
+| HTB Estimate | Approximate Hours |
+| ------------ | ----------------- |
+| 2h           | ~2 hours          |
+| 5h           | ~5 hours          |
+| 6h           | ~6 hours          |
+| 7h           | ~7 hours          |
+| **1d**       | **~8 hours**      |
+| **2d**       | **~16 hours**     |
+| **3d**       | **~24 hours**     |
+| **4d**       | **~32 hours**     |
+| **7d**       | **~56 hours**     |
+
+-----------
+
 The `Tier` of a module does not reflect its `difficulty`.
 
 **Note:** If you have an annual subscription, then included modules will cost you 0 cubes, while still giving you back their reward.
@@ -46,4 +63,10 @@ If you have already running VPN files, use `sudo killall openvpn` to kill them.
 Once you see `Initialization Sequence Completed` you are ready to go, **do not close the terminal tab** as this will kill your connection, open a new tab and start working from it.
 
 [![](https://downloads.intercomcdn.com/i/o/1044983046/5841a76f951c9e1ce745d821/image.png?expires=1754991900&signature=d9f164396936f87299abf6b16db4094b9cfa8560988b3c475531ecf93e3ac334&req=dSAjEsB2noFbX%2FMW1HO4zQxat%2BhKUtvkbo3tx1B2O%2BMAbNRZ6ILlu4Q1yxot%0A%2B2fO42iC6KAWMeh7Urs%3D%0A)](https://downloads.intercomcdn.com/i/o/1044983046/5841a76f951c9e1ce745d821/image.png?expires=1754991900&signature=d9f164396936f87299abf6b16db4094b9cfa8560988b3c475531ecf93e3ac334&req=dSAjEsB2noFbX%2FMW1HO4zQxat%2BhKUtvkbo3tx1B2O%2BMAbNRZ6ILlu4Q1yxot%0A%2B2fO42iC6KAWMeh7Urs%3D%0A)
+
+--------
+
+
+
+
 
