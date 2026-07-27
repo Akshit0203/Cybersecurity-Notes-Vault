@@ -1,4 +1,4 @@
-![image1](../../../../TryHackMe/attachments/207c6e2f22d84a409780e2848aed143f.png)
+![image1](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/207c6e2f22d84a409780e2848aed143f.png)
 
 DNS Record Types
 
@@ -39,43 +39,43 @@ This is used for submitting data to a web server to update information
 DELETE Request
 
 This is used for deleting information/records from a web server.
-![image2](../../../../TryHackMe/attachments/4568901182eb46d1a99360083646ec17.png)
+![image2](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/4568901182eb46d1a99360083646ec17.png)
 
-![image3](../../../../TryHackMe/attachments/ce93b308cc824f398251fe7e8ca91bd9.png)
+![image3](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/ce93b308cc824f398251fe7e8ca91bd9.png)
 
-![image4](../../../../TryHackMe/attachments/95dc3530ef454b1d91b6d0f48a587961.png)
+![image4](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/95dc3530ef454b1d91b6d0f48a587961.png)
 
-![image5](../../../../TryHackMe/attachments/01d435cc59c8485da13b792df900da96.png)
+![image5](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/01d435cc59c8485da13b792df900da96.png)
 
-![image6](../../../../TryHackMe/attachments/088687e35a8f41f3a18ecf9f4726cb59.png)
+![image6](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/088687e35a8f41f3a18ecf9f4726cb59.png)
 
-![image7](../../../../TryHackMe/attachments/08ca95a0690348a5bb119d4f517aeb3c.png)
+![image7](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/08ca95a0690348a5bb119d4f517aeb3c.png)
 
-![image8](../../../../TryHackMe/attachments/8bdbfd528f8a4d3094ea02b5f14d474d.png)
+![image8](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/8bdbfd528f8a4d3094ea02b5f14d474d.png)
 
-![image9](../../../../TryHackMe/attachments/7bf585ff623944aa9ba6b7eaf094625c.png)
+![image9](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/7bf585ff623944aa9ba6b7eaf094625c.png)
 
-![image10](../../../../TryHackMe/attachments/7a5982cc72b74600bcb5e744cf5e2ba7.png)
+![image10](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/7a5982cc72b74600bcb5e744cf5e2ba7.png)
 
-![image11](../../../../TryHackMe/attachments/db46a1cb423b47158b50412c8c6db35f.png)
+![image11](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/db46a1cb423b47158b50412c8c6db35f.png)
 
-![image12](../../../../TryHackMe/attachments/a8be43a332d64c6288f5094d2a0871f2.png)
+![image12](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/a8be43a332d64c6288f5094d2a0871f2.png)
 
-![image13](../../../../TryHackMe/attachments/9d00a4b26fc74c6f870e428beffab017.png)
+![image13](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/9d00a4b26fc74c6f870e428beffab017.png)
 
-![image14](../../../../TryHackMe/attachments/283b0ed4b74d4f5ca840533f79e503be.png)
+![image14](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/283b0ed4b74d4f5ca840533f79e503be.png)
 
-![image15](../../../../TryHackMe/attachments/20553b2a3dac42cf99fc3b85e9851680.png)
+![image15](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/20553b2a3dac42cf99fc3b85e9851680.png)
 
-![image16](../../../../TryHackMe/attachments/8bc1d187e76a47ca853127776bc9e26b.png)
+![image16](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/8bc1d187e76a47ca853127776bc9e26b.png)
 
-![image17](../../../../TryHackMe/attachments/f2bd1113736e431da9f11b2bd6356ee6.png)
+![image17](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/f2bd1113736e431da9f11b2bd6356ee6.png)
 
-![image18](../../../../TryHackMe/attachments/eb34cfcad13e4540a1d859fb2e83315d.png)
+![image18](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/eb34cfcad13e4540a1d859fb2e83315d.png)
 
-![image19](../../../../TryHackMe/attachments/8a7beb98ec334a35aaafed4d891f0725.png)
+![image19](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/8a7beb98ec334a35aaafed4d891f0725.png)
 
-![image20](../../../../TryHackMe/attachments/09a964e1e03341cca660cbd3eef38658.png)
+![image20](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/09a964e1e03341cca660cbd3eef38658.png)
 
-![image21](../../../../TryHackMe/attachments/87af7767e83b47819e58b02de983b196.png)
+![image21](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/87af7767e83b47819e58b02de983b196.png)
 

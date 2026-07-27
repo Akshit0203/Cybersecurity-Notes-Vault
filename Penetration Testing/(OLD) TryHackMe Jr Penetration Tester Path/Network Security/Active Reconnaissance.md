@@ -1,42 +1,42 @@
-![image1](../../../TryHackMe/attachments/0770eb3d062b4dd1b076b1ef76fdc5ed.png)
+![image1](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/0770eb3d062b4dd1b076b1ef76fdc5ed.png)
 
-![image2](../../../TryHackMe/attachments/b7a0350c505449aa92971eff5e018a84.png)
+![image2](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/b7a0350c505449aa92971eff5e018a84.png)
 
-![image3](../../../TryHackMe/attachments/5d79ffe3f1fd4159834f115d8a49c4bc.png)
+![image3](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/5d79ffe3f1fd4159834f115d8a49c4bc.png)
 
-![image4](../../../TryHackMe/attachments/5333bd53e5084c57aa94ad22f26444d5.png)
+![image4](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/5333bd53e5084c57aa94ad22f26444d5.png)
 
-![image5](../../../TryHackMe/attachments/e924dbf930ef44c5a30a51d935bd42c6.png)
+![image5](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/e924dbf930ef44c5a30a51d935bd42c6.png)
 
-![image6](../../../TryHackMe/attachments/a69a052177c54fb5a8bb0c3c827cdf0d.png)
+![image6](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/a69a052177c54fb5a8bb0c3c827cdf0d.png)
 
-![image7](../../../TryHackMe/attachments/f284b1c0f94a463c8e76e611a41252dd.png)
+![image7](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/f284b1c0f94a463c8e76e611a41252dd.png)
 
-![image8](../../../TryHackMe/attachments/8ed18a3b6d714fed896b2e078a641441.png)
+![image8](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/8ed18a3b6d714fed896b2e078a641441.png)
 
-![image9](../../../TryHackMe/attachments/d9d855136f39434ca015aef9cc603bab.png)
+![image9](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/d9d855136f39434ca015aef9cc603bab.png)
 
-![image10](../../../TryHackMe/attachments/7287b5c8e6c54c8d839151b16738ca3f.png)
+![image10](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/7287b5c8e6c54c8d839151b16738ca3f.png)
 
-![image11](../../../TryHackMe/attachments/59d6d25c96aa4026a055c99742893d5f.png)
+![image11](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/59d6d25c96aa4026a055c99742893d5f.png)
 
-![image12](../../../TryHackMe/attachments/626d19a3cbea4c31aefe644ec4071c8b.png)
+![image12](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/626d19a3cbea4c31aefe644ec4071c8b.png)
 
-![image13](../../../TryHackMe/attachments/74e36e58c958467c9d221dc3bbb62ee2.png)
+![image13](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/74e36e58c958467c9d221dc3bbb62ee2.png)
 
-![image14](../../../TryHackMe/attachments/17dc918824e0445daef6490ceab2fce5.png)
+![image14](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/17dc918824e0445daef6490ceab2fce5.png)
 
-![image15](../../../TryHackMe/attachments/da2a425b7bff4351aa4f89a933ca9094.png)
+![image15](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/da2a425b7bff4351aa4f89a933ca9094.png)
 
-![image16](../../../TryHackMe/attachments/7bc36e92cfc947339eae9260d3fb7786.png)
+![image16](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/7bc36e92cfc947339eae9260d3fb7786.png)
 
-![image17](../../../TryHackMe/attachments/a5e13f56fad4453680d564770bf3c33e.png)
+![image17](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/a5e13f56fad4453680d564770bf3c33e.png)
 
-![image18](../../../TryHackMe/attachments/f316818098be447ab06531f7c5ec7547.png)
+![image18](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/f316818098be447ab06531f7c5ec7547.png)
 
-![image19](../../../TryHackMe/attachments/96006d9cdd154cceb01b17452a8e3fab.png)
+![image19](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/96006d9cdd154cceb01b17452a8e3fab.png)
 
-![image20](../../../TryHackMe/attachments/8ef8118afde64096a50a3ecb6ebf7c84.png)
+![image20](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/8ef8118afde64096a50a3ecb6ebf7c84.png)
 
-![image21](../../../TryHackMe/attachments/2d50d865b4364153bad49dd926793aa6.png)
+![image21](../../../5.%20CTF%20&%20Labs/TryHackMe/attachments/2d50d865b4364153bad49dd926793aa6.png)
 
