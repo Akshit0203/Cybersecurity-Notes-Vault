@@ -14,6 +14,24 @@ A `section` is the smallest building block in the HTB Academy structure. Each 
 For example, in this `Intro to Academy` module, this `Sections` section discusses sections!
 
 **Tip:** You can estimate how long a path will take to complete by checking the duration mentioned underneath the path's title. This represents the sum of the `estimated time for completion` of each module in the path "in 8-hour work days".
+
+-----
+
+On HTB Academy, the **estimated time** shown for each module is based on **active study time**, not calendar days.
+
+| HTB Estimate | Approximate Hours |
+| ------------ | ----------------- |
+| 2h           | ~2 hours          |
+| 5h           | ~5 hours          |
+| 6h           | ~6 hours          |
+| 7h           | ~7 hours          |
+| **1d**       | **~8 hours**      |
+| **2d**       | **~16 hours**     |
+| **3d**       | **~24 hours**     |
+| **4d**       | **~32 hours**     |
+| **7d**       | **~56 hours**     |
+
+-----
 ## Types of Sections
 
 There are two types of sections: `Theory Sections` and `Interactive Sections`.
