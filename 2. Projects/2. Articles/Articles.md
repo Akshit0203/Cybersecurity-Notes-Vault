@@ -14,3 +14,18 @@ https://medium.com/@60noypearl/hacking-the-hackers-tool-pwning-flipper-zero-s-le
 
 ----
 
+Automated Penetration Testing with Claude AI
+https://www.hackingarticles.in/automating-penetration-testing-with-claude-ai/
+
+-------
+
+BloodHound MCP: Automating Active Directory Analysis with AI
+https://www.hackingarticles.in/bloodhound-mcp-automating-active-directory-analysis-with-ai/
+
+------
+
+Ai security articles
+https://www.hackingarticles.in/category/ai/
+
+-------
+
