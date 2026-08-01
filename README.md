@@ -1,12 +1,18 @@
+<div align="center">
+
 # 📘 Obsidian Notes Vault 
 [![GitHub stars](https://img.shields.io/github/stars/Akshit0203/Notes_Vault?style=for-the-badge)](../../stargazers) [![GitHub forks](https://img.shields.io/github/forks/Akshit0203/Notes_Vault?style=for-the-badge)](../../network) [![License](https://img.shields.io/github/license/Akshit0203/Notes_Vault?style=for-the-badge)](LICENSE)
+
+</div>
+
+---
 
 This repository contains my personal learning notes created inside Obsidian, covering cybersecurity, networking, programming, cloud concepts, and other technical subjects.
 
 All notes are written while practicing real labs, hands-on exercises, CTF-style learning, and certification preparation.
 
 > This repo serves as a personal knowledge base and revision resource.
-> It may also help beginners explore structured learning materials.
+> It may also help to explore structured learning materials.
 
 ---
 
@@ -21,3 +27,11 @@ All notes are written while practicing real labs, hands-on exercises, CTF-style 
 📩 Connect
 
 LinkedIn: https://linkedin.com/in/akshit023/
+
+---
+
+<div align="center">
+
+⭐ If you find this repository useful, consider giving it a star!
+
+</div>
