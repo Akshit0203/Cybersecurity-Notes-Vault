@@ -22,15 +22,5 @@ https://www.hackingarticles.in/automating-penetration-testing-with-claude-ai/
 BloodHound MCP: Automating Active Directory Analysis with AI
 https://www.hackingarticles.in/bloodhound-mcp-automating-active-directory-analysis-with-ai/
 
-------
-
-Ai security articles
-https://www.hackingarticles.in/category/ai/
-
--------
-
-Applied AI For Security Engineering
-https://labs.secengai.com/
-
 -------
 
