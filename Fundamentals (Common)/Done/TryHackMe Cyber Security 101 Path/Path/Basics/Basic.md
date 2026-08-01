@@ -1,6 +1,6 @@
-![image1](../../../../../2.%20CTF%20&%20Labs/TryHackMe/attachments/74f8e29d02184f9087bfd922c13cee35.png)
+![image1](../../../../../2.1%20CTF%20&%20Labs/TryHackMe/attachments/74f8e29d02184f9087bfd922c13cee35.png)
 
-![image2](../../../../../2.%20CTF%20&%20Labs/TryHackMe/attachments/f84536f1430b47b2b69025c7f816ee03.png)
+![image2](../../../../../2.1%20CTF%20&%20Labs/TryHackMe/attachments/f84536f1430b47b2b69025c7f816ee03.png)
 
-![image3](../../../../../2.%20CTF%20&%20Labs/TryHackMe/attachments/bf0513b40a194dc39a416fbdf31fee86.png)
+![image3](../../../../../2.1%20CTF%20&%20Labs/TryHackMe/attachments/bf0513b40a194dc39a416fbdf31fee86.png)
 
