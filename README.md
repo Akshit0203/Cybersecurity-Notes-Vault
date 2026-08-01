@@ -7,6 +7,8 @@
 
 ---
 
+# About
+
 This repository contains my personal learning notes created inside Obsidian, covering cybersecurity, networking, programming, cloud concepts, and other technical subjects.
 
 All notes are written while practicing real labs, hands-on exercises, CTF-style learning, and certification preparation.
@@ -16,7 +18,7 @@ All notes are written while practicing real labs, hands-on exercises, CTF-style 
 
 ---
 
-🚀 About This Vault
+# Features
 - Contains notes from Labs, security courses & projects
 - Includes attachments such as diagrams, screenshots, and reference visuals
 - Synced via Obsidian + Git Desktop for version control
