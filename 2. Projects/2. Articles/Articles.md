@@ -29,3 +29,8 @@ https://www.hackingarticles.in/category/ai/
 
 -------
 
+Applied AI For Security Engineering
+https://labs.secengai.com/
+
+-------
+
