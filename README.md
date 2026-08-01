@@ -1,7 +1,7 @@
 <div align="center">
 
 # 📘 Obsidian Notes Vault 
-[![GitHub stars](https://img.shields.io/github/stars/Akshit0203/Notes_Vault?style=for-the-badge)](../../stargazers) [![GitHub forks](https://img.shields.io/github/forks/Akshit0203/Notes_Vault?style=for-the-badge)](../../network) [![License](https://img.shields.io/github/license/Akshit0203/Notes_Vault?style=for-the-badge)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/Akshit0203/Notes_Vault?style=for-the-badge)](../../stargazers) [![GitHub forks](https://img.shields.io/github/forks/Akshit0203/Notes_Vault?style=for-the-badge)](../../network)
 
 </div>
 
