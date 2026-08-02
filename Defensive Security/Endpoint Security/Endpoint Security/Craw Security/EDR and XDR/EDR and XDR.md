@@ -1,2 +1,0 @@
-[edr vs xdr vs siem vs soar.pdf](../../../attachments/9057477522b140b5bb2b33f4edbba15d.pdf)
-![image1](../../../attachments/0301112356314d2cb4d9e6997b07e5d2.png)![image2](../../../attachments/89f8975ab1ed4df892b58f408a0c91ef.png)![image3](../../../attachments/7fe66383e7734102b018fed29e632d75.png)![image4](../../../attachments/24c2055beedd44b9a8d8b9c7273ebecb.png)![image5](../../../attachments/23aa6ff01e8e4de182279302344fca4e.png)![image6](../../../attachments/8027559753b840619a9fd3042a9e53c7.png)
