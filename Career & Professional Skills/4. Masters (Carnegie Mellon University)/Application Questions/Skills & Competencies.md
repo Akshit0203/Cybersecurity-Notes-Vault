@@ -13,9 +13,9 @@
 
 ![](attachments/Pasted%20image%2020260715112739.png)
 
-![146](./attachments/Screenshot%202026-06-30%20232345.png)
+![146](attachments/Screenshot%202026-06-30%20232345.png)
 
-![518](./attachments/Screenshot%202026-06-30%20232659.png)
+![518](attachments/Screenshot%202026-06-30%20232659.png)
 
-![](./attachments/Screenshot%202026-06-30%20233503.png)
+![](attachments/Screenshot%202026-06-30%20233503.png)
 

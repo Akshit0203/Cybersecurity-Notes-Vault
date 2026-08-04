@@ -37,13 +37,13 @@ It’s a glimpse into the future of warfare, surveillance, and human detection.
 
 ---
 
-![](../../Career%20&%20Professional%20Skills/6.%20Public%20Speaking/attachments/image-2.png)
+![](../../Career%20&%20Professional%20Skills/5.%20Public%20Speaking/attachments/image-2.png)
 
-![](../../Career%20&%20Professional%20Skills/6.%20Public%20Speaking/attachments/image-3.png)
+![](../../Career%20&%20Professional%20Skills/5.%20Public%20Speaking/attachments/image-3.png)
 
-![](../../Career%20&%20Professional%20Skills/6.%20Public%20Speaking/attachments/image-4.png)
-![](../../Career%20&%20Professional%20Skills/6.%20Public%20Speaking/attachments/image-5.png)
+![](../../Career%20&%20Professional%20Skills/5.%20Public%20Speaking/attachments/image-4.png)
+![](../../Career%20&%20Professional%20Skills/5.%20Public%20Speaking/attachments/image-5.png)
 
-![](../../Career%20&%20Professional%20Skills/6.%20Public%20Speaking/attachments/image-6.png)
+![](../../Career%20&%20Professional%20Skills/5.%20Public%20Speaking/attachments/image-6.png)
 
 
