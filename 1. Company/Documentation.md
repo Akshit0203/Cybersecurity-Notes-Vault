@@ -20,6 +20,18 @@
 17. Financial Model
 18. Term Sheet (if funded)
 
+------
+
+use only a local ca for pvt ltd registration 
+
+not any online platform 
+
+https://www.reddit.com/r/StartUpIndia/comments/1vsjh9e/how_long_did_your_pvt_ltd_registration_actually/
+
+https://www.reddit.com/r/StartUpIndia/comments/1o3l968/the_real_cost_of_that_6999_company_registration/
+
+-------
+
 
 
 
