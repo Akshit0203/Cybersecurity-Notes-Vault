@@ -43,6 +43,8 @@ Enable password less privilege escalation
 4.  Then you extract it and copy it to C:\Windows\System32\spp\tokens\skus (The local you open at step 2)
 5.  You open cmd (run as administrator)
 6.  Then you copy and paste these codes:
+
+```
 cscript.exe %windir%\system32\slmgr.vbs /rilc
 cscript.exe %windir%\system32\slmgr.vbs /upk \>nul 2\>&1
 cscript.exe %windir%\system32\slmgr.vbs /ckms \>nul 2\>&1
@@ -52,6 +54,7 @@ sc config LicenseManager start= auto & net start LicenseManager
 sc config wuauserv start= auto & net start wuauserv
 clipup -v -o -altto c:\\
 Echo
+```
 
 **Install custom kali by zsecurity (wifi pentesting)**
 1.  download (<https://zsecurity.org/download-custom-kali/>)
@@ -122,7 +125,9 @@ Search for : realtek rtl8812au driver windows 11
 <https://www.realtek.com/Download/List?cate_id=660&menu_id=297>
 Deleted this registry key
 
+```
 HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\\3d09c1ca-2bcc-40b7-b9bb-3f3ec143a87b}
+```
 
 And then I removed the "vmware bridge protocol" element from main network adapter.
 Afterwards you can add or remove network adapters and they work correctly, (or leave them by default or reinstall vmware, everything works)
@@ -134,7 +139,6 @@ And install certificate manually
 download from official website 
 root :: redhat
 admin :: redhat
-
 
 **Step-by-Step Recovery After Deleting HP Registry Keys**
 1. Try System Restore Right Now**
