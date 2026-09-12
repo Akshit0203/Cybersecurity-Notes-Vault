@@ -1,4 +1,11 @@
 
+-------
+
+Record outcomes not just the work you did
+Record the results
+How did you help scale(monetary)/secure(preventing monitory loss) the company 
+
+-------
 ## Day 1 at a New Job
 
 > Take notes — you won't remember everything.
