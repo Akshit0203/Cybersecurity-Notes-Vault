@@ -114,6 +114,37 @@ dir z:
 here , "randomname" is just a random name given , and can give any username and password 
 "." here is work in the current directory
 authentication required as some servers so not accept without auth
+# <span style="color:rgb(11, 142, 224)">Port Forwarding </span>
+
+after gaining initial access , to discover more devices on same network use nmap to scan
+download from : (on kali attacker machine)
+```
+https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/x86_64/nmap
+```
+transfer to victim machine , then run : 
+```
+./nmap -sn <victim ip>/24     # /24 since only last octet is changing in subnet
+```
+remove first (gateway) and last ip (broadcast)
+now check which machine you can access now 
+```
+./nmap -p0-100 -vv <different left ips>
+```
+to do local port forwarding :
+```
+ssh -L <my which attacker local port>:<final target ip>:<final target port> root@<through which ip> -i id_rsa -fN 
+
+localhost:8000      # now everything visible on this 
+127.0.0.1:8000
+```
+to do remote port forwarding :
+```
+
+```
+to do dynamic port forwarding :
+```
+
+```
 
 # <span style="color:rgb(11, 142, 224)">Linux Privilege Escalation</span>
 
