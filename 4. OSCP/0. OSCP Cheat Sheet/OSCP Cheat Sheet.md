@@ -183,7 +183,7 @@ chisel.exe client <KALI_IP>:8000 R:<SOCKS_PORT>:socks
 
 # <span style="color:rgb(11, 142, 224)">Linux Privilege Escalation</span>
 
-
+to see which all i can run as root 
 ```
 sudo -l 
 ```
