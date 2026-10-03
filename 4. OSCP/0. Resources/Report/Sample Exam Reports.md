@@ -1,2 +1,2 @@
 
-![](../attachments/OSCP-Exam-Report.pdf)
+![](../../0.%20Resources/attachments/OSCP-Exam-Report.pdf)

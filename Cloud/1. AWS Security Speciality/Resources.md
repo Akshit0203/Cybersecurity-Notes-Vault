@@ -1,2 +1,0 @@
-
-Cantrill security speciality course

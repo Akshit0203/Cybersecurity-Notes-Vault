@@ -64,5 +64,18 @@ Instead:
 ---
 
 
+1- never forget recon, whether its nmap, (also make sure to check every service), zone transfers, directory, subdomains, vhost fuzzing.
+
+2- remember, do recon of every new host u discover or get a shell. Check eveythinggggggggggg.. every port, every service, every suspicious directory.
+
+3- most of us get stumble when seeing huge output whether its a code, or a recon tool output, make use of AI for this, chatgpt, cluade, etc .
+
+4- make sure of all the tool in hackthebox cpts course, don't forget even one tool, eveyone of them has a use. Make use of automate tool.
+
+5- for windows host, follow the active directory enemuration module and windows privilege escalation.. make use of notes for this, u don't have to look whole topic in detail again and again (brain will fry up)...
+
+6- i can't say much about the pentesting, but please do the recon correctly, it is the basis of exploiting/enemurating thr service or the host... U need to find the code, credentials or service thats outdated, and use the tools(auto and manual, mostly auto) that u have learned in htb academy
+
+--------------
 
 
