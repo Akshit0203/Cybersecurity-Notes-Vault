@@ -26,6 +26,7 @@ ls -l /usr/share/nmap/scripts | grep -e "mongodb"
 
 nmap --script-help=mongodb-databases.nse
 ```
+
 ![Pasted image 20250729191814.png](attachments/Pasted%20image%2020250729191814.png)
 to get information about a script
 

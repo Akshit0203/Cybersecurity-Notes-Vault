@@ -73,7 +73,9 @@ to slow down or speed up the scan
 
 ### Scan speed
 
+```
 Options which take <time> are in seconds, or append 'ms' (milliseconds), s' (seconds), 'm' (minutes), or 'h' (hours) to the value (e.g 30m).
+```
 
 -T<0-5>: Set timing template (higher is faster)
 -T0 (paranoid)
@@ -85,9 +87,11 @@ Options which take <time> are in seconds, or append 'ms' (milliseconds), s' (sec
 
 ### host timeout
 
+```
 --host-timeout <time>: Give up on target after this long
 ```
 └─# nmap -sS -sV -F --host-timeout 5s demo.ine.local
+```
 
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-08-02 17:56 IST
 Nmap scan report for demo.ine.local (10.5.20.61)
@@ -98,7 +102,9 @@ Nmap done: 1 IP address (1 host up) scanned in 6.27 seconds
 ```
 ### Scan delay 
 
+```
 --scan-delay/--max-scan-delay <time>: Adjust delay between probes
+```
 
 ```
 nmap -sS -sV -F --scan-delay 15s demo.ine.local
@@ -148,16 +154,11 @@ our other workspace will remain empty
 ```
 nmap -Pn -sS -F -T4 demo.ine.local -oG nmap_grep.txt
 ```
+
 ![Pasted image 20250802211104.png](attachments/Pasted%20image%2020250802211104.png)
 
-
-
 '-oA' - Output in the three major formats at once (oN,oX,oG)
-
-
 '-v' Increase verbosity level (use -vv or more for greater effect)
-
-
 '--reason' Display the reason a port is in a particular state
 
 
