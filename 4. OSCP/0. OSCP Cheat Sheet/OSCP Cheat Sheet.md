@@ -2680,9 +2680,9 @@ Import-Module .\DruvaPE.ps1
 ```
 we get a reverse shel back as nt authority\system 
 
-# <span style="color:rgb(11, 142, 224)">Active Directory</span>
+# ==🔵Active Directory==
 
-#### <span style="color:rgb(11, 142, 224)">Methodology : </span>
+#### ==🟡Methodology : ==
 
 AD -> use nxc to find shares, winrm, rdp rights. Get a foothold and set up ligolo. Run bloodhound, check for any outgoing rights, kerberoast, asrep roast, look for sus files that may contain credentials. If nothing, try windows priv esc, if nothing look at other services, maybe a FTP, MSSQL, MySQL or something and see if theres any low hanging fruits. Rinse and repeat till youre DC.
 
@@ -2690,7 +2690,7 @@ AD -> use nxc to find shares, winrm, rdp rights. Get a foothold and set up ligol
 1. Ligolo-ng for pivoting and port forwarding, super good
 2. nxc >>> crackmapexec. The wiki is super good, I reckon you could do 90% of boxes if you use nxc well.
 3. bloodhound -> so useful for AD, cant do anything without it
-###### <span style="color:rgb(11, 142, 224)">To connect to RDP : </span>
+###### ==🔵To connect to RDP :==
 
 In username type :
 ```
@@ -2711,7 +2711,7 @@ xfreerdp /v:10.48.143.132 /u:user /cert:ignore /sec:rdp /size:1280x720 /smart-si
 ```
 Enter the password when prompted.
 
-### <span style="color:rgb(11, 142, 224)">Authentication</span> 
+### ==🟢Authentication==
 
 ##### <span style="color:rgb(11, 142, 224)">Responder - LLMNR/NBT-NS/mDNS Poisoner and Rogue Authentication Servers</span>
 
@@ -2746,7 +2746,7 @@ Then show the recovered password:
 john --show --format=krb5tgs hash.txt
 ```
 
-### <span style="color:rgb(11, 142, 224)">Breaching : </span>
+### ==🟢Breaching :==
 
 ##### NTLM and NetNTLM Authenticated Services : 
 
@@ -2870,6 +2870,144 @@ https://github.com/funoverip/mcafee-sitelist-pwd-decryption
 python3 mcafee_sitelist_pwd_decrypt.py <AUTH PASSWD VALUE>
 ```
 
+### ==🟢Enumeration==
+
+##### ==🔵Runas (login to network)==
+```
+runas.exe /netonly /user:<domain>\<username> cmd.exe
+```
+##### ==🔵Enumerate contents of SYSVOL since there may be some additional AD credentials lurking there.==
+```
+dir \\za.tryhackme.com\SYSVOL\
+```
+
+##### ==🔵Task manager : ==
+1. go to task manager 
+2. click on more details 
+3. click on users
+here will find which all additional users are logged into this machine 
+
+##### ==🔵Microsoft Management Console (GUI/RDP  access required)==
+
+steps to install the Snap-Ins: (skip this step if mmc opens directly in the next step)
+1. Press **Start**
+2. Search **"Apps & Features"** and press enter
+3. Click **Manage Optional Features**
+4. Click **Add a feature**
+5. Search for **"RSAT"**
+6. Select "**RSAT: Active Directory Domain Services and Lightweight Directory Tools"** and click **Install**
+
+now You can start MMC by using the Windows Start/search button, searching run, and typing in MMC
+now to enumerate AD we need to add snap-ins
+In MMC, we can now attach the AD RSAT Snap-In:
+1. Click **File** -> **Add/Remove Snap-in**
+2. Select and **Add** all three Active Directory Snap-ins
+3. Click ok / through any errors and warnings  
+4. Right-click on **Active Directory Domains and Trusts** and select **Change Forest**
+5. Enter _za.tryhackme.com_ as the **Root domain** and Click **OK**
+6. Right-click on **Active Directory Sites and Services** and select **Change Forest**
+7. Enter _za.tryhackme.com_ as the **Root domain** and Click OK
+8. Right-click on **Active Directory Users and Computers** and select **Change Domain**
+9. Enter _za.tryhackme.com_ as the **Domain** and Click **OK**
+10. Right-click on **Active Directory Users and Computers** in the left-hand pane  
+11. Click on **View** -> **Advanced Features**
+
+Expand active directory users and computers
+then expand the domain name
+
+expand the People directory
+
+Clicking on any of these users will allow us to review all of their properties and attributes. We can also see what groups they are a member of:
+
+We can also use MMC to find hosts in the environment. If we click on either Servers or Workstations, the list of domain-joined machines will be displayed.
+
+If we had the relevant permissions, we could also use MMC to directly make changes to AD, such as changing the user's password or adding an account to a specific group.
+
+##### ==🔵Command Prompt==
+
+###### Users
+
+list all users in the AD domain
+```
+net user /domain
+```
+
+enumerate more detailed information about a single user account:
+```
+net user <username> /domain
+```
+
+###### Groups
+
+enumerate the groups of the domain
+```
+net group /domain
+```
+
+enumerate more details such as membership(users in a group) to a group : 
+```
+net group "group name" /domain
+```
+
+###### Password Policy
+
+enumerate the password policy of the domain : 
+```
+net accounts /domain
+```
+
+###### Benefits & Drawbacks : 
+- No additional or external tooling is required, and these simple commands are often not monitored for by the Blue team.
+- We do not need a GUI to do this enumeration.
+- VBScript and other macro languages that are often used for phishing payloads support these commands natively so they can be used to enumerate initial information regarding the AD domain before more specific payloads are crafted.
+
+Drawbacks : 
+- The `net` commands must be executed from a domain-joined machine. If the machine is not domain-joined, it will default to the WORKGROUP domain.
+- The `net` commands may not show all information. For example, if a user is a member of more than ten groups, not all of these groups will be shown in the output.
+
+##### ==🔵PowerShell==
+
+switch to power shell first
+```
+powershell
+```
+###### Users
+
+ enumerate AD users:
+ ```
+ Get-ADUser -Identity <account name> -Server za.tryhackme.com -Properties *
+ ```
+
+we can also use the `-Filter` parameter that allows more control over enumeration and use the `Format-Table` cmdlet to display the results neatly:
+```
+Get-ADUser -Filter 'Name -like "*stevens"' -Server za.tryhackme.com | Format-Table Name,SamAccountName -A
+```
+###### Groups
+
+enumerate AD groups: 
+```
+Get-ADGroup -Identity Administrators -Server za.tryhackme.com
+```
+
+enumerate group membership : 
+```
+Get-ADGroupMember -Identity Administrators -Server za.tryhackme.com
+```
+###### AD Objects
+
+## Highlight colors
+
+Bring color to your notes with six highlight colors.
+- Add a color emoji (🔴, 🟠, 🟡, 🟢, 🔵, 🟣) at the start of a highlight, or choose a color from the formatting menu.
+- Typing `==` in the editor now suggests highlight colors.
+- Live Preview: When the cursor overlaps a highlight, an inline swatch now appears. Click it to quickly change the highlight color.
+
+
+###### Domains
+
+
+
+###### Altering AD Objects
 
 
 

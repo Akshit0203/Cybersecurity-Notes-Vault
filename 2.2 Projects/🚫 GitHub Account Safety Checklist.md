@@ -5,6 +5,22 @@
 1. Open a support ticket (follow up on single one only dont open multiple tickets) ; Follow up promptly in the same original ticket
 2. tweet it : at @github or @githubhelp ; delete the tweet Link with ticket numbers
 3. Check sub gitub subreddit ; delete reddit comment on pinned post [Link](https://www.reddit.com/r/github/comments/1er6iwo/was_your_account_suspended_deleted_or/?sort=new)
+
+Reddit comment : 
+```
+Username: xxxxxx  
+Ticket ID: #xxxx
+
+My account was flagged on September 21, 2026, with no email or stated reason. I can still log in, but my public profile is hidden/returns 404 to others, and Code Search shows:
+
+“Your user account has been flagged, and cannot search code.”
+
+I submitted an appeal through the official GitHub Support form, but I haven't received a further human response. The ticket is still **Open as of October 5**, with no update.
+
+I use GitHub for professional software development, cybersecurity projects, research, authorized CTFs/labs, and technical documentation. I have also enabled 2FA and reviewed my account security activity.
+
+Would really appreciate a manual review if any GitHub staff see this. Thank you.
+```
 ##### <span style="color:rgb(255, 0, 0)">Personal Checklist : </span>
 1. Don't put a lot of commits in a single day
 2. Don't use the GitHub copilot ai or github actions Inside GitHub
