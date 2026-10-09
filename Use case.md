@@ -23,6 +23,13 @@ list
 
 different levels of headings using space after hashtags count
 
+## Highlight colors
+
+Bring color to your notes with six highlight colors.
+- Add a color emoji (🔴, 🟠, 🟡, 🟢, 🔵, 🟣) at the start of a highlight, or choose a color from the formatting menu.
+- Typing `==` in the editor now suggests highlight colors.
+- Live Preview: When the cursor overlaps a highlight, an inline swatch now appears. Click it to quickly change the highlight color.
+
 # heading 1
 
 goes up to level 6 
