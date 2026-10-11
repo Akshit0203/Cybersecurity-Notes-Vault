@@ -1,0 +1,34 @@
+# --- GPS-SDR-SIM build & generated artifacts ---
+gps-sdr-sim/
+gps-sdr-sim
+gpssim.bin
+*.bin
+!data/**/*.bin
+
+# --- Downloaded / decompressed ephemeris (keep the sample in data/ephemeris) ---
+*.gz
+brdc*.*n
+brdc*.*g
+!data/ephemeris/brdc3190.25n
+
+# --- Compiled objects ---
+*.o
+*.out
+*.exe
+
+# --- OS / editor cruft ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+.vscode/
+.idea/
+
+# --- Python (if used for tooling) ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# --- Logs ---
+*.log

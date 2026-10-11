@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you reference this work, please cite it as below."
+title: "GPS Spoofing & Aviation Security Research (SDR / HackRF One)"
+abstract: >-
+  A controlled, RF-isolated demonstration of GNSS (GPS) spoofing against
+  aviation-grade navigation using a Software-Defined Radio (HackRF One) and
+  GPS-SDR-SIM, with NASA CDDIS broadcast ephemeris, analyzing aviation security
+  risks and GNSS anti-spoofing countermeasures.
+type: software
+authors:
+  - family-names: "Akshit"
+    given-names: ""
+keywords:
+  - GPS spoofing
+  - GNSS security
+  - aviation security
+  - software-defined radio
+  - HackRF
+  - ADS-B
+  - electronic warfare
+  - cybersecurity
+license: MIT
+date-released: "2025-11-15"

@@ -1,0 +1,14 @@
+DETAILED PROJECT REPORT ALSO ATTACHED
+
+Description:
+Using Software-Defined Radio (SDR) for GPS Signal Simulation and Transmission :
+Conducted a controlled, research-oriented GPS spoofing demonstration to analyze GNSS vulnerabilities impacting aviation security near IGI Airport, New Delhi. The project showcased how spoofed GPS signals can replicate real satellite navigation data and mislead GPS receivers in a test environment.
+
+Key steps and highlights:
+ • Downloaded and processed broadcast ephemeris data from NASA CDDIS to create digitized I/Q samples for GPS signal simulation.
+ • Created spoofed GPS coordinates for IGI Airport and transmitted signal using hackrf_transfer.
+ • Compiled custom GPS simulation binaries and optimized the simulation code with motion support
+ • Configured and deployed HackRF One with Mayhem firmware to transmit spoofed GPS signals using accurate frequency and sample rate settings.
+ • Demonstrated end-to-end GPS spoofing by generating a GPS signal that mimicked a real-world location.
+ • Demonstrated how spoofed GPS data can overpower legitimate GNSS signals in a controlled RF environment.
+ • Highlighted aviation security risks and the need for GNSS authentication and anti-spoofing safeguards.

