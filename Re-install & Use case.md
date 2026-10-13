@@ -1,3 +1,24 @@
+# Re-installing/Fresh-Install : 
+
+check extensions settings
+
+go to "settings" then "Files and Links" : 
+
+Default location for new notes : same folder as current file
+
+Default location for new attachments : subfolder under current folder
+
+show all file types : on 
+
+Automatically update internal links : on 
+
+New link format option : shortest path when possible
+
+Use Wikilinks : Turn it OFF
+
+----
+# Guide : 
+
 you can link notes like this [[Welcome]]
 
 using tags #concept
@@ -47,14 +68,4 @@ sudo nmap -p- 80 192.168.0.1
 ```
 
 obsidian is markdown note taking software, it doesn’t store the image inside the text files of your notes (since it’s just a text file) so it has to store the image files somewhere, most just keep them all in an attachments folder
-
-check extensions settings
-
-1- go to "settings" then "Files and Links"
-2- in New link format option choose "Relative path to file "  
-3- disable "Use Wikilinks"
-4- down in Default location for new attachments choose "in subfolder under current folder :  
-5- in subfolder name "Choose any name but Attachments is good name"  
-6- you done here ; when you paste any image to your note it will create a folder in same parent folder called attachments and but the image into it
-just when you upload the note upload the attachments folder with here
 

