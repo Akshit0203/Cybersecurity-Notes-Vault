@@ -566,7 +566,7 @@ The server executes both commands — read the CHANGELOG.md output for the v0.7.
 
 Go to the **Alerts** tab:
 
-![](attachments/image.png)
+![](Fundamentals%20(Common)/Done%20Certifications%20&%20Courses/TryHackMe%20Cyber%20Security%20101%20Path/TryHackMe%20SEC%201/attachments/image.png)
 
 ---
 
@@ -867,7 +867,7 @@ certutil -hashfile agenda.exe SHA256
 
 `CreateDirectoryA` explicitly shows the malware can create directories (i.e., write to disk).
 
-![](attachments/image-1.png)
+![](Fundamentals%20(Common)/Done%20Certifications%20&%20Courses/TryHackMe%20Cyber%20Security%20101%20Path/TryHackMe%20SEC%201/attachments/image-1.png)
 
 ---
 
@@ -882,7 +882,7 @@ From the PeStudio imports, `URLDownloadToFileA` confirms the malware downloads f
 
 A full URL ending in `.exe` appears:
 
-![](attachments/image-2.png)
+![](Fundamentals%20(Common)/Done%20Certifications%20&%20Courses/TryHackMe%20Cyber%20Security%20101%20Path/TryHackMe%20SEC%201/attachments/image-2.png)
 
 ---
 
@@ -929,7 +929,7 @@ On Windows, `cmd.exe /c <command>` means _"Run this command, then terminate."_ M
 
 **Answer:** `dHJ5aGF0bWUuY29tL3RyeXBheW1lL2R3bGQva2V5LnR4d`
 
-![](attachments/image-3.png)
+![](Fundamentals%20(Common)/Done%20Certifications%20&%20Courses/TryHackMe%20Cyber%20Security%20101%20Path/TryHackMe%20SEC%201/attachments/image-3.png)
 
 ---
 
@@ -949,7 +949,7 @@ At the very top:
 0000  4d 5a 90 00 ...
 ```
 
-![](attachments/image-5.png)
+![](Fundamentals%20(Common)/Done%20Certifications%20&%20Courses/TryHackMe%20Cyber%20Security%20101%20Path/TryHackMe%20SEC%201/attachments/image-5.png)
 
 ---
 
@@ -969,4 +969,4 @@ Bottom bar of PeStudio shows: `cpu > 64-bit`
 
 Use **Magic** recipe in CyberChef to decode the Base64 string from Q7.
 
-![](attachments/image-4.png)
+![](Fundamentals%20(Common)/Done%20Certifications%20&%20Courses/TryHackMe%20Cyber%20Security%20101%20Path/TryHackMe%20SEC%201/attachments/image-4.png)

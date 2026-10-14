@@ -1,5 +1,5 @@
 
-![](attachments/image.png)
+![](3.%20Programming/1.%20Python/2.%20TCM%20Security/2.%20Python%20101%20For%20Hackers/1.%20Introduction/attachments/image.png)
 
 # 🧠 First: What Is Unicode?
 

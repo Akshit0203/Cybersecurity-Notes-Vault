@@ -65,23 +65,23 @@ Because that the bank will deal with, according to the tag ID's we give them
 
 ---
 
-![442](attachments/image-1.png)
+![442](IoT%20Security/attachments/image-1.png)
 
-![|447x479](attachments/image-2.png)
+![|447x479](IoT%20Security/attachments/image-2.png)
 
-![|478x434](attachments/image-3.png)
+![|478x434](IoT%20Security/attachments/image-3.png)
 
-![|536x415](attachments/image-4.png)
+![|536x415](IoT%20Security/attachments/image-4.png)
 
-![|551x380](attachments/image-5.png)
+![|551x380](IoT%20Security/attachments/image-5.png)
 
-![](attachments/image-7.png)
+![](IoT%20Security/attachments/image-7.png)
 
 ---
 
-![503](attachments/image-8.png)
+![503](IoT%20Security/attachments/image-8.png)
 
-![|536x789](attachments/image-9.png)
+![|536x789](IoT%20Security/attachments/image-9.png)
 
-![|544x394](attachments/image-10.png)
+![|544x394](IoT%20Security/attachments/image-10.png)
 

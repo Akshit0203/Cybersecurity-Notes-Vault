@@ -1,7 +1,7 @@
 
 An **operating system** (OS) is the core software that coordinates everything happening on a computer. It sits between the user, applications, and the system’s physical hardware, acting as the invisible manager that keeps the entire machine running as one unified system.
 
-![367](attachments/image.png)
+![367](Operating%20System%20Security/attachments/image.png)
 
 - Your **hardware** (CPU, RAM, storage, connected devices)
 - Your **applications** (web browser, game launcher)

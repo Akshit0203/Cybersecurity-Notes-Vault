@@ -1,8 +1,8 @@
 # Work Logging
 
-![](attachments/image.png)
-![](attachments/image-1.png)
-![](attachments/image-2.png)
+![](Career%20&%20Professional%20Skills/3.%20Corporate/attachments/image.png)
+![](Career%20&%20Professional%20Skills/3.%20Corporate/attachments/image-1.png)
+![](Career%20&%20Professional%20Skills/3.%20Corporate/attachments/image-2.png)
 
 ---
 

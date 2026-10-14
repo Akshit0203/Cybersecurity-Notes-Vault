@@ -159,7 +159,7 @@ Every browser ships with a **built-in JS engine** — this is required, not opti
 
 Open **DevTools** (`F12`) → **Console** tab → type JavaScript directly.
 
-![](attachments/image.png)
+![](Web%20Application%20Security/Development/JavaScript/attachments/image.png)
 
 ### How VS Code Runs JS Files
 

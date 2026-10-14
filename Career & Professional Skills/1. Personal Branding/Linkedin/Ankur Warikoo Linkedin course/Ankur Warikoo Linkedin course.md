@@ -26,9 +26,9 @@
 - sharing awards , certification doesn't help **from a creator's perspective**
 - consider posting in office hours - between 9am - 6pm
 
-![|579x207](attachments/image.png)
+![|579x207](Career%20&%20Professional%20Skills/1.%20Personal%20Branding/Linkedin/Ankur%20Warikoo%20Linkedin%20course/attachments/image.png)
 
-![|579x204](attachments/image-1.png)
+![|579x204](Career%20&%20Professional%20Skills/1.%20Personal%20Branding/Linkedin/Ankur%20Warikoo%20Linkedin%20course/attachments/image-1.png)
 
 - when reaching the 30k connection mark , remove connections who are not engaging/ not relevant to your content
 - you can send connection requests to people in your field (should we send or wait for requests)
@@ -38,14 +38,14 @@
 
 - don't go on all platforms at once , only once you've cracked one , go to the next one
 
-![|409x322](attachments/image-2.png)
+![|409x322](Career%20&%20Professional%20Skills/1.%20Personal%20Branding/Linkedin/Ankur%20Warikoo%20Linkedin%20course/attachments/image-2.png)
 
-![|411x212](attachments/image-3.png)
+![|411x212](Career%20&%20Professional%20Skills/1.%20Personal%20Branding/Linkedin/Ankur%20Warikoo%20Linkedin%20course/attachments/image-3.png)
 
 - pricing based on current scenario , if earning 50,000 a month , per hour cost by 3 to 5 times of that , so 250 per hour cost, charge 1000 or 1500 per hour or followers divided by 2
 - to market any product , better to use a personal profile than a corporate profile
 
-![|412x387](attachments/image-4.png)
+![|412x387](Career%20&%20Professional%20Skills/1.%20Personal%20Branding/Linkedin/Ankur%20Warikoo%20Linkedin%20course/attachments/image-4.png)
 
 - hook(first line of post) should be something that stops the scroll and body of the post should be relevant to the hook line
 

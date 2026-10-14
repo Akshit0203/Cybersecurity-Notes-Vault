@@ -1,6 +1,6 @@
 The primary goal of pseudocode is to describe the steps of an algorithm in a way that is easy to translate into actual code later.
 
-![image.png](attachments/image.png)
+![image.png](3.%20Programming/1.%20Python/2.%20TCM%20Security/1.%20Programming%20100%20Fundamentals/8.%20Development%20Best%20Practices%20and%20Additional%20Reading/attachments/image.png)
 
 ### Advantages of Using Pseudocode
 
