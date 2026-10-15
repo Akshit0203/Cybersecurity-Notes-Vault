@@ -141,3 +141,140 @@ Remember for OSCP:
 
 The key distinction is privileges versus machines: Domain Admin is a privileged group membership, while Domain Controller is a server role.
 
+## OSCP Active Directory Attack Path — In Order
+
+1. Enumeration — Discover domain, users, groups, computers and services.
+    
+2. Initial Foothold — Obtain initial access or valid credentials.
+    
+3. Credential Attacks — AS-REP Roasting, Kerberoasting, password reuse.
+    
+4. Privilege Escalation — Exploit Windows misconfigurations, services or permissions.
+    
+5. Credential Dumping — Find credentials, hashes and tickets.
+    
+6. BloodHound Analysis — Identify AD attack paths and excessive permissions.
+    
+7. Lateral Movement — Access other domain computers using discovered credentials.
+    
+8. AD Privilege Escalation — Abuse ACLs, delegation, GPOs or other misconfigurations.
+    
+9. Domain Compromise — Obtain the required high-level access, potentially Domain Admin or control of a Domain Controller.
+    
+10. Proof / Reporting — Collect required proof and document the attack path.
+    
+
+Remember: These steps aren't always strictly linear. Enumeration and credential discovery repeat throughout the assessment. You do not always need Domain Admin or Domain Controller compromise to complete an OSCP objective.
+
+1. Initial Foothold
+    
+2. Local Privilege Escalation → Local Admin / SYSTEM
+    
+3. Credential Dumping
+    
+4. Lateral Movement → Other machines
+    
+5. AD Enumeration → BloodHound
+    
+6. Domain Privilege Escalation → ACLs, GPOs, Delegation
+    
+7. Domain Admin / DC Compromise
+    
+8. Capture Proofs
+
+The difference is simple: Domain Privilege Escalation is the process; Domain Admin / DC Compromise is the result.
+
+### 1. Domain Privilege Escalation
+
+You exploit misconfigured AD permissions to gain more privileges.
+
+Examples:
+
+- ACL abuse — exploit excessive permissions on AD objects.
+    
+- GPO abuse — modify a policy that affects domain computers.
+    
+- Delegation abuse — misuse Kerberos delegation permissions.
+    
+
+You might go from a normal domain user to controlling a server or gaining powerful domain privileges.
+
+### 2. Domain Admin / DC Compromise
+
+You've reached the high-privilege outcome.
+
+- Domain Admin: You have administrative privileges across the domain.
+    
+- DC compromise: You obtain high-level control of a Domain Controller.
+    
+
+### Simple example
+
+`Initial foothold → Local Admin → Find exploitable GPO → Abuse GPO → Domain Admin privileges or control of the DC`
+
+Remember: ACLs, GPOs and delegation are possible ways to escalate. Domain Admin or DC compromise is a possible end result—but not every escalation leads to it.
+
+Yes, that's the basic flow for many OSCP Active Directory labs, but there can be extra steps.
+
+1. Initial Foothold → Gain access as a normal user.
+    
+2. Local Privilege Escalation → Become Local Admin / SYSTEM on the first machine.
+    
+3. Lateral Movement → Access another machine using discovered credentials or attack paths.
+    
+4. Domain Privilege Escalation → Abuse AD permissions, GPOs, or delegation.
+    
+5. Domain Admin / DC Compromise → Reach the required domain-level objective.
+    
+
+Remember: Local Admin on the first machine is not always necessary. Sometimes you can move laterally directly from a normal domain user.
+
+The difference is Step 4 is how you gain more privileges; Step 5 is the final level of access you achieve.
+
+### Step 4 — Domain Privilege Escalation
+
+You exploit an Active Directory weakness to gain higher privileges.
+
+Examples:
+
+- Abuse ACL permissions
+    
+- Modify a vulnerable GPO
+    
+- Exploit Kerberos delegation
+    
+- Obtain credentials for a privileged domain account
+    
+
+You might gain Domain Admin privileges during this step.
+
+### Step 5 — Domain Admin / DC Compromise
+
+You have achieved the high-level objective.
+
+- Domain Admin: You have administrative privileges across the domain.
+    
+- DC compromise: You have high-level control over the Domain Controller.
+    
+
+### Simple analogy
+
+`Step 3: Access another machine → Step 4: Exploit AD permissions → Step 5: Achieve domain-level control`
+
+Remember: Step 4 is the attack process; Step 5 is the result. You don't necessarily need separate steps if your exploitation immediately grants Domain Admin access.
+
+Yes, you've got it! Step 4 can be the last step. Step 5 is just the outcome, not necessarily a separate step.
+
+Your OSCP AD flow can simply be:
+
+1. Initial Foothold → Normal user access
+    
+2. Local Privilege Escalation → Local Admin / SYSTEM
+    
+3. Lateral Movement → Access another machine
+    
+4. Domain Privilege Escalation → Gain Domain Admin or compromise the Domain Controller
+    
+
+That's it. You stop when you've achieved the required exam objective. You don't always need Domain Admin; the required proof and target determine when you're done.
+

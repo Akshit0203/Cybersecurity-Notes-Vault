@@ -4361,6 +4361,22 @@ we have got the as-rep of one user `victim`
 
 # ==🔵Active Directory NEW==
 
+## 1. Initial Foothold → Normal user access : 
+
+
+
+## 2. Local Privilege Escalation → Local Admin / SYSTEM : 
+
+
+
+## 3. Lateral Movement → Access another machine :
+
+
+
+## 4. Domain Privilege Escalation → Gain Domain Admin or compromise the Domain Controller : 
+
+
+
 
 
 
