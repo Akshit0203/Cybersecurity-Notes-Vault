@@ -1,6 +1,6 @@
 # Checklist
 
-[[AD Machines/AD Machines|AD Machines Methodology: Standalones]] | [[Standalones/Standalones|AD Machines Methodology: AD Machines]]
+[[4. OSCP/Exam Day/Checklist Notes/AD Machines/AD Machines|AD Machines Methodology: Standalones]] | [[4. OSCP/Exam Day/Checklist Notes/Standalones/Standalones|AD Machines Methodology: AD Machines]]
 
 ---
 

