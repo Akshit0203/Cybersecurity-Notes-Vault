@@ -201,7 +201,7 @@ Show NFS Shares :
 showmount -e <IP>
 ```
 
-#### <span style="color:rgb(11, 142, 224)">FTP anonymous login</span>
+#### <span style="color:rgb(11, 142, 224)">FTP (port 21)</span>
 
 Connect:
 ```
