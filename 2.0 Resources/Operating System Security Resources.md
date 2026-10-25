@@ -52,6 +52,21 @@ RHCSA (Red Hat Certified System Administrator)
 LFCS: Linux Foundation Certified Systems Administrator
 ## Android 
 
+**8kSec Academy** - Mobile Application Security and Offensive iOS/Android Security Internals On-Demand Trainings \
+https://academy.8ksec.io/
+
+**Mobile Hacking Lab** - Offensive Mobile Security Trainings \
+https://www.mobilehackinglab.com/black-friday-deals-mobile-security
+
+**MobileHackingLab** - Android Userland Fuzzing & Exploitation Online Training Course \
+https://www.mobilehackinglab.com/afe
+
+**Android Hacking Course** - Android Applications Hacking for Bug Bounty and Pentesting \
+https://www.udemy.com/course/hacking-android-applications-for-bug-bounty-and-pentesting/?couponCode=97652C8A4386C813A7DB
+
+**CyberPro** - Cybersecurity Training - Mobile App \
+Android: [App link](https://play.google.com/store/apps/details?id=com.cyberlearn.cyber_pro&hl=en_US)
+
 HTB Android Application Pentesting Path [Link](https://academy.hackthebox.com/app/paths/420/details)
 Linuxdroid Start Android (Beginner Level)
 Linuxdroid CR phase 2 (craxs rat - Android Penetration)
@@ -65,7 +80,18 @@ Redfox Cybersecurity Academy : Android Pentesting Course
 
 ## iOS
 
+**8kSec Academy** - Mobile Application Security and Offensive iOS/Android Security Internals On-Demand Trainings \
+https://academy.8ksec.io/
+
+**Mobile Hacking Lab** - Offensive Mobile Security Trainings \
+https://www.mobilehackinglab.com/black-friday-deals-mobile-security
+
+iOS: [App link](https://apps.apple.com/app/apple-store/id6499339401?pt=127014487&ct=Github&mt=8) \
+
 Redfox Cybersecurity Academy : iOS Pentesting Course
+
+**IASE** SecuRing Certified iOS Application Security Engineer \
+https://courses.securing.pl/courses/iase
 
 ## Windows 
 

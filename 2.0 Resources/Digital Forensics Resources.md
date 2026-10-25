@@ -9,6 +9,19 @@ TCM Security Windows Evidence Acquisition and Triage
 
 redteamleaders : Digital Forensics & Incident Investigation
 redteamleaders : CSAM Combat & Investigation Introduction
+
+**Hexordia** - DFIR Virtual Live training \
+https://learn.hexordia.com/
+
+**13Cubed** - OS Forensics and Investigations Courses \
+https://training.13cubed.com/
+
+**Balkasoft** - DFIR and Mobile Forensics Training \
+https://belkasoft.com/training-bundles
+
+**Invictus Incident Response CloudLabs** \
+https://cloudlabs.invictus-ir.com
+
 Hackers Arise – Digital Forensics
 Hackers Arise – Advanced Digital Forensics 
 Hackers Arise – Network Forensics
@@ -16,7 +29,6 @@ Hackers Arise – Memory Forensics
 Hackers Arise – SCADA/ICS Forensics 
 Hackers Arise – Cryptocurrency Forensics 
 Hackers Arise – Investigating a Cyber Attack
-
 Hackers Arise – Anti-Forensics 
 
 ## Drone Forensics : 

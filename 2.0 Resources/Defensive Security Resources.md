@@ -1,4 +1,4 @@
-# Detection / Analysis / SOC
+# SOC
 
 ## Courses :
 
@@ -7,12 +7,23 @@ Professor Messor CompTIA Security +
 **TryHackMe Path – SOC Level 2**
 **TryHackMe Path – Advanced Endpoint Investigations**
 
-
 TCM Security Security Operations (SOC) 101
 TCM Security Security Operations (SOC) 201
 
-TCM Security Detection Engineering for Beginners
+**Blu Raven Academy** - Hands-On KQL Training for Threat Hunting, Detection Engineering, and Security Analysis \
+https://academy.bluraven.io/blackfriday2025
 
+**Invictus Incident Response Training** \
+https://academy.invictus-ir.com
+
+**The OSINTion/Blue Team Fusion** - Practical, real-world training for emerging and established Blue Teamers \
+https://www.theosintion.com/courses/blue-team-fusion
+
+**LetsDefend** - Blue Team Training \
+https://app.letsdefend.io/pricing
+
+**Security Blue Team** - BTL0 / BTL1 / BTL2 Training and Certifications \
+https://www.securityblue.team/
 
 EC council - Mastering ChatGPT for Threat Intelligence
 redteamleaders : Foundations of Log Analysis for Cyber Defense
@@ -24,12 +35,28 @@ Hackers Arise – Cyber Threat Intelligence
 Hackers Arise – MITRE ATT&CK 
 - [x] Student Security Operations Center (SOC) Program Foundations
 - [x] Microsoft Certified: Security, Compliance, and Identity Fundamentals (Exam: SC-900)
+
+**Black Hills InfoSec** - Antisyphon Training Active Defense and Cyber Deception \
+https://www.antisyphontraining.com/pay-forward-what-you-can/
+# Detection Enginerring  
+
+HTB Detection Enginerring Certification
+
+**Level Effect** - Blue with Virtual SOC, Data Science/AI, Detection Engineering Training (Self-Paced/Live) \
+https://training.leveleffect.com/catalog
+
+TCM Security Detection Engineering for Beginners
+
 ## Awareness & Human Security
 
 https://emkei.cz/
 
 TCM Security Practical Phishing Campaigns
-Evilginx mastery - downloaded
+
+Phishing & MFA Bypass
+**Evilginx Mastery** - Red Teamer course on Phishing and Reverse Proxies for MFA \
+https://academy.breakdev.org/evilginx-mastery
+
 Linuxdroid evilteam (Phishing)
 Linuxdroid blackwood (Social Engineering)
 redteamleaders : Spear-Phishing and OpSec Techniques
@@ -97,6 +124,9 @@ ISACA CISA (Audit)
 
 ## Courses :
 
+
+**ACE Responder** - Hands-on SIEM and Reverse Engineering Labs for SOC Analysts and Threat Hunters :new: \
+https://aceresponder.com
 
 ## Certification : 
 
