@@ -1,6 +1,6 @@
 
-At work, I do not think in terms of Tool 1 vs Tool 2.  
-I think from first principles and decide what problem I am actually solving.  
+At work, do not think in terms of Tool 1 vs Tool 2.  
+think from first principles and decide what problem I am actually solving.  
   
 For example:  
   

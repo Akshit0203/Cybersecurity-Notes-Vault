@@ -21,4 +21,4 @@ HOW TO FIX ALL THE ATTACK FROM AN ENGINEERING PERSPECTIVE
 
 If you cannot contribute open source to GitHub Merges 
 But can you check their code security? 
-That is even easier for every GitHub repo on earth made public !!!
+That is even easier for every GitHub repo made public
