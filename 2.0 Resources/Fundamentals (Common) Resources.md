@@ -96,19 +96,23 @@ https://freedium-mirror.cfd/
 https://www.fiverr.com/
 https://gumroad.com/dashboard
 
+# Discounted exam vouchers :
+
+https://www.globalitsuccess.com/ (ex. CompTIA , AWS)
+https://defcraft.academy/vouchers/ine (ine security , ex. eJPT , eCPPT)
+
 # Exam Reports :
 
 https://fsknockout.com/
+https://lokithewar.store/category
+https://cyberservices.store/
 darkforums(.)su or (.as) - people selling reports
 [DWService - remote access, remote administration, remote support](https://www.dwservice.net/en/home.html)
 # Exam dumps all :
 
 https://free-braindumps.com/
 [Exam dumps](https://www.allfreedumps.com/certs.html)
-
-# Discounted exam vouchers :
-
-https://www.globalitsuccess.com/
+https://open-exam-prep.com/practice/exams/technology
 
 # Websites :
 

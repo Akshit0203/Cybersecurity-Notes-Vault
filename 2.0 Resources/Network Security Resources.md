@@ -54,7 +54,7 @@ https://github.com/0xInfection/Awesome-WAF (everything about web application fir
 - [x] TryHackMe Path – Jr Penetration Tester
 - [ ] **TryHackMe Path – Offensive Pentesting**
 - [ ] **TryHackMePath  – Red Teaming**
-- [ ] TryHackMe Path – CompTIA Pentest+
+- [x] TryHackMe Path – CompTIA Pentest+
 - [ ] redteamleaders : Data Exfiltration - Red Team Operations
 - [ ] redteamleaders : Initial Access & Adversary Simulation
 
