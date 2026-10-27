@@ -113,7 +113,6 @@ Hackers Arise – Cyber Defense (Military)
 ## Certification : 
 
 [ISO/IEC 27001:2022 Lead Auditor - Mastermind Assurance](https://learn.mastermindassurance.com/courses/take/new-course/lessons/61109891-welcome)
-INE Security eEDA (Enterprise Defense Administrator)
 Comptia CASP+
 ISC2 CISSP
 ISACA CISM (Policies , Risk , Leadership)
