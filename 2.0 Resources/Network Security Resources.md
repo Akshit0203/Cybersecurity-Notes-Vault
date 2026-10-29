@@ -61,8 +61,8 @@ https://github.com/0xInfection/Awesome-WAF (everything about web application fir
 ## Certifications 
 
 - [ ] Ine Security eJPT (Junior Penetration Testing)
-- [ ] TryHackMe Pen1
-- [ ] TryHackMe Pen2
+- [ ] TryHackMe PT1
+- [ ] TryHackMe PT2
 - [ ] INE Security eCPPT (Certified Professional Penetration Tester)
 - [ ] AlteredSecurity Certified Penetration Tester (ACPT)
 - [ ] CompTIA PenTest+
