@@ -22,15 +22,6 @@ https://belkasoft.com/training-bundles
 **Invictus Incident Response CloudLabs** \
 https://cloudlabs.invictus-ir.com
 
-Hackers Arise – Digital Forensics
-Hackers Arise – Advanced Digital Forensics 
-Hackers Arise – Network Forensics
-Hackers Arise – Memory Forensics 
-Hackers Arise – SCADA/ICS Forensics 
-Hackers Arise – Cryptocurrency Forensics 
-Hackers Arise – Investigating a Cyber Attack
-Hackers Arise – Anti-Forensics 
-
 ## Drone Forensics : 
 
 Damn Vulnerable Drone

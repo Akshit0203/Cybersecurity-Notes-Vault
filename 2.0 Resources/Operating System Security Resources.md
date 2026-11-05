@@ -8,7 +8,6 @@
 
 TCM Security Mobile Application Penetration Testing
 redteamleaders : AV/EDR Evasion Practical Techniques 
-Hackers Arise – Mobile Hacking
 
 Mobile Hacking Lab Youtube Channel 
 https://www.youtube.com/@MobileHackingLab/videos
@@ -31,12 +30,9 @@ M Prashant YouTube Playlist Linux Admin Playlist
 M Prashant YouTube Playlist Linux Questions for Exams & Interviews
 M Prashant YouTube Playlist Linux Zero to Hero
 
-Hackers Arise – Linux Basics for Hackers
-Hackers Arise – Linux Basics for Hackers
 Craw security RHCSA (Red Hat Certified System Administrator)
 
 - [x] Bitten Tech [LINPE1] Linux Privilege Escalation for Offensive Pentesting
-Hackers Arise – Linux Firewalls
 
 |thing|my take|
 |---|---|
@@ -74,7 +70,6 @@ TechVansh – Master Android Hacking with CRAX RAT
 TechVansh – Everything About Android Hacking
 TechVansh – 2025 Nov Live Android Hacking Masterclass
 Android hacking - cosmofeed
-Hackers Arise – Android Hacking
 
 Redfox Cybersecurity Academy : Android Pentesting Course
 
@@ -103,8 +98,6 @@ HTB Certified Active Directory Pentesting Expert (HTB CAPE)
 - [x] Bitten Tech [PAD1] Active Directory for Pentesters | Red Teaming on Windows Domains
 redteamleaders : Offensive Development Introduction for Windows v1
 redteamleaders : Purple Team - Active Directory and AzureAD v1 
-Hackers Arise – Active Directory 
-Hackers Arise – Privilege Escalation
 
 Redfox Cybersecurity Academy : Windows Red Teaming Course
 Redfox Cybersecurity Academy : Windows Evasion Course

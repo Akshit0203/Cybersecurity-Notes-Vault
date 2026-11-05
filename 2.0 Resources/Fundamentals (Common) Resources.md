@@ -99,7 +99,7 @@ https://gumroad.com/dashboard
 # Discounted exam vouchers :
 
 https://www.globalitsuccess.com/ (ex. CompTIA , AWS)
-https://defcraft.academy/vouchers/ine (ine security , ex. eJPT , eCPPT)
+https://defcraft.academy/vouchers/ine (ine security , ex. eJPT , eCPPT ,etc. all)(also 3 month couse + vouchers all certs)
 
 # Exam Reports :
 
@@ -160,7 +160,6 @@ redteamleaders : Cybersecurity for Kids v1
 Qualys Certification and Training Center
 Technical support fundamentals - coursera
 IT security - coursera
-Hackers Arise – Remaining Anonymous
 redteamleaders : Introduction to Red Team Operation Management
 redteamleaders : Mastering Pentest & Red Team Report Writing 
 Security Blue Team: Introduction to Penetration Testing

@@ -59,19 +59,6 @@ https://programs.isa.**org**
 - [Introduction to Internet of Things(IoT) using Arduino](https://www.udemy.com/course/introduction-to-internet-of-things-iot-using-arduino/?couponCode=MXABCARTRT24)
 - [Make a Living as a Smart Home Automation & IoT Installer](https://www.udemy.com/course/make-a-living-as-a-smart-home-installer/?couponCode=MXABCARTRT24)
 
-### Hackers Arise
-
-- Radio Basics
-- Software Defined Radio
-- Advanced SDR
-- Femtocell
-- IoT Hacking
-- Car Hacking
-- IP Camera Hacking
-- SCADA/ICS Security
-- Advanced SCADA/ICS
-- Satellite Hacking
-
 ### Other Courses & Training
 
 - TCM Security Beginner's Guide to IoT and Hardware Hacking

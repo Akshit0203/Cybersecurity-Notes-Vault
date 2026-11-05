@@ -28,11 +28,6 @@ https://www.securityblue.team/
 EC council - Mastering ChatGPT for Threat Intelligence
 redteamleaders : Foundations of Log Analysis for Cyber Defense
 David Bombal Wireshark Certified Analyst (WCA) - The Complete Hands-On Course
-Hackers Arise – Snort 
-Hackers Arise – Honeypots
-Hackers Arise – Splunk 
-Hackers Arise – Cyber Threat Intelligence
-Hackers Arise – MITRE ATT&CK 
 - [x] Student Security Operations Center (SOC) Program Foundations
 - [x] Microsoft Certified: Security, Compliance, and Identity Fundamentals (Exam: SC-900)
 
@@ -61,8 +56,6 @@ Linuxdroid evilteam (Phishing)
 Linuxdroid blackwood (Social Engineering)
 redteamleaders : Spear-Phishing and OpSec Techniques
 redteamleaders : Digital Protection Introduction
-Hackers Arise – Phishing Analysis 
-Hackers Arise – Social Engineering
 
 ## OSINT
 
@@ -85,8 +78,6 @@ Linuxdroid F-OSINT (Open Source Intelligence)
 redteamleaders : Advanced OSINT Mastery 
 redteamleaders : Intelligence & Counterintelligence Introduction
 redteamleaders : Physical PenTest Fundamentals 
-Hackers Arise – OSINT 
-Hackers Arise – OSINT Business 
 
 ## Certification : 
 
@@ -103,12 +94,6 @@ Wireshark Certified Analyst (WCA)
 ## Course : 
 
 
-Hackers Arise – CISSP 
-Hackers Arise – CASP+ 
-Hackers Arise – CCSP+
-Hackers Arise – Criminal Law
-Hackers Arise – Cyber Law 
-Hackers Arise – Cyber Defense (Military)
 
 ## Certification : 
 
@@ -139,7 +124,6 @@ INE Security eCTHP (Certified Threat Hunting Professional)
 
 OffSec Incident Responder OSIR (IR-200)
 INE Security eCIR Certified Incident Responder
-Hackers Arise – Phishing Analysis 
 
 ----
 # Overall Blue Team Certifications : 
