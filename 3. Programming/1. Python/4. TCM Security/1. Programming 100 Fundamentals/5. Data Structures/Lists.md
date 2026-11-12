@@ -1,5 +1,5 @@
 
-![Pasted image 20251125200721.png](attachments/Pasted%20image%2020251125200721.png)
+![Pasted image 20251125200721.png](Pasted%20image%2020251125200721.png)
 
 In Python, a list is a versatile and mutable data structure that can hold a collection of items. It allows you to store multiple values of different data types in a single variable.
 

@@ -54,7 +54,7 @@ _start:
 
 ### Summary of Differences:
 
-![](attachments/Pasted%20image%2020260725163326.png)
+![](Pasted%20image%2020260725163326.png)
 ### Why Use Each?
 
 - **High-Level Languages**: If you're focused on solving a problem, like building a website or automating a task, high-level languages like Python are great because they simplify things. You don’t need to worry about how the computer works behind the scenes.
