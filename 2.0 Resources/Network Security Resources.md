@@ -5,6 +5,8 @@
 
 **Search all on LinkedIn learning also (watch everything you can)**
 
+**AppSecEngineer** – [Infrastructure Security](https://www.appsecengineer.com/learning-paths/infrastructure-security)
+
  - [x] Udemy CompTIA Network+ (N10-009) Jason DionBootcamp
  - [x] Jeremey's it labs - youtube playlist
  - [x] Ccna notes github - <https://github.com/dollarboysushil/CCNA-200-301/blob/main/Day%203%20-%20OSI%20Model%20%26%20TCP%2CIP%20suite.md>
@@ -60,10 +62,10 @@ https://github.com/0xInfection/Awesome-WAF (everything about web application fir
 
 ## Certifications 
 
-- [ ] Ine Security eJPT (Junior Penetration Testing)
+- [x] Ine Security eJPT (Junior Penetration Testing)
 - [ ] TryHackMe PT1
 - [ ] TryHackMe PT2
-- [ ] INE Security eCPPT (Certified Professional Penetration Tester)
+- [x] INE Security eCPPT (Certified Professional Penetration Tester)
 - [ ] AlteredSecurity Certified Penetration Tester (ACPT)
 - [ ] CompTIA PenTest+
 - [ ] TCM Security — Practical Junior Penetration Tester (PJPT) (Course(s) Included : Practical Ethical Hacking – The Complete Course)
