@@ -1,3 +1,63 @@
+# Security 
+
+how do these tools work ?
+How are these tools made ? ex. nmap 
+# Articles :
+
+https://github.com/0xInfection/Awesome-WAF (everything about web application firewall)
+## Courses :
+
+- [x] Bitten tech [PEN1] Complete Offensive Pentesting for Beginners certificate from app
+- [x] TryHackMe Path – Jr Penetration Tester
+- [ ] **TryHackMe Path – Offensive Pentesting**
+- [ ] **TryHackMePath  – Red Teaming**
+- [x] TryHackMe Path – CompTIA Pentest+
+- [ ] redteamleaders : Data Exfiltration - Red Team Operations
+- [ ] redteamleaders : Initial Access & Adversary Simulation
+
+## Certifications 
+
+- [x] Ine Security eJPT (Junior Penetration Testing)
+- [x] INE Security eCPPT (Certified Professional Penetration Tester)
+
+- [ ] TryHackMe PT1
+- [ ] TryHackMe PT2
+
+- [ ] Altered Security ACPT
+- [ ] Altered Security CRTP
+
+- [ ] TCM Security PJPT — Add courses to LinkedIn post and certification section as well : (Course(s) Included : Practical Ethical Hacking – The Complete Course)
+- [ ] TCM Security PNPT — Add courses to LinkedIn post and certification section as well : (Course(s) Included : Practical Ethical Hacking – The Complete Course; Windows Privilege Escalation; Linux Privilege Escalation; Open-Source Intelligence; External Pentest Playbook)
+
+- [ ] EC Council - Cpent (LPT ONLY)
+but remember it has binary exploitation and iot pentest
+don't give without knowing these both
+
+- [ ] HTB CJCA
+- [ ] HTB Certified Penetration Testing Specialist (HTB CPTS)
+
+- [ ] CompTIA PenTest+
+- [ ] CompTIA Cybersecurity Analyst (CySA+) 
+- [ ] CompTIA SecAI+
+- [ ] CompTIA SecurityX
+
+- [ ] Offsec KLCP PEN-103 Kali Linux Certified Professional
+- [ ] GPEN
+
+- [ ] **Zero-Point Security** CRTO [Link](https://www.zeropointsecurity.co.uk/courses)
+
+- [ ] OffSec Certified Professional OSCP+ (PEN-200)
+- [ ] OffSec Experienced Penetration Tester OSEP (PEN-300)
+
+CREST Certifications
+Penetration Testing
+- [ ] **Practitioner:** CREST - Practitioner Security Analyst (CPSA): [Link](https://www.crest-approved.org/skills-certifications-careers/crest-practitioner-security-analyst/)
+- [ ] **Registered:** CREST - Registered Penetration Tester (CRT): [Link](https://www.crest-approved.org/skills-certifications-careers/crest-registered-penetration-tester/)
+- [ ] **Certified:** CREST - Certified Tester - Infrastructure (CCT INF): [Link](https://www.crest-approved.org/skills-certifications-careers/crest-certified-infrastructure-tester/)
+- [ ] **Certified:** CREST - Certified Tester - Application (CCT APP): [Link](https://www.crest-approved.org/skills-certifications-careers/crest-certified-web-application-tester/)
+- [ ] **Certified:** CREST - Certified Red Team Specialist (CCRTS): [Link](https://www.crest-approved.org/skills-certifications-careers/crest-certified-red-team-specialist/)
+- [ ] **Certified:** CREST - Certified Red Team Manager (CCRTM): [Link](https://www.crest-approved.org/skills-certifications-careers/crest-certified-red-team-manager/)
+
 
 # Core
 
@@ -41,42 +101,13 @@ https://nslookup.io/dns-course/
 - [x] CompTIA Network+
 - [x] Certified Network Security Practitioner (CNSP)
 
-# Security 
+----
 
-how do these tools work ?
-How are these tools made ? ex. nmap 
-
-# Articles :
-
-https://github.com/0xInfection/Awesome-WAF (everything about web application firewall)
-
-## Courses :
-
-- [x] Bitten tech [PEN1] Complete Offensive Pentesting for Beginners certificate from app
-- [x] TryHackMe Path – Jr Penetration Tester
-- [ ] **TryHackMe Path – Offensive Pentesting**
-- [ ] **TryHackMePath  – Red Teaming**
-- [x] TryHackMe Path – CompTIA Pentest+
-- [ ] redteamleaders : Data Exfiltration - Red Team Operations
-- [ ] redteamleaders : Initial Access & Adversary Simulation
-
-## Certifications 
-
-- [x] Ine Security eJPT (Junior Penetration Testing)
-- [ ] TryHackMe PT1
-- [ ] TryHackMe PT2
-- [x] INE Security eCPPT (Certified Professional Penetration Tester)
-- [ ] AlteredSecurity Certified Penetration Tester (ACPT)
-- [ ] CompTIA PenTest+
-- [ ] TCM Security — Practical Junior Penetration Tester (PJPT) (Course(s) Included : Practical Ethical Hacking – The Complete Course)
-- [ ] TCM Security — Practical Network Penetration Tester (PNPT) (Course(s) Included : Practical Ethical Hacking – The Complete Course; Windows Privilege Escalation; Linux Privilege Escalation; Open-Source Intelligence; External Pentest Playbook)
-- [ ] EC Council - Cpent
-- [ ] HTB Certified Penetration Testing Specialist (HTB CPTS)
-
-**Zero-Point Security** \
-https://www.zeropointsecurity.co.uk/courses
-CRTO
-
-- [ ] OffSec Certified Professional OSCP+ (PEN-200)
-- [ ] OffSec Experienced Penetration Tester OSEP (PEN-300)
-
+Stackable certifications :
+CompTIA Cloud Admin Professional (Network+ / Cloud+)
+CompTIA Secure Cloud Professional (Security+ / Cloud+)
+CompTIA Security Analytics Professional (Security+ / CySA+)
+CompTIA Network Vulnerability Assessment Professional (Security+ / PenTest+)
+CompTIA Network Security Professional (Security+ / PenTest+ / CySA+)
+CompTIA Security Analytics Expert (Security+ / CySA+ / SecurityX)
+CompTIA Secure Infrastructure Expert (Security+ / CySA+ / PenTest+ / SecurityX)

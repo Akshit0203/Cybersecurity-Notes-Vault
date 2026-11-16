@@ -24,13 +24,13 @@ https://www.mobilehackinglab.com/courses
 ### Courses :
 
 - [x] TCM Security Linux 100
-TCM Security Linux 101 
-HTB Operating System Fundamentals Path [Link](https://academy.hackthebox.com/app/paths/20/details)
-M Prashant YouTube Playlist Linux Admin Playlist
-M Prashant YouTube Playlist Linux Questions for Exams & Interviews
-M Prashant YouTube Playlist Linux Zero to Hero
-
-Craw security RHCSA (Red Hat Certified System Administrator)
+- [ ] TCM Security Linux 101 
+- [ ] HTB Operating System Fundamentals Path [Link](https://academy.hackthebox.com/app/paths/20/details)
+- [ ] M Prashant YouTube Playlist Linux Admin Playlist
+- [ ] M Prashant YouTube Playlist Linux Questions for Exams & Interviews
+- [ ] M Prashant YouTube Playlist Linux Zero to Hero
+- [ ] HackTricks Courses : Linux Exploitation Expert (LEE): [Link](https://hacktricks-training.com/courses/)
+- [ ] Craw security RHCSA (Red Hat Certified System Administrator)
 
 - [x] Bitten Tech [LINPE1] Linux Privilege Escalation for Offensive Pentesting
 
