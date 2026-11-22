@@ -12,9 +12,9 @@ SHELL IS WHERE WE CAN INTERACT
 
 NOT A NON-INTERACTIVE SHELL 
 EX. WEBSHELL
-![446](4.%20OSCP/Exam%20Day/14.%20Preparing%20for%20OSCP%201/1.%20OSCP%20Exam%20Guide/Attachments/Pasted%20image%2020261016212649.png)
+![446](4.%20OSCP/1.%20Exam%20Day/14.%20Preparing%20for%20OSCP%201/1.%20OSCP%20Exam%20Guide/Attachments/Pasted%20image%2020261016212649.png)
 ex . even os command injection (RCE) 
-![448](4.%20OSCP/Exam%20Day/14.%20Preparing%20for%20OSCP%201/1.%20OSCP%20Exam%20Guide/Attachments/Pasted%20image%2020261016212837.png)
+![448](4.%20OSCP/1.%20Exam%20Day/14.%20Preparing%20for%20OSCP%201/1.%20OSCP%20Exam%20Guide/Attachments/Pasted%20image%2020261016212837.png)
 even this is not a shell 
 
 
@@ -22,7 +22,7 @@ even this is not a shell
 
 The exam control panel contains a section available to submit your proof files. The contents of the local.txt and proof.txt files obtained from your exam machines _must be submitted in the control panel before your exam has ended._
 
-![](4.%20OSCP/Exam%20Day/14.%20Preparing%20for%20OSCP%201/1.%20OSCP%20Exam%20Guide/Attachments/Pasted%20image%2020261016205632.png)
+![](4.%20OSCP/1.%20Exam%20Day/14.%20Preparing%20for%20OSCP%201/1.%20OSCP%20Exam%20Guide/Attachments/Pasted%20image%2020261016205632.png)
 
 
 # Screenshot Requirements
@@ -35,7 +35,7 @@ WITH THE CONTENTS OF THE LOCAL AND PROOF FLAG
 GIVE IP ADDRESS AS WELL OF MACHINE 
  `ipconfig`, `ifconfig`
 
-![](4.%20OSCP/Exam%20Day/14.%20Preparing%20for%20OSCP%201/1.%20OSCP%20Exam%20Guide/Attachments/Pasted%20image%2020261016205822.png)
+![](4.%20OSCP/1.%20Exam%20Day/14.%20Preparing%20for%20OSCP%201/1.%20OSCP%20Exam%20Guide/Attachments/Pasted%20image%2020261016205822.png)
 
 # Exam Restrictions
 

@@ -89,11 +89,11 @@ Proof contents must be shown from an **authenticated interactive shell** using `
 **Invalid (NOT interactive):**
 - A **web shell** — e.g. a PHP script calling `system()`, `exec()`, `passthru()`. Each command spawns a separate background process; no persistent state, no TTY. Running `cat local.txt` through a browser/web shell is invalid.
 
-![[4. OSCP/Exam Day/14. Preparing for OSCP 1/1. OSCP Exam Guide/Attachments/Pasted image 20261016212649.png]]
+![[4. OSCP/1. Exam Day/14. Preparing for OSCP 1/1. OSCP Exam Guide/Attachments/Pasted image 20261016212649.png]]
 
 - Even **OS command injection / RCE** by itself is not a shell.
 
-![[4. OSCP/Exam Day/14. Preparing for OSCP 1/1. OSCP Exam Guide/Attachments/Pasted image 20261016212837.png]]
+![[4. OSCP/1. Exam Day/14. Preparing for OSCP 1/1. OSCP Exam Guide/Attachments/Pasted image 20261016212837.png]]
 
 > [!tip] Fix
 > If you have a web shell or RCE, use it to **stage a reverse‑shell callback** and catch an authentic interactive shell on a local listener **before** capturing proof.
@@ -108,7 +108,7 @@ Proof contents must be shown from an **authenticated interactive shell** using `
   - **Linux:** `cat local.txt` / `cat proof.txt` alongside `ip a` / `ifconfig` / `ip addr`
 - This proves the flag came from that target via a real interactive shell, not fabricated or moved.
 
-![[4. OSCP/Exam Day/14. Preparing for OSCP 1/1. OSCP Exam Guide/Attachments/Pasted image 20261016205822.png]]
+![[4. OSCP/1. Exam Day/14. Preparing for OSCP 1/1. OSCP Exam Guide/Attachments/Pasted image 20261016205822.png]]
 
 ---
 
@@ -121,7 +121,7 @@ Access the control panel via the link in your exam email (VPN connects ~15–30 
 
 > The control panel will **not** tell you whether a submitted proof is correct.
 
-![[4. OSCP/Exam Day/14. Preparing for OSCP 1/1. OSCP Exam Guide/Attachments/Pasted image 20261016205632.png]]
+![[4. OSCP/1. Exam Day/14. Preparing for OSCP 1/1. OSCP Exam Guide/Attachments/Pasted image 20261016205632.png]]
 
 > [!important] Proof contents must be submitted in the control panel **before your exam ends.**
 
