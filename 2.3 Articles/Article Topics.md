@@ -23,3 +23,8 @@ https://www.hackingarticles.in/bloodhound-mcp-automating-active-directory-analys
 
 -------
 
+https://utkusen.substack.com/p/how-llm-based-penetration-testing
+https://substack.com/@utkusen
+
+-------
+
