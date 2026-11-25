@@ -26,8 +26,8 @@ https://github.com/0xInfection/Awesome-WAF (everything about web application fir
 - [ ] Altered Security ACPT
 - [ ] Altered Security CRTP
 
-- [ ] TCM Security PJPT — Add courses to LinkedIn post and certification section as well : (Course(s) Included : Practical Ethical Hacking – The Complete Course)
-- [ ] TCM Security PNPT — Add courses to LinkedIn post and certification section as well : (Course(s) Included : Practical Ethical Hacking – The Complete Course; Windows Privilege Escalation; Linux Privilege Escalation; Open-Source Intelligence; External Pentest Playbook)
+- [x] TCM Security PJPT — Add courses to LinkedIn post and certification section as well : (Course(s) Included : Practical Ethical Hacking – The Complete Course)
+- [x] TCM Security PNPT — Add courses to LinkedIn post and certification section as well : (Course(s) Included : Practical Ethical Hacking – The Complete Course; Windows Privilege Escalation; Linux Privilege Escalation; Open-Source Intelligence; External Pentest Playbook)
 
 - [ ] EC Council - Cpent (LPT ONLY)
 but remember it has binary exploitation and iot pentest
