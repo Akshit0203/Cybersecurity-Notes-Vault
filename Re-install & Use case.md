@@ -12,7 +12,8 @@ show all file types : on
 
 Automatically update internal links : on 
 
-New link format option : shortest path when possible
+IMPORTANT FOR RENDERING ON GITHUB : 
+New link format option : Path from current File
 
 Use Wikilinks : Turn it OFF
 
