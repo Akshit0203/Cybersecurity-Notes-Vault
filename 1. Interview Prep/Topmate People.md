@@ -11,3 +11,4 @@ Search on Topmate for  your desired role [topmate | Search](https://topmate.io/s
 1. Chetan Pathade (GenAI Security Engineer @AWS ; Carnegie Mellon University Masters) ; [Topmate](https://topmate.io/chetan_pathade10) ; [Linkedin](https://www.linkedin.com/in/chetan-pathade/)
 2. Manubhav Sharma (Threat Analyst@Sophos ; SOC ; blue team) ; [Topmate](https://topmate.io/learnwithmanubhavsharma) ; [Linkedin](https://www.linkedin.com/in/manubhav-sharma/)
 3. Pradeep Bhat (Security Engineering Manager @ Groww) ; [Topmate](https://topmate.io/pradeep_bhat) ; [Linkedin](https://www.linkedin.com/in/pradeeppbhat/)
+4. Raj Shah (Manager - Cloud Security@KPMG mumbai) ; [Topmate](https://topmate.io/programmedraj) ; [Linkedin](https://www.linkedin.com/in/programmedraj/)

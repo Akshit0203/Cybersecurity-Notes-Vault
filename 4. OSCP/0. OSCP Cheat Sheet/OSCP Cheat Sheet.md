@@ -318,6 +318,22 @@ Username: abc
 Password: abc
 ```
 Confirm that `<user>` is a member of the **Domain Admins** group.
+#### ==🔴.pdf==
+
+Extract a hash that that John can work with:
+```
+pdf2john Infrastructure.pdf > pdf.hash
+```
+
+John :
+```
+john --wordlist=/usr/share/wordlists/rockyou.txt --rules=best64 pdf.hash
+```
+
+Open the pdf :
+```
+evince Infrastructure.pdf
+```
 
 ## ==🔵If you find any encoded string : ==
 
@@ -1306,27 +1322,29 @@ Remember for windows use `base64-encoded PowerShell reverse shell` and not linux
 3. [ ] visit website on the all ports running http , don't go by the port number only
 4. [ ] Directory brute force the website
 5. [ ] Check the webiste name or any name or version name on searchsploit
-6. [ ] in nmap port scan if any new service with new name , search it up on searchsploit
-7. [ ] on google , `name <version> exploit (add : poc github)`
-8. [ ] visit the webistes with `https://` also , even though it says `http://`
-9. [ ] Browse to a non-existent path on the website to check if it gives version number
-10. [ ] for all services running , check their version number and search for their exploit
-11. [ ] `<url>`/.git
-12. [ ] Check if virtual hosting is present (add to /etc/hos)
-13. [ ] Check: `/CHANGELOG(can give versions), /robots.txt, /sitemap.xml, /sitemap, /.git/, /.env, /web.config, /backup.zip, /<hostname>.zip`
-14. [ ] if there's a lfi , search where the configuration files of the service is , then read it using the lfi
-15. [ ] The `ss -ntlpu` command reveals a service listening on `127.0.0.1:8000` that was not visible in external port scans. To access this internal service, ligolo-ng creates a network tunnel from the compromised machine to the attacker's Kali system.
-16. [ ] search for `<service name>/<website name>` exploit on google , read the exploit to check if we have to change the ip and port and start up a listener
-17. [ ] use wappalyzer
-18. [ ] to run python exploit try both `python2 abc.py` and `python3 abc.py`
-19. [ ] use last resort of msfconsole , it the exploit requires heavy modification , do rest 2 machines first then
-20. [ ] check exploit for version of smb
-21. [ ] Check default credentials. Find a username without a password? Guess the username as a password. Did you check publicly exposed documents for usernames?
-22. [ ] Also, password reuse is absolutely a thing. Find a new username or password? Respray, especially with netexec (nxc) on Windows. And remember, spray usernames as passwords.
-23. [ ] visit all ports on the ip with http running  and directory brute force all those ports
-24. [ ] if a website has login use default credentials first `admin:admin` / `admin:password` ; or search for the default credentials of that web app online
-25. [ ] view page source code for any `vhost` or any hint
-26. [ ] after you upload a reverse shell 
+6. [ ] When you find a service, dont just look for CVEs. Google the service and find all the ways to exploit it
+7. [ ] in nmap port scan if any new service with new name , search it up on searchsploit
+8. [ ] on google , `name <version> exploit (add : poc github)`
+9. [ ] visit the webistes with `https://` also , even though it says `http://`
+10. [ ] Browse to a non-existent path on the website to check if it gives version number
+11. [ ] for all services running , check their version number and search for their exploit
+12. [ ] `<url>`/.git
+13. [ ] Check if virtual hosting is present (add to /etc/hos)
+14. [ ] Check: `/CHANGELOG(can give versions), /robots.txt, /sitemap.xml, /sitemap, /.git/, /.env, /web.config, /backup.zip, /<hostname>.zip`
+15. [ ] if there's a lfi , search where the configuration files of the service is , then read it using the lfi
+16. [ ] The `ss -ntlpu` command reveals a service listening on `127.0.0.1:8000` that was not visible in external port scans. To access this internal service, ligolo-ng creates a network tunnel from the compromised machine to the attacker's Kali system.
+17. [ ] search for `<service name>/<website name>` exploit on google , read the exploit to check if we have to change the ip and port and start up a listener
+18. [ ] use wappalyzer
+19. [ ] do wordpress scan on the website
+20. [ ] to run python exploit try both `python2 abc.py` and `python3 abc.py`
+21. [ ] use last resort of msfconsole , it the exploit requires heavy modification , do rest 2 machines first then
+22. [ ] check exploit for version of smb
+23. [ ] Check default credentials. Find a username without a password? Guess the username as a password. Did you check publicly exposed documents for usernames?
+24. [ ] Also, password reuse is absolutely a thing. Find a new username or password? Respray, especially with netexec (nxc) on Windows. And remember, spray usernames as passwords.
+25. [ ] visit all ports on the ip with http running  and directory brute force all those ports
+26. [ ] if a website has login use default credentials first `admin:admin` / `admin:password` ; or search for the default credentials of that web app online
+27. [ ] view page source code for any `vhost` or any hint
+28. [ ] after you upload a reverse shell 
 - [ ] you have to browse also to the file location `http://192.168.142.16/shell.php`
 - [ ] or find the folder where it is getting uploaded 
 - [ ] or if you uploaded a web shell : `http://192.168.142.16/shell.php?cmd=id`

@@ -1,4 +1,5 @@
 # Jobs Search/Switch :
+
 LinkedIn Jobs [Link](https://www.linkedin.com/jobs/)
 [AmbitionBox](https://www.ambitionbox.com/)
 [Glassdoor](https://www.glassdoor.co.in/Community/index.htm)
@@ -98,7 +99,8 @@ https://gumroad.com/dashboard
 
 # Discounted exam vouchers :
 
-https://www.globalitsuccess.com/ (ex. CompTIA , AWS)
+https://www.globalitsuccess.com/ (All)(ex. CompTIA , AWS)
+https://certizon.com/ (All)
 https://defcraft.academy/vouchers/ine (ine security , ex. eJPT , eCPPT ,etc. all)(also 3 month couse + vouchers all certs)
 
 # Exam Reports :
